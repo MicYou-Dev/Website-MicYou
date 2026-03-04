@@ -40,7 +40,8 @@ const { currentLang } = Astro.props;
 			item.addEventListener("click", () => {
 				const lang = item.dataset.lang;
 				if (lang) {
-					window.location.href = lang === "zh" ? "/" : "/en/";
+					const baseUrl = import.meta.env.BASE_URL;
+					window.location.href = lang === "zh" ? baseUrl : `${baseUrl}/en/`;
 				}
 			});
 		});
