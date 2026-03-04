@@ -6,19 +6,23 @@ import FeaturesSection from "../components/FeaturesSection.astro";
 import DownloadSection from "../components/DownloadSection.astro";
 import ContributorsSection from "../components/ContributorsSection.astro";
 import Footer from "../components/Footer.astro";
-import en from "../locales/en";
+import zh from "../locales/zh";
 import "../styles/theme.css";
 ---
 
-<Layout title="MicYou - Professional Microphone Streaming" lang="en">
-	<NavBar t={en.nav} currentLang="en" />
+<Layout
+	title="MicYou"
+	description="MicYou - 将手机变成专业麦克风。"
+	lang="zh"
+>
+	<NavBar t={zh.nav} currentLang="zh" />
 	<main>
-		<HeroSection t={en.hero} />
-		<FeaturesSection t={en.features} />
-		<DownloadSection t={en.download} />
-		<ContributorsSection t={en.contributors} />
+		<HeroSection t={zh.hero} />
+		<FeaturesSection t={zh.features} />
+		<DownloadSection t={zh.download} />
+		<ContributorsSection t={zh.contributors} />
 	</main>
-	<Footer t={en.footer} />
+	<Footer t={zh.footer} />
 </Layout>
 
 <style is:global>

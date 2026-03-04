@@ -40,23 +40,19 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 			<div class="download-card" data-platform="windows">
 				<div class="badge" hidden>{t.recommended}</div>
 				<div class="platform-icon">
-					<span class="material-symbols-rounded">desktop_windows</span>
+					<md-icon>desktop_windows</md-icon>
 				</div>
 				<h3 class="platform-name">{t.winClient}</h3>
 				<p class="platform-desc">{t.winReq}</p>
 				<div class="store-buttons">
-					<a
-						data-url="exe"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">download</span>
+					<md-outlined-button data-url="exe" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						<span class="btn-label">{t.loading}</span>
-					</a>
-					<a data-url="zip" class="md-btn md-btn--outlined" href={FALLBACK}>
-						<span class="material-symbols-rounded">download</span>
+					</md-outlined-button>
+					<md-outlined-button data-url="zip" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						{t.btnWinZip}
-					</a>
+					</md-outlined-button>
 				</div>
 				<div class="version-info">
 					<span class="version-tag">Latest</span> &bull; {t.bit64}
@@ -67,81 +63,65 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 			<div class="download-card" data-platform="android">
 				<div class="badge" hidden>{t.recommended}</div>
 				<div class="platform-icon">
-					<span class="material-symbols-rounded">smartphone</span>
+					<md-icon>smartphone</md-icon>
 				</div>
 				<h3 class="platform-name">{t.androidApp}</h3>
 				<p class="platform-desc">{t.androidReq}</p>
 				<div class="store-buttons">
-					<a
-						data-url="apk"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">android</span>
+					<md-outlined-button data-url="apk" href={FALLBACK}>
+						<md-icon slot="icon">android</md-icon>
 						{t.btnApk}
-					</a>
+					</md-outlined-button>
 				</div>
-				<div class="version-info"><span class="version-tag">Latest</span></div>
+				<div class="version-info">
+					<span class="version-tag">Latest</span>
+				</div>
 			</div>
 
 			<!-- macOS -->
 			<div class="download-card" data-platform="mac">
 				<div class="badge" hidden>{t.recommended}</div>
 				<div class="platform-icon">
-					<span class="material-symbols-rounded">laptop_mac</span>
+					<md-icon>laptop_mac</md-icon>
 				</div>
 				<h3 class="platform-name">{t.macClient}</h3>
 				<p class="platform-desc">{t.macReq}</p>
 				<div class="store-buttons">
-					<a
-						data-url="dmg-arm"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">download</span>
+					<md-outlined-button data-url="dmg-arm" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						macOS (Apple Silicon)
-					</a>
-					<a
-						data-url="dmg-x64"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">download</span>
+					</md-outlined-button>
+					<md-outlined-button data-url="dmg-x64" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						macOS (Intel x64)
-					</a>
+					</md-outlined-button>
 				</div>
-				<div class="version-info"><span class="version-tag">Latest</span></div>
+				<div class="version-info">
+					<span class="version-tag">Latest</span>
+				</div>
 			</div>
 
 			<!-- Linux -->
 			<div class="download-card" data-platform="linux">
 				<div class="badge" hidden>{t.recommended}</div>
 				<div class="platform-icon">
-					<span class="material-symbols-rounded">desktop_mac</span>
+					<md-icon>desktop_mac</md-icon>
 				</div>
 				<h3 class="platform-name">{t.linuxClient}</h3>
 				<p class="platform-desc">{t.linuxReq}</p>
 				<div class="store-buttons">
-					<a
-						data-url="deb"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">download</span>
+					<md-outlined-button data-url="deb" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						{t.btnLinuxDebian}
-					</a>
-					<a
-						data-url="rpm"
-						class="md-btn md-btn--outlined"
-						href={FALLBACK}
-					>
-						<span class="material-symbols-rounded">download</span>
+					</md-outlined-button>
+					<md-outlined-button data-url="rpm" href={FALLBACK}>
+						<md-icon slot="icon">download</md-icon>
 						{t.btnLinuxRPM}
-					</a>
-					<button data-action="copy-aur" class="md-btn md-btn--outlined">
-						<span class="material-symbols-rounded">content_copy</span>
+					</md-outlined-button>
+					<md-outlined-button data-action="copy-aur">
+						<md-icon slot="icon">content_copy</md-icon>
 						{t.btnLinuxAUR}
-					</button>
+					</md-outlined-button>
 					<div class="aur-message" hidden></div>
 				</div>
 				<div class="version-info">
@@ -153,6 +133,9 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 </section>
 
 <script>
+	import "@material/web/button/filled-button.js";
+	import "@material/web/button/outlined-button.js";
+	import "@material/web/icon/icon.js";
 	import { detectDevice } from "../utils/device";
 
 	const section = document.getElementById("download")!;
@@ -195,17 +178,21 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 				rpm: find((n) => n.endsWith(".rpm")),
 				"dmg-arm":
 					dmgArm?.browser_download_url ??
-					(dmgAny && !dmgX64 ? dmgAny.browser_download_url : data.html_url),
+					(dmgAny && !dmgX64
+						? dmgAny.browser_download_url
+						: data.html_url),
 				"dmg-x64":
 					dmgX64?.browser_download_url ??
-					(dmgAny && !dmgArm ? dmgAny.browser_download_url : data.html_url),
+					(dmgAny && !dmgArm
+						? dmgAny.browser_download_url
+						: data.html_url),
 			};
 
 			for (const [key, url] of Object.entries(urls)) {
-				const el = section.querySelector<HTMLAnchorElement>(
+				const el = section.querySelector<HTMLElement>(
 					`[data-url="${key}"]`,
 				);
-				if (el) el.href = url;
+				if (el) el.setAttribute("href", url);
 			}
 
 			const exeLabel = section.querySelector("[data-url='exe'] .btn-label");
@@ -250,7 +237,14 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 			const key = primaryUrlKey[cardPlatform];
 			if (key) {
 				const btn = card.querySelector<HTMLElement>(`[data-url="${key}"]`);
-				btn?.classList.replace("md-btn--outlined", "md-btn--filled");
+				if (btn) {
+					const filled = document.createElement("md-filled-button");
+					for (const attr of Array.from(btn.attributes)) {
+						filled.setAttribute(attr.name, attr.value);
+					}
+					filled.innerHTML = btn.innerHTML;
+					btn.replaceWith(filled);
+				}
 			}
 		} catch {
 			// ignore
@@ -280,53 +274,6 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 </script>
 
 <style>
-	.md-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: 40px;
-		padding: 0 16px;
-		border-radius: 20px;
-		font-family: "Roboto", sans-serif;
-		font-size: 14px;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-		text-decoration: none;
-		border: none;
-		gap: 8px;
-		user-select: none;
-		white-space: nowrap;
-	}
-
-	.md-btn .material-symbols-rounded {
-		font-size: 18px;
-	}
-
-	.md-btn--filled {
-		background-color: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-	}
-
-	.md-btn--filled:hover {
-		box-shadow: var(--md-sys-elevation-level1);
-		background-image: linear-gradient(
-			rgba(255, 255, 255, 0.08),
-			rgba(255, 255, 255, 0.08)
-		);
-	}
-
-	.md-btn--outlined {
-		background-color: transparent;
-		color: var(--md-sys-color-primary);
-		border: 1px solid var(--md-sys-color-outline);
-	}
-
-	.md-btn--outlined:hover {
-		background-color: rgba(208, 188, 255, 0.08);
-		border-color: var(--md-sys-color-primary);
-	}
-
 	.download-section {
 		padding: 100px 24px;
 		background-color: var(--md-sys-color-background);
@@ -416,7 +363,6 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 	}
 
 	.platform-icon {
-		font-size: 36px;
 		color: var(--md-sys-color-primary);
 		margin-bottom: 20px;
 		width: 64px;
@@ -426,6 +372,10 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.platform-icon md-icon {
+		--md-icon-size: 36px;
 	}
 
 	.platform-name {

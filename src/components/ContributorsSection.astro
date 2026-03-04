@@ -28,8 +28,12 @@ const { t } = Astro.props;
 </section>
 
 <script>
+	import "@material/web/button/filled-button.js";
+	import "@material/web/icon/icon.js";
+
 	const section = document.getElementById("contributors")!;
-	const contentEl = section.querySelector<HTMLElement>(".contributors-content")!;
+	const contentEl =
+		section.querySelector<HTMLElement>(".contributors-content")!;
 	const t = JSON.parse(section.dataset.t ?? "{}");
 	const AUTHORS = ["LanRhyme", "ChinsaaWei"];
 
@@ -45,7 +49,8 @@ const { t } = Astro.props;
 			const contributors = data
 				.filter(
 					(c: { type: string; login: string }) =>
-						c.type === "User" && !c.login.toLowerCase().includes("bot"),
+						c.type === "User" &&
+						!c.login.toLowerCase().includes("bot"),
 				)
 				.sort(
 					(
@@ -72,7 +77,7 @@ const { t } = Astro.props;
 				)
 				.join("")}</div>`;
 		} catch {
-			contentEl.innerHTML = `<div class="error">${t.error}<button class="retry-btn">${t.retry}</button></div>`;
+			contentEl.innerHTML = `<div class="error">${t.error}<md-filled-button class="retry-btn">${t.retry}</md-filled-button></div>`;
 			contentEl
 				.querySelector(".retry-btn")
 				?.addEventListener("click", fetchContributors);
@@ -109,6 +114,13 @@ const { t } = Astro.props;
 		font: var(--md-sys-typescale-body-medium);
 		color: var(--md-sys-color-on-surface-variant);
 		padding: 40px;
+	}
+
+	:global(.error) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
 	}
 
 	:global(.grid) {
@@ -173,21 +185,5 @@ const { t } = Astro.props;
 	:global(.contribs) {
 		font: var(--md-sys-typescale-body-small);
 		color: var(--md-sys-color-on-surface-variant);
-	}
-
-	:global(.retry-btn) {
-		margin-left: 12px;
-		padding: 6px 12px;
-		background: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-		border: none;
-		border-radius: var(--md-sys-shape-corner-small);
-		font: var(--md-sys-typescale-label-medium);
-		cursor: pointer;
-		transition: background 0.2s;
-	}
-
-	:global(.retry-btn:hover) {
-		background: color-mix(in srgb, var(--md-sys-color-primary), white 10%);
 	}
 </style>

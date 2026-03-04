@@ -17,7 +17,7 @@ const { t, currentLang } = Astro.props;
 <header class="navbar" id="main-navbar">
 	<div class="navbar-container">
 		<div class="navbar-logo">
-			<span class="material-symbols-rounded logo-icon">mic</span>
+			<md-icon class="logo-icon">mic</md-icon>
 			<span class="logo-text">MicYou</span>
 		</div>
 
@@ -33,8 +33,8 @@ const { t, currentLang } = Astro.props;
 		</nav>
 
 		<div class="navbar-actions">
-			<a class="md-button md-button--filled navbar-button" href="#download"
-				>{t.getStarted}</a
+			<md-filled-button href="#download" class="navbar-button" style="min-width: 80px"
+				>{t.getStarted}</md-filled-button
 			>
 			<LanguageSwitcher currentLang={currentLang} />
 		</div>
@@ -42,6 +42,9 @@ const { t, currentLang } = Astro.props;
 </header>
 
 <script>
+	import "@material/web/button/filled-button.js";
+	import "@material/web/icon/icon.js";
+
 	const navbar = document.getElementById("main-navbar")!;
 	window.addEventListener(
 		"scroll",
@@ -53,35 +56,6 @@ const { t, currentLang } = Astro.props;
 </script>
 
 <style>
-	.md-button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: 40px;
-		padding: 0 24px;
-		border-radius: 20px;
-		font-family: "Roboto", sans-serif;
-		font-size: 14px;
-		font-weight: 500;
-		text-decoration: none;
-		cursor: pointer;
-		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-		user-select: none;
-	}
-
-	.md-button--filled {
-		background-color: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-	}
-
-	.md-button--filled:hover {
-		box-shadow: var(--md-sys-elevation-level1);
-		background-image: linear-gradient(
-			rgba(255, 255, 255, 0.08),
-			rgba(255, 255, 255, 0.08)
-		);
-	}
-
 	.navbar {
 		position: fixed;
 		top: 0;

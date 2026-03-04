@@ -1,0 +1,53 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NavBar from "../../components/NavBar.astro";
+import HeroSection from "../../components/HeroSection.astro";
+import FeaturesSection from "../../components/FeaturesSection.astro";
+import DownloadSection from "../../components/DownloadSection.astro";
+import ContributorsSection from "../../components/ContributorsSection.astro";
+import Footer from "../../components/Footer.astro";
+import en from "../../locales/en";
+import "../../styles/theme.css";
+---
+
+<Layout title="MicYou - Professional Microphone Streaming" lang="en">
+    <NavBar t={en.nav} currentLang="en" />
+    <main>
+        <HeroSection t={en.hero} />
+        <FeaturesSection t={en.features} />
+        <DownloadSection t={en.download} />
+        <ContributorsSection t={en.contributors} />
+    </main>
+    <Footer t={en.footer} />
+</Layout>
+
+<style is:global>
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: var(--md-sys-color-background);
+        color: var(--md-sys-color-on-background);
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--md-sys-color-surface);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--md-sys-color-outline);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--md-sys-color-outline-variant);
+    }
+</style>

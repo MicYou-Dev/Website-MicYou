@@ -93,3 +93,11 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
+
+md-icon {
+	--md-icon-font: "Material Symbols Rounded";
+}
+
+:not(:defined) {
+	visibility: hidden;
+}

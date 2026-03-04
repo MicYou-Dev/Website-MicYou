@@ -11,11 +11,15 @@ const { icon, title, description, delay = 0 } = Astro.props;
 
 <div class="feature-card" style={`animation-delay: ${delay}ms`}>
 	<div class="icon-container">
-		<span class="material-symbols-rounded feature-icon">{icon}</span>
+		<md-icon class="feature-icon">{icon}</md-icon>
 	</div>
 	<h3 class="feature-title">{title}</h3>
 	<p class="feature-description">{description}</p>
 </div>
+
+<script>
+	import "@material/web/icon/icon.js";
+</script>
 
 <style>
 	.feature-card {
