@@ -1,0 +1,137 @@
+---
+interface Props {
+	currentLang: string;
+}
+const { currentLang } = Astro.props;
+---
+
+<div class="language-switcher">
+	<button class="switcher-btn">
+		<span class="material-symbols-rounded">language</span>
+		<span class="current-lang-code">{currentLang === "zh" ? "ZH" : "EN"}</span>
+		<span class="material-symbols-rounded arrow-icon">expand_more</span>
+	</button>
+
+	<div class="dropdown-menu" style="display:none">
+		<button
+			class:list={["dropdown-item", { active: currentLang === "en" }]}
+			data-lang="en">English</button
+		>
+		<button
+			class:list={["dropdown-item", { active: currentLang === "zh" }]}
+			data-lang="zh">简体中文</button
+		>
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll(".language-switcher").forEach((switcher) => {
+		const btn = switcher.querySelector(".switcher-btn")!;
+		const dropdown = switcher.querySelector<HTMLElement>(".dropdown-menu")!;
+		const arrow = switcher.querySelector(".arrow-icon")!;
+
+		btn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const isOpen = dropdown.style.display !== "none";
+			dropdown.style.display = isOpen ? "none" : "flex";
+			arrow.classList.toggle("rotated", !isOpen);
+		});
+
+		dropdown.querySelectorAll<HTMLElement>("[data-lang]").forEach((item) => {
+			item.addEventListener("click", () => {
+				window.location.href = item.dataset.lang === "zh" ? "/zh/" : "/";
+			});
+		});
+	});
+
+	document.addEventListener("click", (e) => {
+		document.querySelectorAll(".language-switcher").forEach((switcher) => {
+			if (!switcher.contains(e.target as Node)) {
+				const dropdown = switcher.querySelector<HTMLElement>(".dropdown-menu")!;
+				const arrow = switcher.querySelector(".arrow-icon")!;
+				dropdown.style.display = "none";
+				arrow.classList.remove("rotated");
+			}
+		});
+	});
+</script>
+
+<style>
+	.language-switcher {
+		position: relative;
+		margin-left: 16px;
+	}
+
+	.switcher-btn {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		background: transparent;
+		border: 1px solid var(--md-sys-color-outline);
+		color: var(--md-sys-color-on-surface);
+		padding: 6px 12px;
+		border-radius: 20px;
+		cursor: pointer;
+		font-family: "Roboto", sans-serif;
+		font-size: 14px;
+		transition: all 0.2s;
+	}
+
+	.switcher-btn:hover {
+		background-color: var(--md-sys-color-secondary-container);
+		border-color: transparent;
+	}
+
+	.current-lang-code {
+		font-weight: 500;
+		text-transform: uppercase;
+		margin: 0 4px;
+	}
+
+	.arrow-icon {
+		font-size: 18px;
+		transition: transform 0.2s;
+	}
+
+	.rotated {
+		transform: rotate(180deg);
+	}
+
+	.dropdown-menu {
+		position: absolute;
+		top: calc(100% + 8px);
+		right: 0;
+		width: 120px;
+		background-color: var(--md-sys-color-surface-variant);
+		border-radius: 12px;
+		box-shadow: var(--md-sys-elevation-level2);
+		padding: 8px;
+		flex-direction: column;
+		gap: 4px;
+		overflow: hidden;
+	}
+
+	.dropdown-item {
+		background: transparent;
+		border: none;
+		color: var(--md-sys-color-on-surface-variant);
+		padding: 10px 16px;
+		text-align: left;
+		cursor: pointer;
+		border-radius: 8px;
+		font-family: "Roboto", sans-serif;
+		font-size: 14px;
+		transition: background-color 0.2s;
+	}
+
+	.dropdown-item:hover {
+		background-color: rgba(255, 255, 255, 0.08);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.dropdown-item.active {
+		background-color: var(--md-sys-color-secondary-container);
+		color: var(--md-sys-color-on-secondary-container);
+		font-weight: 500;
+	}
+</style>

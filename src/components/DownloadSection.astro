@@ -1,0 +1,485 @@
+---
+interface DownloadTranslations {
+	recommended: string;
+	title: string;
+	subtitle: string;
+	winClient: string;
+	winReq: string;
+	macClient: string;
+	macReq: string;
+	btnWinDownload: string;
+	btnWinZip: string;
+	linuxClient: string;
+	linuxReq: string;
+	btnLinuxDebian: string;
+	btnLinuxRPM: string;
+	btnLinuxAUR: string;
+	aurCommandCopied: string;
+	loading: string;
+	androidApp: string;
+	androidReq: string;
+	btnApk: string;
+	bit64: string;
+}
+
+interface Props {
+	t: DownloadTranslations;
+}
+
+const { t } = Astro.props;
+const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
+---
+
+<section id="download" class="download-section" data-t={JSON.stringify(t)}>
+	<div class="download-content">
+		<h2 class="section-title">{t.title}</h2>
+		<p class="section-subtitle">{t.subtitle}</p>
+
+		<div class="download-grid">
+			<!-- Windows -->
+			<div class="download-card" data-platform="windows">
+				<div class="badge" hidden>{t.recommended}</div>
+				<div class="platform-icon">
+					<span class="material-symbols-rounded">desktop_windows</span>
+				</div>
+				<h3 class="platform-name">{t.winClient}</h3>
+				<p class="platform-desc">{t.winReq}</p>
+				<div class="store-buttons">
+					<a
+						data-url="exe"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">download</span>
+						<span class="btn-label">{t.loading}</span>
+					</a>
+					<a data-url="zip" class="md-btn md-btn--outlined" href={FALLBACK}>
+						<span class="material-symbols-rounded">download</span>
+						{t.btnWinZip}
+					</a>
+				</div>
+				<div class="version-info">
+					<span class="version-tag">Latest</span> &bull; {t.bit64}
+				</div>
+			</div>
+
+			<!-- Android -->
+			<div class="download-card" data-platform="android">
+				<div class="badge" hidden>{t.recommended}</div>
+				<div class="platform-icon">
+					<span class="material-symbols-rounded">smartphone</span>
+				</div>
+				<h3 class="platform-name">{t.androidApp}</h3>
+				<p class="platform-desc">{t.androidReq}</p>
+				<div class="store-buttons">
+					<a
+						data-url="apk"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">android</span>
+						{t.btnApk}
+					</a>
+				</div>
+				<div class="version-info"><span class="version-tag">Latest</span></div>
+			</div>
+
+			<!-- macOS -->
+			<div class="download-card" data-platform="mac">
+				<div class="badge" hidden>{t.recommended}</div>
+				<div class="platform-icon">
+					<span class="material-symbols-rounded">laptop_mac</span>
+				</div>
+				<h3 class="platform-name">{t.macClient}</h3>
+				<p class="platform-desc">{t.macReq}</p>
+				<div class="store-buttons">
+					<a
+						data-url="dmg-arm"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">download</span>
+						macOS (Apple Silicon)
+					</a>
+					<a
+						data-url="dmg-x64"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">download</span>
+						macOS (Intel x64)
+					</a>
+				</div>
+				<div class="version-info"><span class="version-tag">Latest</span></div>
+			</div>
+
+			<!-- Linux -->
+			<div class="download-card" data-platform="linux">
+				<div class="badge" hidden>{t.recommended}</div>
+				<div class="platform-icon">
+					<span class="material-symbols-rounded">desktop_mac</span>
+				</div>
+				<h3 class="platform-name">{t.linuxClient}</h3>
+				<p class="platform-desc">{t.linuxReq}</p>
+				<div class="store-buttons">
+					<a
+						data-url="deb"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">download</span>
+						{t.btnLinuxDebian}
+					</a>
+					<a
+						data-url="rpm"
+						class="md-btn md-btn--outlined"
+						href={FALLBACK}
+					>
+						<span class="material-symbols-rounded">download</span>
+						{t.btnLinuxRPM}
+					</a>
+					<button data-action="copy-aur" class="md-btn md-btn--outlined">
+						<span class="material-symbols-rounded">content_copy</span>
+						{t.btnLinuxAUR}
+					</button>
+					<div class="aur-message" hidden></div>
+				</div>
+				<div class="version-info">
+					<span class="version-tag">Latest</span> &bull; {t.bit64}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { detectDevice } from "../utils/device";
+
+	const section = document.getElementById("download")!;
+	const t = JSON.parse(section.dataset.t ?? "{}");
+	const AUR_COMMAND = "paru -S micyou-bin";
+	const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
+
+	type Asset = { name: string; browser_download_url: string };
+	type Release = { tag_name: string; assets: Asset[]; html_url: string };
+
+	async function fetchRelease() {
+		try {
+			const res = await fetch(
+				"https://api.github.com/repos/LanRhyme/MicYou/releases/latest",
+			);
+			if (!res.ok) throw new Error("Failed to fetch");
+			const data: Release = await res.json();
+
+			const find = (test: (name: string) => boolean) =>
+				data.assets.find((a) => test(a.name))?.browser_download_url ??
+				data.html_url;
+
+			const dmgAny = data.assets.find((a) => a.name.endsWith(".dmg"));
+			const dmgArm = data.assets.find(
+				(a) =>
+					a.name.endsWith(".dmg") &&
+					/arm|aarch|apple-silicon|universal/i.test(a.name),
+			);
+			const dmgX64 = data.assets.find(
+				(a) =>
+					a.name.endsWith(".dmg") &&
+					/x64|x86_64|intel|x86-64/i.test(a.name),
+			);
+
+			const urls: Record<string, string> = {
+				exe: find((n) => n.endsWith(".exe") || n.endsWith(".msi")),
+				zip: find((n) => n.endsWith(".zip")),
+				apk: find((n) => n.endsWith(".apk")),
+				deb: find((n) => n.endsWith(".deb")),
+				rpm: find((n) => n.endsWith(".rpm")),
+				"dmg-arm":
+					dmgArm?.browser_download_url ??
+					(dmgAny && !dmgX64 ? dmgAny.browser_download_url : data.html_url),
+				"dmg-x64":
+					dmgX64?.browser_download_url ??
+					(dmgAny && !dmgArm ? dmgAny.browser_download_url : data.html_url),
+			};
+
+			for (const [key, url] of Object.entries(urls)) {
+				const el = section.querySelector<HTMLAnchorElement>(
+					`[data-url="${key}"]`,
+				);
+				if (el) el.href = url;
+			}
+
+			const exeLabel = section.querySelector("[data-url='exe'] .btn-label");
+			if (exeLabel) exeLabel.textContent = t.btnWinDownload;
+
+			section.querySelectorAll(".version-tag").forEach((el) => {
+				el.textContent = data.tag_name;
+			});
+		} catch {
+			const exeLabel = section.querySelector("[data-url='exe'] .btn-label");
+			if (exeLabel) exeLabel.textContent = t.btnWinDownload;
+		}
+	}
+
+	async function detectAndHighlight() {
+		try {
+			const platform = await detectDevice();
+			const platformMap: Record<string, string> = {
+				windows: "windows",
+				android: "android",
+				mac_arm: "mac",
+				mac_x64: "mac",
+				linux: "linux",
+			};
+			const cardPlatform = platformMap[platform];
+			if (!cardPlatform) return;
+
+			const card = section.querySelector<HTMLElement>(
+				`[data-platform="${cardPlatform}"]`,
+			);
+			if (!card) return;
+			card.classList.add("recommended");
+			const badge = card.querySelector<HTMLElement>(".badge");
+			if (badge) badge.hidden = false;
+
+			const primaryUrlKey: Record<string, string> = {
+				windows: "exe",
+				android: "apk",
+				mac: platform === "mac_arm" ? "dmg-arm" : "dmg-x64",
+				linux: "deb",
+			};
+			const key = primaryUrlKey[cardPlatform];
+			if (key) {
+				const btn = card.querySelector<HTMLElement>(`[data-url="${key}"]`);
+				btn?.classList.replace("md-btn--outlined", "md-btn--filled");
+			}
+		} catch {
+			// ignore
+		}
+	}
+
+	section
+		.querySelector("[data-action='copy-aur']")
+		?.addEventListener("click", async () => {
+			try {
+				await navigator.clipboard.writeText(AUR_COMMAND);
+				const msg = section.querySelector<HTMLElement>(".aur-message");
+				if (msg) {
+					msg.textContent = t.aurCommandCopied;
+					msg.hidden = false;
+					setTimeout(() => {
+						msg.hidden = true;
+					}, 3000);
+				}
+			} catch {
+				// ignore
+			}
+		});
+
+	fetchRelease();
+	detectAndHighlight();
+</script>
+
+<style>
+	.md-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 40px;
+		padding: 0 16px;
+		border-radius: 20px;
+		font-family: "Roboto", sans-serif;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+		text-decoration: none;
+		border: none;
+		gap: 8px;
+		user-select: none;
+		white-space: nowrap;
+	}
+
+	.md-btn .material-symbols-rounded {
+		font-size: 18px;
+	}
+
+	.md-btn--filled {
+		background-color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+	}
+
+	.md-btn--filled:hover {
+		box-shadow: var(--md-sys-elevation-level1);
+		background-image: linear-gradient(
+			rgba(255, 255, 255, 0.08),
+			rgba(255, 255, 255, 0.08)
+		);
+	}
+
+	.md-btn--outlined {
+		background-color: transparent;
+		color: var(--md-sys-color-primary);
+		border: 1px solid var(--md-sys-color-outline);
+	}
+
+	.md-btn--outlined:hover {
+		background-color: rgba(208, 188, 255, 0.08);
+		border-color: var(--md-sys-color-primary);
+	}
+
+	.download-section {
+		padding: 100px 24px;
+		background-color: var(--md-sys-color-background);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.download-content {
+		max-width: 1000px;
+		margin: 0 auto;
+		text-align: center;
+		position: relative;
+		z-index: 2;
+	}
+
+	.section-title {
+		font-size: 36px;
+		font-weight: 700;
+		margin-bottom: 16px;
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.section-subtitle {
+		font-size: 18px;
+		color: var(--md-sys-color-on-surface-variant);
+		margin-bottom: 48px;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.download-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px;
+		grid-auto-rows: 1fr;
+	}
+
+	.download-card {
+		position: relative;
+		background: var(--md-sys-color-surface-variant);
+		border-radius: 12px;
+		padding: 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		border: 1px solid rgba(0, 0, 0, 0.04);
+		transition:
+			transform 280ms cubic-bezier(0.2, 0.9, 0.3, 1),
+			box-shadow 240ms ease;
+		backdrop-filter: blur(6px) saturate(120%);
+		box-shadow: var(--md-sys-elevation-level1);
+		height: 100%;
+	}
+
+	.download-card:hover {
+		transform: translateY(-8px);
+		box-shadow: var(--md-sys-elevation-level2);
+	}
+
+	.download-card.recommended {
+		border: 1px solid rgba(63, 123, 255, 0.12);
+		box-shadow: var(--md-sys-elevation-level2);
+		background: color-mix(
+			in srgb,
+			var(--md-sys-color-surface-variant),
+			var(--md-sys-color-primary) 1%
+		);
+	}
+
+	.download-card.recommended:hover {
+		transform: translateY(-8px);
+		box-shadow: var(--md-sys-elevation-level3);
+	}
+
+	.badge {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		background: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+		padding: 6px 10px;
+		border-radius: 999px;
+		font-size: 12px;
+		font-weight: 600;
+		box-shadow: 0 8px 20px rgba(32, 64, 128, 0.12);
+	}
+
+	.platform-icon {
+		font-size: 36px;
+		color: var(--md-sys-color-primary);
+		margin-bottom: 20px;
+		width: 64px;
+		height: 64px;
+		background-color: var(--md-sys-color-secondary-container);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.platform-name {
+		font-size: 24px;
+		font-weight: 700;
+		margin-bottom: 8px;
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.platform-desc {
+		color: var(--md-sys-color-on-surface-variant);
+		margin-bottom: 32px;
+	}
+
+	.store-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		width: 100%;
+		align-items: stretch;
+	}
+
+	@media (min-width: 900px) {
+		.download-card .store-buttons {
+			flex-direction: row;
+			justify-content: center;
+			gap: 14px;
+		}
+
+		.download-card .store-buttons > * {
+			flex: 1 1 auto;
+		}
+	}
+
+	.aur-message {
+		padding: 8px 12px;
+		background-color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+		border-radius: 8px;
+		font-size: 13px;
+		text-align: center;
+		margin-top: 4px;
+	}
+
+	.version-info {
+		margin-top: auto;
+		padding-top: 16px;
+		font-size: 12px;
+		color: var(--md-sys-color-outline);
+	}
+
+	@media (max-width: 768px) {
+		.download-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

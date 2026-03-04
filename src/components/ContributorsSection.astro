@@ -1,0 +1,193 @@
+---
+interface Props {
+	t: {
+		title: string;
+		subtitle: string;
+		loading: string;
+		error: string;
+		retry: string;
+		authorBadge: string;
+		contributions: string;
+		unexpectedResponse: string;
+	};
+}
+
+const { t } = Astro.props;
+---
+
+<section
+	id="contributors"
+	class="contributors"
+	data-t={JSON.stringify(t)}
+>
+	<h2>{t.title}</h2>
+	<p class="subtitle">{t.subtitle}</p>
+	<div class="contributors-content">
+		<div class="loading">{t.loading}</div>
+	</div>
+</section>
+
+<script>
+	const section = document.getElementById("contributors")!;
+	const contentEl = section.querySelector<HTMLElement>(".contributors-content")!;
+	const t = JSON.parse(section.dataset.t ?? "{}");
+	const AUTHORS = ["LanRhyme", "ChinsaaWei"];
+
+	async function fetchContributors() {
+		try {
+			const res = await fetch(
+				"https://api.github.com/repos/LanRhyme/MicYou/contributors?per_page=100",
+			);
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			const data = await res.json();
+			if (!Array.isArray(data)) throw new Error(t.unexpectedResponse);
+
+			const contributors = data
+				.filter(
+					(c: { type: string; login: string }) =>
+						c.type === "User" && !c.login.toLowerCase().includes("bot"),
+				)
+				.sort(
+					(
+						a: { contributions: number },
+						b: { contributions: number },
+					) => b.contributions - a.contributions,
+				);
+
+			contentEl.innerHTML = `<div class="grid">${contributors
+				.map(
+					(c: {
+						html_url: string;
+						avatar_url: string;
+						login: string;
+						contributions: number;
+					}) => `
+				<a href="${c.html_url}" target="_blank" rel="noopener" class="card">
+					<img src="${c.avatar_url}" alt="${c.login}" class="avatar" loading="lazy" />
+					<div class="info">
+						<span class="name">${c.login}${AUTHORS.includes(c.login) ? `<span class="author-badge">${t.authorBadge}</span>` : ""}</span>
+						<span class="contribs">${c.contributions} ${t.contributions}</span>
+					</div>
+				</a>`,
+				)
+				.join("")}</div>`;
+		} catch {
+			contentEl.innerHTML = `<div class="error">${t.error}<button class="retry-btn">${t.retry}</button></div>`;
+			contentEl
+				.querySelector(".retry-btn")
+				?.addEventListener("click", fetchContributors);
+		}
+	}
+
+	fetchContributors();
+</script>
+
+<style>
+	.contributors {
+		padding: 60px 24px;
+		background: var(--md-sys-color-surface);
+		text-align: center;
+	}
+
+	h2 {
+		font: var(--md-sys-typescale-headline-large);
+		color: var(--md-sys-color-on-surface);
+		margin-bottom: 12px;
+	}
+
+	.subtitle {
+		font: var(--md-sys-typescale-body-large);
+		color: var(--md-sys-color-on-surface-variant);
+		margin-bottom: 40px;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.loading,
+	:global(.error) {
+		font: var(--md-sys-typescale-body-medium);
+		color: var(--md-sys-color-on-surface-variant);
+		padding: 40px;
+	}
+
+	:global(.grid) {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 20px;
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
+	:global(.card) {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 20px;
+		background: var(--md-sys-color-surface-variant);
+		border-radius: var(--md-sys-shape-corner-medium);
+		text-decoration: none;
+		color: inherit;
+		transition: background 0.2s;
+	}
+
+	:global(.card:hover) {
+		background: color-mix(
+			in srgb,
+			var(--md-sys-color-surface-variant),
+			white 5%
+		);
+	}
+
+	:global(.avatar) {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	:global(.info) {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	:global(.name) {
+		font: var(--md-sys-typescale-title-medium);
+		color: var(--md-sys-color-on-surface);
+		margin-bottom: 4px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	:global(.author-badge) {
+		background: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+		font: var(--md-sys-typescale-label-small);
+		padding: 2px 8px;
+		border-radius: var(--md-sys-shape-corner-small);
+	}
+
+	:global(.contribs) {
+		font: var(--md-sys-typescale-body-small);
+		color: var(--md-sys-color-on-surface-variant);
+	}
+
+	:global(.retry-btn) {
+		margin-left: 12px;
+		padding: 6px 12px;
+		background: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+		border: none;
+		border-radius: var(--md-sys-shape-corner-small);
+		font: var(--md-sys-typescale-label-medium);
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	:global(.retry-btn:hover) {
+		background: color-mix(in srgb, var(--md-sys-color-primary), white 10%);
+	}
+</style>

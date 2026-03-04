@@ -1,0 +1,152 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+	t: {
+		titleTop: string;
+		titleBottom: string;
+		subtitle: string;
+		btnDownload: string;
+		btnLearnMore: string;
+	};
+}
+
+const { t } = Astro.props;
+---
+
+<section class="hero-section">
+	<div class="hero-content">
+		<h1 class="hero-title">
+			{t.titleTop} <br />
+			<span class="gradient-text">{t.titleBottom}</span>
+		</h1>
+		<p class="hero-subtitle">
+			{t.subtitle}
+		</p>
+
+		<div class="hero-actions">
+			<Button variant="filled" label={t.btnDownload} icon="download" href="#download" />
+			<Button variant="outlined" label={t.btnLearnMore} icon="arrow_forward" href="#features" />
+		</div>
+	</div>
+
+	<div class="hero-visual">
+		<div class="visual-circle circle-1"></div>
+		<div class="visual-circle circle-2"></div>
+		<div class="visual-grid"></div>
+	</div>
+</section>
+
+<style>
+	.hero-section {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 120px 24px 60px;
+		position: relative;
+		overflow: hidden;
+		background: radial-gradient(circle at 50% 10%, #2d2a35 0%, #1c1b1f 60%);
+	}
+
+	.hero-content {
+		max-width: 800px;
+		text-align: center;
+		z-index: 2;
+		position: relative;
+	}
+
+	.hero-title {
+		font-family: "Roboto", sans-serif;
+		font-weight: 700;
+		font-size: 64px;
+		line-height: 1.1;
+		letter-spacing: -1.5px;
+		margin-bottom: 24px;
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.gradient-text {
+		background: linear-gradient(90deg, #a8c7fa 0%, #d6e3ff 50%, #a8c7fa 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		background-size: 200%;
+		animation: shimmer 6s infinite linear;
+	}
+
+	@keyframes shimmer {
+		0% {
+			background-position: 0% 50%;
+		}
+		100% {
+			background-position: 200% 50%;
+		}
+	}
+
+	.hero-subtitle {
+		font-size: 20px;
+		line-height: 1.6;
+		color: var(--md-sys-color-on-surface-variant);
+		margin-bottom: 40px;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.hero-visual {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.visual-circle {
+		position: absolute;
+		border-radius: 50%;
+		opacity: 0.06;
+	}
+
+	.circle-1 {
+		width: 600px;
+		height: 600px;
+		background: var(--md-sys-color-primary);
+		top: -200px;
+		left: -150px;
+	}
+
+	.circle-2 {
+		width: 400px;
+		height: 400px;
+		background: var(--md-sys-color-tertiary);
+		bottom: -100px;
+		right: -100px;
+	}
+
+	.visual-grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+		background-size: 60px 60px;
+	}
+
+	@media (max-width: 768px) {
+		.hero-title {
+			font-size: 40px;
+		}
+
+		.hero-subtitle {
+			font-size: 16px;
+		}
+	}
+</style>

@@ -1,0 +1,185 @@
+---
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+interface Props {
+	t: {
+		features: string;
+		download: string;
+		about: string;
+		getStarted: string;
+	};
+	currentLang: string;
+}
+
+const { t, currentLang } = Astro.props;
+---
+
+<header class="navbar" id="main-navbar">
+	<div class="navbar-container">
+		<div class="navbar-logo">
+			<span class="material-symbols-rounded logo-icon">mic</span>
+			<span class="logo-text">MicYou</span>
+		</div>
+
+		<nav class="navbar-links">
+			<a href="#features" class="nav-link">{t.features}</a>
+			<a href="#download" class="nav-link">{t.download}</a>
+			<a
+				href="https://github.com/LanRhyme/MicYou"
+				target="_blank"
+				rel="noopener"
+				class="nav-link">{t.about}</a
+			>
+		</nav>
+
+		<div class="navbar-actions">
+			<a class="md-button md-button--filled navbar-button" href="#download"
+				>{t.getStarted}</a
+			>
+			<LanguageSwitcher currentLang={currentLang} />
+		</div>
+	</div>
+</header>
+
+<script>
+	const navbar = document.getElementById("main-navbar")!;
+	window.addEventListener(
+		"scroll",
+		() => {
+			navbar.classList.toggle("navbar--scrolled", window.scrollY > 20);
+		},
+		{ passive: true },
+	);
+</script>
+
+<style>
+	.md-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 40px;
+		padding: 0 24px;
+		border-radius: 20px;
+		font-family: "Roboto", sans-serif;
+		font-size: 14px;
+		font-weight: 500;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+		user-select: none;
+	}
+
+	.md-button--filled {
+		background-color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+	}
+
+	.md-button--filled:hover {
+		box-shadow: var(--md-sys-elevation-level1);
+		background-image: linear-gradient(
+			rgba(255, 255, 255, 0.08),
+			rgba(255, 255, 255, 0.08)
+		);
+	}
+
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 64px;
+		z-index: 1000;
+		transition:
+			background-color 0.3s ease,
+			box-shadow 0.3s ease,
+			backdrop-filter 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 16px;
+	}
+
+	.navbar--scrolled {
+		background-color: rgba(28, 27, 31, 0.8);
+		backdrop-filter: blur(12px);
+		box-shadow: var(--md-sys-elevation-level2);
+	}
+
+	.navbar-container {
+		max-width: 1200px;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.navbar-logo {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--md-sys-color-primary);
+		font-weight: 700;
+		font-size: 22px;
+		letter-spacing: -0.5px;
+		cursor: pointer;
+		user-select: none;
+		flex: 1;
+	}
+
+	.logo-icon {
+		font-size: 28px;
+		color: var(--md-sys-color-primary);
+	}
+
+	.navbar-links {
+		display: flex;
+		gap: 32px;
+	}
+
+	.navbar-actions {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex: 1;
+		justify-content: flex-end;
+	}
+
+	.nav-link {
+		color: var(--md-sys-color-on-surface-variant);
+		font-size: 14px;
+		font-weight: 500;
+		transition: color 0.2s ease;
+		position: relative;
+		text-decoration: none;
+	}
+
+	.nav-link:hover {
+		color: var(--md-sys-color-primary);
+	}
+
+	.nav-link::after {
+		content: "";
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 0%;
+		height: 2px;
+		background-color: var(--md-sys-color-primary);
+		transition: width 0.3s ease;
+		border-radius: 2px;
+	}
+
+	.nav-link:hover::after {
+		width: 100%;
+	}
+
+	@media (max-width: 768px) {
+		.navbar-links {
+			display: none;
+		}
+
+		.navbar-button {
+			transform: translateX(12px);
+		}
+	}
+</style>
