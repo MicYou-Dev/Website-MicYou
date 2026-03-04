@@ -27,6 +27,13 @@
 
 	--md-sys-color-surface-variant: #43474e;
 	--md-sys-color-on-surface-variant: #c3c7cf;
+
+	--md-sys-color-surface-container-lowest: #0e1012;
+	--md-sys-color-surface-container-low: #1e2023;
+	--md-sys-color-surface-container: #232527;
+	--md-sys-color-surface-container-high: #2d3033;
+	--md-sys-color-surface-container-highest: #383a3e;
+
 	--md-sys-color-outline: #8d9199;
 
 	/* Elevation */
