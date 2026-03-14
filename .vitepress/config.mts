@@ -69,6 +69,7 @@ export default defineConfig({
   },
 
   themeConfig: {
+    logo: '/app_icon.png',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/LanRhyme/MicYou' },
       { icon: 'telegram', link: 'https://t.me/MicYouChannel' }

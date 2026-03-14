@@ -3,9 +3,9 @@ import type { DefaultTheme } from 'vitepress'
 
 // Navigation
 export const nav: DefaultTheme.NavItem[] = [
-  { text: 'Home', link: '/en/' },
-  { text: 'Docs', link: '/en/docs/quick-start' },
-  { text: 'Download', link: 'https://github.com/LanRhyme/MicYou/releases/latest' }
+  { text: '<iconify-icon class="i-mr" icon="mdi:home" style="color:#e74c3c"></iconify-icon>Home', link: '/en/' },
+  { text: '<iconify-icon class="i-mr" icon="mdi:file-document" style="color:#3498db"></iconify-icon>Docs', link: '/en/docs/quick-start' },
+  { text: '<iconify-icon class="i-mr" icon="mdi:download" style="color:#20c997"></iconify-icon>Download', link: 'https://github.com/LanRhyme/MicYou/releases/latest' }
 ]
 
 // Contributors component translations

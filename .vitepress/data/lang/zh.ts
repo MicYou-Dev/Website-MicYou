@@ -3,9 +3,9 @@ import type { DefaultTheme } from 'vitepress'
 
 // 导航栏
 export const nav: DefaultTheme.NavItem[] = [
-  { text: '首页', link: '/' },
-  { text: '文档', link: '/docs/quick-start' },
-  { text: '下载', link: 'https://github.com/LanRhyme/MicYou/releases/latest' }
+  { text: '<iconify-icon class="i-mr" icon="mdi:home" style="color:#e74c3c"></iconify-icon>首页', link: '/' },
+  { text: '<iconify-icon class="i-mr" icon="mdi:file-document" style="color:#3498db"></iconify-icon>文档', link: '/docs/quick-start' },
+  { text: '<iconify-icon class="i-mr" icon="mdi:download" style="color:#20c997"></iconify-icon>下载', link: 'https://github.com/LanRhyme/MicYou/releases/latest' }
 ]
 
 // 贡献者组件翻译
