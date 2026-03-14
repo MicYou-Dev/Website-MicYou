@@ -15,6 +15,9 @@ importers:
         specifier: ^3.5.30
         version: 3.5.30(typescript@5.9.3)
     devDependencies:
+      '@mdit/plugin-figure':
+        specifier: ^0.23.1
+        version: 0.23.1
       pngjs:
         specifier: ^7.0.0
         version: 7.0.0
@@ -219,6 +222,15 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@mdit/plugin-figure@0.23.1':
+    resolution: {integrity: sha512-gdEnVk1IW9qZD8QSIs4jZhgdwk/BymKn+5GsVux4Pa7j/+sIkoR76dD6kJI/Q7qStI1sFrmTou1s/sQf7/NRwg==}
+    engines: {node: '>= 20'}
+    peerDependencies:
+      markdown-it: ^14.1.0
+    peerDependenciesMeta:
+      markdown-it:
+        optional: true
 
   '@rolldown/pluginutils@1.0.0-rc.2':
     resolution: {integrity: sha512-izyXV/v+cHiRfozX62W9htOAvwMo4/bXKDrQ+vom1L1qRuexPock/7VZDAhnpHCLNejd3NJ6hiab+tO0D44Rgw==}
@@ -907,6 +919,10 @@ snapshots:
       vue: 3.5.30(typescript@5.9.3)
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
+
+  '@mdit/plugin-figure@0.23.1':
+    dependencies:
+      '@types/markdown-it': 14.1.2
 
   '@rolldown/pluginutils@1.0.0-rc.2': {}
 

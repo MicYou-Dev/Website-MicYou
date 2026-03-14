@@ -64,4 +64,5 @@
 检查方式：打开「设置」> 「声音」，验证两个设备均为**已启用**状态：
 
 ![输入设备](https://github.com/user-attachments/assets/1cf5f97f-1647-4fb0-a152-85be2697df39)
+
 ![输出设备](https://github.com/user-attachments/assets/9e9ef42d-186f-42a6-ba4d-7b1a3815f860)

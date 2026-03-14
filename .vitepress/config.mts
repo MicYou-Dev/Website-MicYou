@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { figure } from '@mdit/plugin-figure'
 import { docsSidebar, getSidebarPath } from '../src/docs/sidebar'
 import { navTranslations, themeConfigTranslations } from './data/i18n'
 
@@ -8,6 +9,12 @@ export default defineConfig({
   title: "MicYou",
   description: "将 Android 设备转变为 PC 的高质量麦克风",
   cleanUrls: true,
+
+  markdown: {
+    config: (md) => {
+      md.use(figure)
+    } 
+  },
 
   // 支持 iconify-icon 组件
   vue: {
