@@ -122,7 +122,6 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 						<md-icon slot="icon">content_copy</md-icon>
 						{t.btnLinuxAUR}
 					</md-outlined-button>
-					<div class="aur-message" hidden></div>
 				</div>
 				<div class="version-info">
 					<span class="version-tag">Latest</span> &bull; {t.bit64}
@@ -256,18 +255,43 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 		?.addEventListener("click", async () => {
 			try {
 				await navigator.clipboard.writeText(AUR_COMMAND);
-				const msg = section.querySelector<HTMLElement>(".aur-message");
-				if (msg) {
-					msg.textContent = t.aurCommandCopied;
-					msg.hidden = false;
-					setTimeout(() => {
-						msg.hidden = true;
-					}, 3000);
-				}
+				showToast(t.aurCommandCopied);
 			} catch {
 				// ignore
 			}
 		});
+
+	function showToast(message: string) {
+		let container = document.getElementById("toast-container");
+		if (!container) {
+			container = document.createElement("div");
+			container.id = "toast-container";
+			document.body.appendChild(container);
+		}
+
+		const toast = document.createElement("div");
+		toast.className = "toast";
+
+		const content = document.createElement("span");
+		content.textContent = message;
+		toast.appendChild(content);
+
+		const progress = document.createElement("div");
+		progress.className = "toast-progress";
+		toast.appendChild(progress);
+
+		container.appendChild(toast);
+
+		// 触发动画
+		requestAnimationFrame(() => {
+			toast.classList.add("show");
+		});
+
+		setTimeout(() => {
+			toast.classList.remove("show");
+			setTimeout(() => toast.remove(), 100);
+		}, 3000);
+	}
 
 	fetchRelease();
 	detectAndHighlight();
@@ -413,16 +437,6 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 		}
 	}
 
-	.aur-message {
-		padding: 8px 12px;
-		background-color: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-		border-radius: 8px;
-		font-size: 13px;
-		text-align: center;
-		margin-top: 4px;
-	}
-
 	.version-info {
 		margin-top: auto;
 		padding-top: 16px;
@@ -433,6 +447,82 @@ const FALLBACK = "https://github.com/LanRhyme/MicYou/releases/latest";
 	@media (max-width: 768px) {
 		.download-grid {
 			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<style is:global>
+	#toast-container {
+		position: fixed;
+		bottom: 16px;
+		right: 16px;
+		z-index: 9999;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		pointer-events: none;
+	}
+
+	.toast {
+		position: relative;
+		background-color: var(--md-sys-color-inverse-surface);
+		color: var(--md-sys-color-inverse-on-surface);
+		padding: 14px 16px;
+		border-radius: 12px;
+		font-size: 14px;
+		font-weight: 500;
+		letter-spacing: 0.1px;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.3),
+			0 1px 3px 1px rgba(0, 0, 0, 0.15);
+		opacity: 0;
+		transform: translateY(8px) scale(0.95);
+		transition:
+			opacity 200ms cubic-bezier(0.2, 0, 0, 1),
+			transform 200ms cubic-bezier(0.2, 0, 0, 1);
+		pointer-events: auto;
+		min-width: 180px;
+		max-width: 320px;
+		text-align: center;
+		overflow: hidden;
+	}
+
+	.toast.show {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.toast-progress {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 3px;
+		width: 100%;
+		background-color: var(--md-sys-color-primary);
+		transform-origin: left;
+		animation: toast-progress 3s linear forwards;
+		border-radius: 0 0 12px 12px;
+	}
+
+	@keyframes toast-progress {
+		from {
+			transform: scaleX(1);
+		}
+		to {
+			transform: scaleX(0);
+		}
+	}
+
+	@media (max-width: 480px) {
+		#toast-container {
+			left: 16px;
+			right: 16px;
+			bottom: 16px;
+		}
+
+		.toast {
+			max-width: none;
+			width: 100%;
 		}
 	}
 </style>
