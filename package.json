@@ -1,23 +1,24 @@
 {
-	"name": "webside-micyou",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"lint": "biome check .",
-		"format": "biome format --write .",
-		"type-check": "astro check"
-	},
-	"dependencies": {
-		"@material/web": "^2.4.1"
-	},
-	"devDependencies": {
-		"@astrojs/check": "^0.9.7",
-		"@biomejs/biome": "2.4.6",
-		"astro": "^6.0.4",
-		"typescript": "^5.9.3"
-	}
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.1",
+  "devDependencies": {
+    "pngjs": "^7.0.0",
+    "vitepress": "2.0.0-alpha.16"
+  },
+  "dependencies": {
+    "@theojs/lumen": "^6.4.5",
+    "vue": "^3.5.30"
+  }
 }

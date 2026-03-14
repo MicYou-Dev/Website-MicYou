@@ -1,0 +1,194 @@
+import type { FooterData } from '@theojs/lumen'
+import type { DefaultTheme } from 'vitepress'
+
+// Navigation
+export const nav: DefaultTheme.NavItem[] = [
+  { text: 'Home', link: '/en/' },
+  { text: 'Guide', link: 'https://github.com/LanRhyme/MicYou#usage-guide' },
+  { text: 'Download', link: 'https://github.com/LanRhyme/MicYou/releases/latest' }
+]
+
+// Contributors component translations
+export const contributors = {
+  author: 'Author',
+  contributions: 'contributions',
+  developedWith: 'MicYou Developed with ❤',
+  thanksContributors: 'Thanks to our contributors'
+}
+
+// Footer translations
+export const footer = {
+  project: 'Project',
+  community: 'Community',
+  support: 'Support',
+  githubRepo: 'GitHub Repository',
+  downloadLatest: 'Download Latest',
+  feedback: 'Report Issue',
+  contributing: 'Contributing Guide',
+  telegramChannel: 'Telegram Channel',
+  qqGroup: 'QQ Group',
+  starProject: 'Star Project',
+  sponsor: 'Sponsor Developer',
+  mitLicensed: 'MIT licensed'
+}
+
+// Theme config
+export const themeConfig = {
+  editLink: {
+    pattern: 'https://github.com/LanRhyme/MicYou/edit/master/docs/:path',
+    text: 'Edit this page on GitHub'
+  },
+  lastUpdated: {
+    text: 'Last updated',
+    formatOptions: { dateStyle: 'short' as const, timeStyle: 'short' as const }
+  },
+  search: {
+    provider: 'local' as const,
+    options: {
+      translations: {
+        button: { buttonText: 'Search', buttonAriaLabel: 'Search' },
+        modal: {
+          noResultsText: 'No results found',
+          resetButtonTitle: 'Clear search query',
+          footer: { selectText: 'Select', navigateText: 'Navigate' }
+        }
+      }
+    }
+  },
+  docFooter: { prev: 'Previous', next: 'Next' },
+  outline: { label: 'On this page' },
+  returnToTopLabel: 'Return to top',
+  sidebarMenuLabel: 'Menu',
+  darkModeSwitchLabel: 'Theme',
+  lightModeSwitchTitle: 'Switch to light mode',
+  darkModeSwitchTitle: 'Switch to dark mode'
+}
+
+// Footer data
+export function getFooterData(): FooterData {
+  return {
+    author: {
+      icon: {
+        light: 'mdi:copyright',
+        dark: 'mdi:copyright',
+        color: { light: '#334355', dark: '#6b8aad' }
+      },
+      name: 'LanRhyme',
+      link: 'https://github.com/LanRhyme/Website-MicYou/blob/main/LICENSE',
+      startYear: 2026,
+      text: footer.mitLicensed
+    },
+    group: [
+      {
+        icon: {
+          light: 'mdi:github',
+          dark: 'mdi:github',
+          color: { light: '#333', dark: '#fff' }
+        },
+        title: footer.project,
+        links: [
+          {
+            icon: {
+              light: 'mdi:source-branch',
+              dark: 'mdi:source-branch',
+              color: { light: '#334355', dark: '#6b8aad' }
+            },
+            name: footer.githubRepo,
+            link: 'https://github.com/LanRhyme/MicYou',
+            rel: 'noopener noreferrer'
+          },
+          {
+            icon: {
+              light: 'mdi:download',
+              dark: 'mdi:download',
+              color: { light: '#334355', dark: '#6b8aad' }
+            },
+            name: footer.downloadLatest,
+            link: 'https://github.com/LanRhyme/MicYou/releases/latest',
+            rel: 'noopener noreferrer'
+          },
+          {
+            icon: {
+              light: 'mdi:bug-outline',
+              dark: 'mdi:bug-outline',
+              color: { light: '#e74c3c', dark: '#ff6b6b' }
+            },
+            name: footer.feedback,
+            link: 'https://github.com/LanRhyme/MicYou/issues',
+            rel: 'noopener noreferrer'
+          },
+          {
+            icon: {
+              light: 'mdi:file-document-outline',
+              dark: 'mdi:file-document-outline',
+              color: { light: '#334355', dark: '#6b8aad' }
+            },
+            name: footer.contributing,
+            link: 'https://github.com/LanRhyme/MicYou/blob/master/CONTRIBUTING.md',
+            rel: 'noopener noreferrer'
+          }
+        ]
+      },
+      {
+        icon: {
+          light: 'mdi:chat-outline',
+          dark: 'mdi:chat-outline',
+          color: { light: '#334355', dark: '#6b8aad' }
+        },
+        title: footer.community,
+        links: [
+          {
+            icon: {
+              light: 'mdi:telegram',
+              dark: 'mdi:telegram',
+              color: { light: '#2CA5E0', dark: '#2CA5E0' }
+            },
+            name: footer.telegramChannel,
+            link: 'https://t.me/MicYouChannel',
+            rel: 'noopener noreferrer'
+          },
+          {
+            icon: {
+              light: 'mdi:qqchat',
+              dark: 'mdi:qqchat',
+              color: { light: '#12B7F5', dark: '#12B7F5' }
+            },
+            name: footer.qqGroup,
+            link: 'https://qm.qq.com/q/V16hPpWPKO',
+            rel: 'noopener noreferrer'
+          }
+        ]
+      },
+      {
+        icon: {
+          light: 'mdi:heart-outline',
+          dark: 'mdi:heart-outline',
+          color: { light: '#e74c3c', dark: '#ff6b6b' }
+        },
+        title: footer.support,
+        links: [
+          {
+            icon: {
+              light: 'mdi:star-outline',
+              dark: 'mdi:star-outline',
+              color: { light: '#f1c40f', dark: '#f1c40f' }
+            },
+            name: footer.starProject,
+            link: 'https://github.com/LanRhyme/MicYou/stargazers',
+            rel: 'noopener noreferrer'
+          },
+          {
+            icon: {
+              light: 'mdi:hand-coin-outline',
+              dark: 'mdi:hand-coin-outline',
+              color: { light: '#946ce6', dark: '#946ce6' }
+            },
+            name: footer.sponsor,
+            link: 'https://afdian.com/a/LanRhyme',
+            rel: 'noopener noreferrer sponsored'
+          }
+        ]
+      }
+    ]
+  }
+}

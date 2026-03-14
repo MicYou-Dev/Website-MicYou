@@ -1,0 +1,88 @@
+/**
+ * MicYou 主题样式
+ * 主题色基于应用图标提取
+ */
+
+/**
+ * Brand Colors - 基于图标主题色 #334355
+ * -------------------------------------------------------------------------- */
+
+:root {
+  /* 主色调 - 深蓝灰 */
+  --vp-c-brand-1: #4a5d73;
+  --vp-c-brand-2: #3d4f64;
+  --vp-c-brand-3: #334355;
+  --vp-c-brand-soft: rgba(51, 67, 85, 0.14);
+}
+
+/**
+ * Dark Mode - 深色模式调整
+ * -------------------------------------------------------------------------- */
+
+.dark {
+  --vp-c-brand-1: #6b8aad;
+  --vp-c-brand-2: #5a7a9d;
+  --vp-c-brand-3: #4a6a8d;
+  --vp-c-brand-soft: rgba(107, 138, 173, 0.14);
+}
+
+/**
+ * Component: Home Hero
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    135deg,
+    #334355 0%,
+    #4a6a8d 50%,
+    #6b8aad 100%
+  );
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    135deg,
+    #334355 0%,
+    #4a6a8d 50%,
+    #6b8aad 100%
+  );
+  --vp-home-hero-image-filter: blur(68px);
+
+  /* Hero 按钮主题色 */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: #fff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: #fff;
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(80px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(96px);
+  }
+}
+
+.VPFeatures .items .item,
+.VPTeamMembers .item {
+    transition: transform 0.3s; /* 平滑过渡 */
+}
+
+/* Hero text 字体缩小 */
+.VPHero .text {
+  font-size: 36px;
+  line-height: 1.2;
+}
+
+.VPFeatures .items .item:hover,
+.VPTeamMembers .item:hover {
+    transform: translateY(-5px); /* 向上移动 */
+}
