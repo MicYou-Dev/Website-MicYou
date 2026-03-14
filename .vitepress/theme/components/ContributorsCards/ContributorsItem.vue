@@ -18,7 +18,7 @@ const { member } = defineProps<Props>()
     <!-- 点击跳转到贡献者GitHub主页 -->
     <a class="profile" :href="member.link" target="_blank" rel="noopener noreferrer">
       <figure class="avatar">
-        <img class="avatar-img" :src="member.avatar" :alt="member.name" />
+        <img class="avatar-img" :src="member.avatar" :alt="member.name" loading="lazy" decoding="async" width="64" height="64" />
       </figure>
       <div class="data">
         <h1 class="name">{{ member.name }}</h1>

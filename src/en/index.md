@@ -6,7 +6,7 @@ hero:
   text: "Turn Your Phone into a PC Microphone"
   tagline: High quality, low latency, cross-platform audio transmission solution
   image:
-    src: /app_icon.png
+    src: /app_icon.webp
     alt: MicYou Logo
   actions:
     - theme: brand

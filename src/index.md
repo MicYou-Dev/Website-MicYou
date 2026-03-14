@@ -6,8 +6,10 @@ hero:
   text: "将手机变成电脑麦克风"
   tagline: 高质量、低延迟、跨平台的音频传输解决方案
   image:
-    src: /app_icon.png
+    src: /app_icon.webp
     alt: MicYou Logo
+    width: 256
+    height: 256
   actions:
     - theme: brand
       text: 快速开始

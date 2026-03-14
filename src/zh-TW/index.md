@@ -6,7 +6,7 @@ hero:
   text: "將手機變成電腦麥克風"
   tagline: 高品質、低延遲、跨平台的音訊傳輸解決方案
   image:
-    src: /app_icon.png
+    src: /app_icon.webp
     alt: MicYou Logo
   actions:
     - theme: brand

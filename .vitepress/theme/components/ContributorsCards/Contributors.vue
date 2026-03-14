@@ -16,7 +16,7 @@ const t = computed(() => {
 // 作者列表 - 使用 VitePress TeamMembers 样式
 const authors = computed(() => [
   {
-    avatar: 'https://github.com/LanRhyme.png',
+    avatar: 'https://avatars.githubusercontent.com/u/72445752?v=4&s=128',
     name: 'LanRhyme',
     title: t.value.author,
     links: [
@@ -24,7 +24,7 @@ const authors = computed(() => [
     ]
   },
   {
-    avatar: 'https://github.com/ChinsaaWei.png',
+    avatar: 'https://avatars.githubusercontent.com/u/59009214?v=4&s=128',
     name: 'ChinsaaWei',
     title: t.value.author,
     links: [
