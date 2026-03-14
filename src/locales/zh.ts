@@ -69,6 +69,6 @@ export default {
 		privacy: "隐私政策",
 		terms: "服务条款",
 		rights: "保留所有权利",
-		madeWith: "Designed by LanRhyme with ❤️",
+		madeWith: "made by LanRhyme with ❤️",
 	},
 };

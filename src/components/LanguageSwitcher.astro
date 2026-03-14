@@ -16,6 +16,9 @@ const { currentLang } = Astro.props;
 		<md-menu-item data-lang="zh">
 			<div slot="headline">简体中文</div>
 		</md-menu-item>
+		<md-menu-item data-lang="zh-TW">
+			<div slot="headline">繁體中文</div>
+		</md-menu-item>
 	</md-menu>
 </span>
 
@@ -40,7 +43,11 @@ const { currentLang } = Astro.props;
 			item.addEventListener("click", () => {
 				const lang = item.dataset.lang;
 				if (lang) {
-					window.location.href = lang === "zh" ? "/" : "/en/";
+					if (lang === "zh") {
+						window.location.href = "/";
+					} else {
+						window.location.href = `/${lang}/`;
+					}
 				}
 			});
 		});

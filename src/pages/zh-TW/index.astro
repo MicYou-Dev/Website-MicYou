@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NavBar from "../../components/NavBar.astro";
+import HeroSection from "../../components/HeroSection.astro";
+import FeaturesSection from "../../components/FeaturesSection.astro";
+import DownloadSection from "../../components/DownloadSection.astro";
+import ContributorsSection from "../../components/ContributorsSection.astro";
+import Footer from "../../components/Footer.astro";
+import zhTW from "../../locales/zh-TW";
+import "../../styles/theme.css";
+---
+
+<Layout title="MicYou - 專業麥克風串流" lang="zh-TW">
+    <NavBar t={zhTW.nav} currentLang="zh-TW" />
+    <main>
+        <HeroSection t={zhTW.hero} />
+        <FeaturesSection t={zhTW.features} />
+        <DownloadSection t={zhTW.download} />
+        <ContributorsSection t={zhTW.contributors} />
+    </main>
+    <Footer t={zhTW.footer} />
+</Layout>
