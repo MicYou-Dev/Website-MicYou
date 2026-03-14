@@ -7,6 +7,7 @@ export default defineConfig({
   srcDir: "./src",
   title: "MicYou",
   description: "将 Android 设备转变为 PC 的高质量麦克风",
+  cleanUrls: true,
 
   // 支持 iconify-icon 组件
   vue: {
