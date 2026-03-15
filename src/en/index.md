@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: Download
       link: /download
+    - theme: alt
+      text: See videos
+      link: /video
 
 features:
   - icon: 📡

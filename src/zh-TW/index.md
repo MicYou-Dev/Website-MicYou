@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: 下載
       link: /download
+    - theme: alt
+      text: 觀看視頻
+      link: /video
 
 features:
   - icon: 📡
