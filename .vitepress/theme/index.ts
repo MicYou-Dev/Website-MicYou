@@ -1,10 +1,11 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from "vue";
+
 import type { Theme } from "vitepress";
-import DefaultTheme from "vitepress/theme";
 import { useData } from "vitepress";
+import DefaultTheme from "vitepress/theme";
+import { h } from "vue";
 import "@theojs/lumen/style";
-import { Footer, BoxCube, Card, Links, Pill } from "@theojs/lumen";
+import { BoxCube, Card, Footer, Links, Pill } from "@theojs/lumen";
 import { getFooterData, type Lang } from "../data/i18n";
 import Contributors from "./components/ContributorsCards/Contributors.vue";
 import DownloadSection from "./components/DownloadSection/DownloadSection.vue";

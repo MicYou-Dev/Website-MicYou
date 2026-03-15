@@ -1,5 +1,5 @@
-import { defineConfig } from "vitepress";
 import { figure } from "@mdit/plugin-figure";
+import { defineConfig } from "vitepress";
 import { docsSidebar, getSidebarPath } from "../src/docs/sidebar";
 import { navTranslations, themeConfigTranslations } from "./data/i18n";
 
@@ -60,9 +60,9 @@ export default defineConfig({
 			description:
 				"Transform your Android device into a high-quality microphone for PC - High quality, low latency, cross-platform audio transmission solution",
 			themeConfig: {
-				nav: navTranslations["en"],
+				nav: navTranslations.en,
 				sidebar: { [getSidebarPath("en")]: docsSidebar("en") },
-				...themeConfigTranslations["en"],
+				...themeConfigTranslations.en,
 			},
 		},
 		"zh-TW": {

@@ -1,4 +1,4 @@
-import { DefaultTheme } from "vitepress";
+import type { DefaultTheme } from "vitepress";
 
 type Lang = "zh-CN" | "en" | "zh-TW";
 

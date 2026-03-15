@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { VPTeamMembers } from "vitepress/theme";
-import ContributorsItem from "./ContributorsItem.vue";
-import { ref, onMounted, computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useData } from "vitepress";
+import VPTeamMembers from "vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
+import ContributorsItem from "./ContributorsItem.vue";
 import { contributorsTranslations, type Lang } from "../../../data/i18n";
 
 const { lang } = useData();
@@ -99,6 +99,16 @@ function setCachedData(data: CachedData["data"], currentLang: string) {
 	}
 }
 
+// GitHub API 返回的贡献者数据类型
+interface GitHubContributor {
+	total: number;
+	author: {
+		login: string;
+		avatar_url: string;
+		html_url: string;
+	} | null;
+}
+
 onMounted(async () => {
 	// 先尝试从缓存获取
 	const cached = getCachedData();
@@ -114,7 +124,7 @@ onMounted(async () => {
 		);
 		if (!response.ok) throw new Error("Failed to fetch contributors");
 
-		const data = await response.json();
+		const data = (await response.json()) as GitHubContributor[];
 
 		// 检查返回数据是否为数组（GitHub API 有时返回 202 状态的对象）
 		if (!Array.isArray(data)) {
@@ -123,17 +133,17 @@ onMounted(async () => {
 
 		// 过滤掉作者和 bot 账号，并按贡献数降序排列
 		const contributorsData = data
-			.filter((c: any) => {
+			.filter((c): c is GitHubContributor & { author: NonNullable<GitHubContributor["author"]> } => {
 				const login = c.author?.login;
 				return (
-					login &&
+					login !== undefined &&
 					!authorUsernames.has(login) &&
 					!botUsernames.has(login) &&
 					!login.includes("[bot]")
 				);
 			})
-			.sort((a: any, b: any) => b.total - a.total)
-			.map((c: any) => ({
+			.sort((a, b) => b.total - a.total)
+			.map((c) => ({
 				avatar: `${c.author.avatar_url}&size=80`,
 				name: c.author.login,
 				title: `${c.total} ${t.value.contributions}`,

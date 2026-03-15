@@ -71,8 +71,11 @@
 	}
 }
 
-.VPFeatures .items .item,
 .VPTeamMembers .item {
+	transition: transform 0.3s; /* 平滑过渡 */
+}
+
+.VPFeatures .items .item {
 	transition: transform 0.3s; /* 平滑过渡 */
 }
 
@@ -82,7 +85,10 @@
 	line-height: 1.2;
 }
 
-.VPFeatures .items .item:hover,
 .VPTeamMembers .item:hover {
+	transform: translateY(-5px); /* 向上移动 */
+}
+
+.VPFeatures .items .item:hover {
 	transform: translateY(-5px); /* 向上移动 */
 }

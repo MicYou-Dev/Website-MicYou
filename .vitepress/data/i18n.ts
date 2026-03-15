@@ -1,7 +1,7 @@
 import type { FooterData } from "@theojs/lumen";
 import type { DefaultTheme } from "vitepress";
-import * as zh from "./lang/zh";
 import * as en from "./lang/en";
+import * as zh from "./lang/zh";
 import * as zh_tw from "./lang/zh_tw";
 
 export type Lang = "zh-CN" | "en" | "zh-TW";

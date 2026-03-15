@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
 import { useData } from "vitepress";
+import { computed, onMounted, ref } from "vue";
 import { downloadTranslations, type Lang } from "../../../data/i18n";
 
 const { lang } = useData();
@@ -14,7 +14,7 @@ const loading = ref(true);
 const error = ref(false);
 const copiedId = ref<string | null>(null);
 
-const platforms = computed(() => [
+const _platforms = computed(() => [
 	{
 		name: "Windows",
 		icon: "simple-icons:windows",
@@ -72,10 +72,10 @@ const platforms = computed(() => [
 	},
 ]);
 
-const getDownloadUrl = (pattern: string) =>
+const _getDownloadUrl = (pattern: string) =>
 	`https://github.com/LanRhyme/MicYou/releases/download/v${latestVersion.value}/${pattern.replace("{version}", latestVersion.value)}`;
 
-const copyCommand = async (cmd: string) => {
+const _copyCommand = async (cmd: string) => {
 	try {
 		await navigator.clipboard.writeText(cmd);
 		copiedId.value = cmd;
@@ -134,7 +134,7 @@ onMounted(async () => {
 
     <template v-else>
       <div class="download-card">
-        <template v-for="(platform, idx) in platforms" :key="platform.name">
+        <template v-for="(platform, idx) in _platforms" :key="platform.name">
           <div v-if="idx" class="divider"></div>
           <div class="download-row">
             <div class="platform-info">
@@ -148,11 +148,11 @@ onMounted(async () => {
             </div>
             <div class="download-options">
               <template v-for="file in platform.files" :key="file.pattern || file.copyCommand">
-                <a v-if="file.pattern" :href="getDownloadUrl(file.pattern)" class="btn" target="_blank">
+                <a v-if="file.pattern" :href="_getDownloadUrl(file.pattern)" class="btn" target="_blank">
                   <iconify-icon icon="mdi:download" />
                   <span>{{ file.name }}</span>
                 </a>
-                <button v-else class="btn" :class="{ copied: copiedId === file.copyCommand }" @click="copyCommand(file.copyCommand!)">
+                <button v-else class="btn" :class="{ copied: copiedId === file.copyCommand }" @click="_copyCommand(file.copyCommand!)">
                   <iconify-icon :icon="copiedId === file.copyCommand ? 'mdi:check' : 'mdi:content-copy'" />
                   <span>{{ copiedId === file.copyCommand ? t.copied : file.name }}</span>
                 </button>

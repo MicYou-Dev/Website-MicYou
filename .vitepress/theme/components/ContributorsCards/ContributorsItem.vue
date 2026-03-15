@@ -10,7 +10,7 @@ interface Props {
 }
 
 // 接收单个贡献者数据
-const { member } = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <template>
