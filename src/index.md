@@ -12,6 +12,10 @@ hero:
     - theme: brand
       text: 快速开始
       link: /docs/quick-start
+    - theme: alt
+      text: 下载
+      link: /download
+
 
 features:
   - icon: 📡

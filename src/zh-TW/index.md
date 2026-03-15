@@ -12,6 +12,9 @@ hero:
     - theme: brand
       text: 快速開始
       link: /zh-TW/docs/quick-start
+    - theme: alt
+      text: 下載
+      link: /download
 
 features:
   - icon: 📡

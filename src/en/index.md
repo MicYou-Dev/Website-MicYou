@@ -12,6 +12,9 @@ hero:
     - theme: brand
       text: Get Started
       link: /en/docs/quick-start
+    - theme: alt
+      text: Download
+      link: /download
 
 features:
   - icon: 📡
