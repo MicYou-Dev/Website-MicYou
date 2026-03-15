@@ -16,7 +16,7 @@ const t = computed(() => {
 // 作者列表 - 使用 VitePress TeamMembers 样式
 const authors = computed(() => [
   {
-    avatar: 'https://github.com/LanRhyme.png',
+    avatar: 'https://github.com/LanRhyme.png?size=80',
     name: 'LanRhyme',
     title: t.value.author,
     links: [
@@ -24,7 +24,7 @@ const authors = computed(() => [
     ]
   },
   {
-    avatar: 'https://github.com/ChinsaaWei.png',
+    avatar: 'https://github.com/ChinsaaWei.png?size=80',
     name: 'ChinsaaWei',
     title: t.value.author,
     links: [
@@ -114,6 +114,11 @@ onMounted(async () => {
 
     const data = await response.json()
 
+    // 检查返回数据是否为数组（GitHub API 有时返回 202 状态的对象）
+    if (!Array.isArray(data)) {
+      throw new Error('Contributors data is not ready yet')
+    }
+
     // 过滤掉作者和 bot 账号，并按贡献数降序排列
     const contributorsData = data
       .filter((c: any) => {
@@ -122,7 +127,7 @@ onMounted(async () => {
       })
       .sort((a: any, b: any) => b.total - a.total)
       .map((c: any) => ({
-        avatar: c.author.avatar_url,
+        avatar: `${c.author.avatar_url}&size=80`,
         name: c.author.login,
         title: `${c.total} ${t.value.contributions}`,
         link: c.author.html_url
