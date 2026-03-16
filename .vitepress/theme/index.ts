@@ -44,7 +44,9 @@ export default {
 				const { frontmatter } = useData();
 				// 只在首页显示统计
 				const isHome = frontmatter.value.layout === "home";
-				return isHome ? h("div", { class: "nav-stats-center" }, h(UmamiStats)) : null;
+				return isHome
+					? h("div", { class: "nav-stats-center" }, h(UmamiStats))
+					: null;
 			},
 			"layout-bottom": () => {
 				// 从 VitePress 获取当前语言

@@ -14,12 +14,11 @@ const loading = ref(true);
 const error = ref(false);
 const copiedId = ref<string | null>(null);
 
-// 平台配置
 const platforms = computed(() => [
 	{
 		name: "Windows",
 		icon: "simple-icons:windows",
-		description: t.value.windowsDesc,
+		desc: t.value.windowsDesc,
 		files: [
 			{
 				name: t.value.installer,
@@ -38,7 +37,7 @@ const platforms = computed(() => [
 	{
 		name: "macOS",
 		icon: "simple-icons:macos",
-		description: t.value.macOSDesc,
+		desc: t.value.macOSDesc,
 		files: [
 			{
 				name: "DMG (Apple Silicon)",
@@ -54,11 +53,11 @@ const platforms = computed(() => [
 	{
 		name: "Linux",
 		icon: "simple-icons:linux",
-		description: t.value.linuxDesc,
+		desc: t.value.linuxDesc,
 		files: [
 			{ name: "DEB", pattern: "MicYou-Linux-{version}.deb" },
 			{ name: "RPM", pattern: "MicYou-Linux-{version}.rpm" },
-			{ name: "Arch", copyCommand: "paru -S micyou-bin" },
+			{ name: "Arch", copy: "paru -S micyou-bin" },
 			{
 				name: `${t.value.portable} (NoJRE)`,
 				pattern: "MicYou-Linux-NoJRE-{version}.tar.gz",
@@ -68,43 +67,37 @@ const platforms = computed(() => [
 	{
 		name: "Android",
 		icon: "simple-icons:android",
-		description: t.value.androidDesc,
+		desc: t.value.androidDesc,
 		files: [{ name: "APK", pattern: "MicYou-Android-{version}.apk" }],
 	},
 ]);
 
-const getDownloadUrl = (pattern: string) =>
+const getUrl = (pattern: string) =>
 	`https://github.com/LanRhyme/MicYou/releases/download/v${latestVersion.value}/${pattern.replace("{version}", latestVersion.value)}`;
 
-const copyCommand = async (cmd: string) => {
-	try {
-		await navigator.clipboard.writeText(cmd);
-		copiedId.value = cmd;
-		setTimeout(() => (copiedId.value = null), 2000);
-	} catch {
-		/* ignore */
-	}
+const copyCmd = async (cmd: string) => {
+	await navigator.clipboard.writeText(cmd);
+	copiedId.value = cmd;
+	setTimeout(() => (copiedId.value = null), 2000);
 };
 
 onMounted(async () => {
-	const CACHE_KEY = "micyou-version";
-	const CACHE_TTL = 6 * 60 * 60 * 1000;
-
-	try {
-		const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
-		if (cached.version && Date.now() - cached.time < CACHE_TTL) {
-			latestVersion.value = cached.version;
+	const cache = localStorage.getItem("micyou-ver");
+	if (cache) {
+		const { ver, time } = JSON.parse(cache);
+		if (Date.now() - time < 6 * 60 * 60 * 1000) {
+			latestVersion.value = ver;
 			return;
 		}
-
+	}
+	try {
 		const res = await fetch(
 			"https://api.github.com/repos/LanRhyme/MicYou/releases/latest",
 		);
-		const data = await res.json();
-		latestVersion.value = data.tag_name.replace(/^v/, "");
+		latestVersion.value = (await res.json()).tag_name.replace(/^v/, "");
 		localStorage.setItem(
-			CACHE_KEY,
-			JSON.stringify({ version: latestVersion.value, time: Date.now() }),
+			"micyou-ver",
+			JSON.stringify({ ver: latestVersion.value, time: Date.now() }),
 		);
 	} catch {
 		error.value = true;
@@ -115,259 +108,69 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="download-container">
-    <header class="download-header">
-      <h1 class="download-title">{{ t.title }}</h1>
-      <span v-if="latestVersion" class="version-badge" aria-label="最新版本">v{{ latestVersion }}</span>
+  <div class="dl">
+    <header class="dl-head">
+      <h1>{{ t.title }}</h1>
+      <span v-if="latestVersion" class="ver">v{{ latestVersion }}</span>
     </header>
 
-    <div v-if="loading" class="state-center" role="status" aria-live="polite">
-      <span class="loading-spinner" aria-hidden="true"></span>
-      <span>{{ t.loading }}</span>
-    </div>
-
-    <div v-else-if="error" class="state-center" role="alert">
+    <div v-if="loading" class="state"><span class="spin" />{{ t.loading }}</div>
+    <div v-else-if="error" class="state">
       <p>{{ t.error }}</p>
-      <a href="https://github.com/LanRhyme/MicYou/releases/latest" target="_blank" rel="noopener noreferrer" class="fallback-link">
-        {{ t.viewOnGitHub }}
-      </a>
+      <a href="https://github.com/LanRhyme/MicYou/releases/latest" target="_blank">{{ t.viewOnGitHub }}</a>
     </div>
 
     <template v-else>
-      <div class="download-card" role="region" :aria-label="t.title">
-        <template v-for="(platform, idx) in platforms" :key="platform.name">
-          <div v-if="idx" class="divider" aria-hidden="true"></div>
-          <div class="download-row">
-            <div class="platform-info">
-              <div class="platform-icon" aria-hidden="true">
-                <iconify-icon :icon="platform.icon" />
-              </div>
-              <div>
-                <h3>{{ platform.name }}</h3>
-                <p>{{ platform.description }}</p>
-              </div>
-            </div>
-            <div class="download-options" role="group" :aria-label="`${platform.name} 下载选项`">
-              <template v-for="file in platform.files" :key="file.pattern || file.copyCommand">
-                <a
-                  v-if="file.pattern"
-                  :href="getDownloadUrl(file.pattern)"
-                  class="btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  :aria-label="`下载 ${file.name} (在新窗口打开)`"
-                >
-                  <iconify-icon icon="mdi:download" aria-hidden="true" />
-                  <span>{{ file.name }}</span>
-                </a>
-                <button
-                  v-else
-                  class="btn"
-                  :class="{ copied: copiedId === file.copyCommand }"
-                  @click="copyCommand(file.copyCommand!)"
-                  :aria-label="copiedId === file.copyCommand ? t.copied : `复制命令: ${file.name}`"
-                  :aria-pressed="copiedId === file.copyCommand"
-                >
-                  <iconify-icon :icon="copiedId === file.copyCommand ? 'mdi:check' : 'mdi:content-copy'" aria-hidden="true" />
-                  <span>{{ copiedId === file.copyCommand ? t.copied : file.name }}</span>
-                </button>
-              </template>
+      <div class="card">
+        <div v-for="(p, i) in platforms" :key="p.name" class="row">
+          <div v-if="i" class="sep" />
+          <div class="info">
+            <iconify-icon :icon="p.icon" class="icon" />
+            <div>
+              <h3>{{ p.name }}</h3>
+              <p>{{ p.desc }}</p>
             </div>
           </div>
-        </template>
+          <div class="opts">
+            <template v-for="f in p.files" :key="f.pattern || f.copy">
+              <a v-if="f.pattern" :href="getUrl(f.pattern)" class="btn" target="_blank">
+                <iconify-icon icon="mdi:download" />{{ f.name }}
+              </a>
+              <button v-else class="btn" :class="{ done: copiedId === f.copy }" @click="copyCmd(f.copy!)">
+                <iconify-icon :icon="copiedId === f.copy ? 'mdi:check' : 'mdi:content-copy'" />
+                {{ copiedId === f.copy ? t.copied : f.name }}
+              </button>
+            </template>
+          </div>
+        </div>
       </div>
-
-      <div class="release-notes">
-        <a href="https://github.com/LanRhyme/MicYou/releases/latest" target="_blank" rel="noopener noreferrer">
-          {{ t.viewReleaseNotes }}
-        </a>
-      </div>
+      <p class="notes"><a href="https://github.com/LanRhyme/MicYou/releases/latest" target="_blank">{{ t.viewReleaseNotes }}</a></p>
     </template>
   </div>
 </template>
 
 <style scoped>
-.download-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 32px 24px;
-}
-
-.download-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.download-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  background: linear-gradient(120deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1.5;
-}
-
-.version-badge {
-  font-size: 0.875rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
-  border: 1px solid var(--vp-c-brand-1);
-}
-
-.state-center {
-  text-align: center;
-  padding: 64px 24px;
-  color: var(--vp-c-text-2);
-}
-
-.loading-spinner {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border: 3px solid var(--vp-c-divider);
-  border-top-color: var(--vp-c-brand-1);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-right: 12px;
-  vertical-align: middle;
-}
-
+.dl { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+.dl-head { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px; }
+.dl-head h1 { font-size: 2rem; font-weight: 700; margin: 0; background: linear-gradient(120deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); background-clip: text; -webkit-text-fill-color: transparent; }
+.ver { font-size: .875rem; font-weight: 600; padding: 6px 14px; border-radius: 20px; background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); border: 1px solid var(--vp-c-brand-1); }
+.state { text-align: center; padding: 64px 24px; color: var(--vp-c-text-2); }
+.state a { display: inline-block; margin-top: 16px; padding: 12px 24px; border-radius: 8px; background: var(--vp-c-brand-1); color: #fff; text-decoration: none; font-weight: 600; }
+.spin { display: inline-block; width: 24px; height: 24px; border: 3px solid var(--vp-c-divider); border-top-color: var(--vp-c-brand-1); border-radius: 50%; animation: spin .8s linear infinite; margin-right: 12px; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.fallback-link {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 12px 24px;
-  border-radius: 8px;
-  background: var(--vp-c-brand-1);
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.fallback-link:hover { background: var(--vp-c-brand-2); }
-
-.download-card {
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.divider {
-  height: 1px;
-  background: var(--vp-c-divider);
-  margin: 0 24px;
-}
-
-.download-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 20px 24px;
-  transition: background 0.2s;
-}
-
-.download-row:hover { background: var(--vp-c-bg); }
-
-.platform-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.platform-icon {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--vp-c-bg);
-  border-radius: 12px;
-  border: 1px solid var(--vp-c-divider);
-  font-size: 1.75rem;
-  color: var(--vp-c-brand-1);
-}
-
-.platform-info h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.platform-info p {
-  font-size: 0.8125rem;
-  color: var(--vp-c-text-2);
-  margin: 0;
-}
-
-.download-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-1);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  background: var(--vp-c-brand-soft);
-  border-color: var(--vp-c-brand-1);
-  color: var(--vp-c-brand-1);
-  transform: translateY(-1px);
-}
-
-.btn.copied {
-  background: var(--vp-c-brand-soft);
-  border-color: var(--vp-c-brand-1);
-  color: var(--vp-c-brand-1);
-}
-
-.release-notes {
-  text-align: center;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--vp-c-divider);
-}
-
-.release-notes a {
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.release-notes a:hover { text-decoration: underline; }
-
-@media (max-width: 768px) {
-  .download-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-  .platform-info { width: 100%; }
-  .download-options { width: 100%; }
-  .download-header { flex-direction: column; gap: 12px; }
-  .download-title { font-size: 1.5rem; }
-}
+.card { background: var(--vp-c-bg-soft); border: 1px solid var(--vp-c-divider); border-radius: 12px; overflow: hidden; }
+.row { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; transition: background .2s; }
+.row:hover { background: var(--vp-c-bg); }
+.sep { height: 1px; background: var(--vp-c-divider); margin: 0 24px 20px; }
+.info { display: flex; align-items: center; gap: 16px; }
+.icon { font-size: 1.75rem; color: var(--vp-c-brand-1); }
+.info h3 { font-size: 1.125rem; font-weight: 600; margin: 0; }
+.info p { font-size: .8125rem; color: var(--vp-c-text-2); margin: 0; }
+.opts { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; background: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); color: var(--vp-c-text-1); font-size: .875rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: all .2s; }
+.btn:hover, .btn.done { background: var(--vp-c-brand-soft); border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); transform: translateY(-1px); }
+.notes { text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--vp-c-divider); }
+.notes a { color: var(--vp-c-brand-1); text-decoration: none; font-weight: 500; }
+.notes a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .row { flex-direction: column; align-items: stretch; gap: 16px; } .dl-head { flex-direction: column; gap: 12px; } .dl-head h1 { font-size: 1.5rem; } }
 </style>
