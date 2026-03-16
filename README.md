@@ -127,4 +127,6 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 
 ## License
 
-[MIT](./LICENSE) Copyright 2026 LanRhyme
+[MIT License](./LICENSE)
+
+Copyright © 2026 LanRhyme
