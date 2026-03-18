@@ -3,7 +3,7 @@
  * 用于避免客户端 API 调用触发速率限制
  */
 
-import { writeFileSync } from "node:fs";
+import { writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -158,6 +158,23 @@ async function fetchContributors(token?: string): Promise<
 	return [];
 }
 
+/**
+ * 比较两个数据对象是否相同（忽略 fetchedAt 字段）
+ */
+function isDataEqual(
+	existing: OutputData,
+	newData: Omit<OutputData, "fetchedAt">,
+): boolean {
+	return (
+		existing.version === newData.version &&
+		existing.releaseUrl === newData.releaseUrl &&
+		existing.releaseDate === newData.releaseDate &&
+		existing.releaseNotes === newData.releaseNotes &&
+		JSON.stringify(existing.contributors) ===
+			JSON.stringify(newData.contributors)
+	);
+}
+
 async function main() {
 	console.log("Fetching GitHub data...");
 
@@ -171,12 +188,33 @@ async function main() {
 			fetchContributors(token),
 		]);
 
-		const output: OutputData = {
+		const newData: Omit<OutputData, "fetchedAt"> = {
 			version: release.version,
 			releaseUrl: release.url,
 			releaseDate: release.date,
 			releaseNotes: release.notes,
 			contributors,
+		};
+
+		// 读取现有数据并比较
+		if (existsSync(OUTPUT_FILE)) {
+			try {
+				const existing: OutputData = JSON.parse(
+					readFileSync(OUTPUT_FILE, "utf-8"),
+				);
+				if (isDataEqual(existing, newData)) {
+					console.log(`✓ Version: ${newData.version}`);
+					console.log(`✓ Contributors: ${newData.contributors.length}`);
+					console.log("✓ No changes detected, skipping file write");
+					return;
+				}
+			} catch {
+				// 文件解析失败，继续写入
+			}
+		}
+
+		const output: OutputData = {
+			...newData,
 			fetchedAt: new Date().toISOString(),
 		};
 
