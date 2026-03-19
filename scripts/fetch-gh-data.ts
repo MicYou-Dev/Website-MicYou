@@ -213,7 +213,6 @@ function isDataEqual(
 	);
 }
 
-const CHANGELOG_API_URL = "https://bot.micyou.top/changelog";
 const CHANGELOG_OUTPUT_FILE = join(SRC_DIR, "changelog.json");
 const MARKDOWN_IT_BUNDLE_URL =
 	"https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js";
@@ -225,21 +224,6 @@ type MarkdownRenderer = {
 type MarkdownItConstructor = new () => MarkdownRenderer;
 
 let markdownItCtor: MarkdownItConstructor | null = null;
-
-interface ChangelogApiEntry {
-	tag_name: string;
-	name: string;
-	body: string;
-	html_url: string;
-	published_at: string;
-}
-
-interface ChangelogApiResponse {
-	success: boolean;
-	data?: {
-		entries?: ChangelogApiEntry[];
-	};
-}
 
 interface ChangelogEntry {
 	tag_name: string;
@@ -302,29 +286,30 @@ async function loadMarkdownIt(): Promise<MarkdownItConstructor> {
 	return markdownItCtor;
 }
 
-async function fetchChangelog(): Promise<ChangelogEntry[]> {
+interface GitHubReleaseEntry {
+	tag_name: string;
+	name: string;
+	body: string;
+	html_url: string;
+	published_at: string;
+	draft: boolean;
+}
+
+async function fetchChangelog(token?: string): Promise<ChangelogEntry[]> {
 	try {
-		const res = await fetch(CHANGELOG_API_URL, {
-			headers: {
-				"User-Agent": "MicYou-Website-Build-Script",
-			},
-		});
+		const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases`;
+		const releases = await fetchJSON<GitHubReleaseEntry[]>(url, token);
 
-		if (!res.ok) {
-			throw new Error(`Changelog API error: ${res.status} ${res.statusText}`);
-		}
-
-		const data = (await res.json()) as ChangelogApiResponse;
-
-		if (!data.success || !Array.isArray(data.data?.entries)) {
-			console.warn("Changelog API returned invalid data, using empty entries");
+		if (!Array.isArray(releases)) {
+			console.warn("Releases API returned non-array, using empty entries");
 			return [];
 		}
 
 		const MarkdownIt = await loadMarkdownIt();
 		const md = new MarkdownIt();
 
-		return [...data.data.entries]
+		return releases
+			.filter((r) => !r.draft)
 			.sort(
 				(a, b) =>
 					new Date(b.published_at).getTime() -
@@ -354,7 +339,7 @@ async function main() {
 		const [release, contributors, changelogEntries] = await Promise.all([
 			fetchLatestRelease(token),
 			fetchContributors(token),
-			fetchChangelog(),
+			fetchChangelog(token),
 		]);
 
 		const newData: Omit<OutputData, "fetchedAt"> = {
