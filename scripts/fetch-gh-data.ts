@@ -399,19 +399,32 @@ async function main() {
 			console.log(`✓ Saved to: ${OUTPUT_FILE}`);
 		}
 
-		const changelogOutput: ChangelogOutput = {
-			entries: changelogEntries,
-			fetchedAt,
-		};
+		// changelog 获取失败时保留旧数据，避免空数组覆盖
+		if (changelogEntries.length > 0) {
+			const changelogOutput: ChangelogOutput = {
+				entries: changelogEntries,
+				fetchedAt,
+			};
 
-		writeFileSync(
-			CHANGELOG_OUTPUT_FILE,
-			JSON.stringify(changelogOutput, null, 2),
-			"utf-8",
-		);
+			writeFileSync(
+				CHANGELOG_OUTPUT_FILE,
+				JSON.stringify(changelogOutput, null, 2),
+				"utf-8",
+			);
 
-		console.log(`✓ Changelog entries: ${changelogOutput.entries.length}`);
-		console.log(`✓ Saved to: ${CHANGELOG_OUTPUT_FILE}`);
+			console.log(`✓ Changelog entries: ${changelogOutput.entries.length}`);
+			console.log(`✓ Saved to: ${CHANGELOG_OUTPUT_FILE}`);
+		} else if (existsSync(CHANGELOG_OUTPUT_FILE)) {
+			console.log("⚠ Changelog fetch returned empty, keeping existing data");
+		} else {
+			// 没有旧数据也没有新数据，写空文件
+			writeFileSync(
+				CHANGELOG_OUTPUT_FILE,
+				JSON.stringify({ entries: [], fetchedAt }, null, 2),
+				"utf-8",
+			);
+			console.log("⚠ No changelog data available, wrote empty file");
+		}
 	} catch (error) {
 		console.error("Failed to fetch GitHub data:", error);
 		processLike.exit(1);
