@@ -1,4 +1,103 @@
 {
-	"entries": [],
-	"fetchedAt": "2026-03-19T15:26:27.386Z"
+	"entries": [
+		{
+			"tag_name": "v1.1.5",
+			"published_at": "2026-03-08T14:54:55Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.5",
+			"html_body": "<h2>主要功能</h2>\n<ul>\n<li>首次启动引导 - 新用户引导弹窗</li>\n<li>自动检查更新 - 支持应用内更新</li>\n<li>增益控制 (AGC) - 音频自动增益控制功能</li>\n<li>快速设置 Tile - Android 快速设置快捷操作</li>\n</ul>\n<h2>核心优化</h2>\n<ul>\n<li>音频处理重构 - Ulunas 改用 Kotlin 实现</li>\n</ul>\n<h2>What's Changed</h2>\n<ul>\n<li>补全繁体中文及粤语本地化 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/125</li>\n<li>Translate visualizer and background settings to Chinese by @Jack-Huang-2020 in https://github.com/LanRhyme/MicYou/pull/127</li>\n<li>feat: 添加移动端保持屏幕常亮功能 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/132</li>\n<li>feat: 添加快速设置Tile服务及相关功能 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/135</li>\n<li>ref: 重构文档结构 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/137</li>\n<li>docs: 优化贡献指南和常见问题部分的描述，提升可读性 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/138</li>\n<li>refactor(audio): migrate ONNX to Maven, update Ulunas to Kotlin, add JTransforms by @a2heng in https://github.com/LanRhyme/MicYou/pull/139</li>\n<li>feat(音频处理): 实现增益控制功能并重构放大器效果器 by @a2heng in https://github.com/LanRhyme/MicYou/pull/141</li>\n<li>feat: 添加OLED优化功能，支持深色模式下使用纯黑背景 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/140</li>\n<li>docs: 添加 Issue 模板 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/142</li>\n<li>feat: 应用内更新 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/143</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.1.4...v1.1.5</p>\n",
+			"name": "v1.1.5"
+		},
+		{
+			"tag_name": "v1.1.4",
+			"published_at": "2026-03-03T06:36:00Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.4",
+			"html_body": "<h2>主要更新</h2>\n<ul>\n<li>UI大改</li>\n<li>增加悬浮窗功能</li>\n<li>增加自定义背景功能</li>\n<li>增加音频可视化样式选择功能</li>\n<li>增加毛玻璃效果开关</li>\n<li>部分bug修复</li>\n</ul>\n<h2>其他内容</h2>\n<ul>\n<li>i18n(en): polish wording and add missing cancel key by @PabloLIONA in https://github.com/LanRhyme/MicYou/pull/103</li>\n<li>chore(i18n): 从Crowdin更新翻译 by @github-actions[bot] in https://github.com/LanRhyme/MicYou/pull/108</li>\n<li>Update closeConfirmCancel message in strings_cat.json by @Jack-Huang-2020 in https://github.com/LanRhyme/MicYou/pull/111</li>\n<li>Replace local image paths with GitHub image links by @Jack-Huang-2020 in https://github.com/LanRhyme/MicYou/pull/113</li>\n<li>Revert &quot;Replace local image paths with GitHub image links&quot; by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/116</li>\n<li>Optimize screenshot localization. by @Jack-Huang-2020 in https://github.com/LanRhyme/MicYou/pull/117</li>\n<li>fix: Windows 防火墙检查优化和对话框显示改进 by @moumoum0 in https://github.com/LanRhyme/MicYou/pull/120</li>\n<li>chore(i18n): 从Crowdin更新翻译 by @github-actions[bot] in https://github.com/LanRhyme/MicYou/pull/122</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@PabloLIONA made their first contribution in https://github.com/LanRhyme/MicYou/pull/103</li>\n<li>@moumoum0 made their first contribution in https://github.com/LanRhyme/MicYou/pull/120</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.1.3...v1.1.4</p>\n",
+			"name": "v1.1.4"
+		},
+		{
+			"tag_name": "v1.1.3",
+			"published_at": "2026-02-27T15:04:15Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.3",
+			"html_body": "<p>这个版本我们重构了 PC 端的 UI 界面， 完善了各平台的的 Ulunas 降噪实现，重构了托盘实现，并修复了一众 Bug 。</p>\n<h2>新增功能</h2>\n<ul>\n<li>macOS ONNX 降噪 - 新增对 macOS 平台的 ONNX 降噪支持</li>\n<li>袖珍模式 - 桌面版新增袖珍模式切换功能</li>\n<li>HEX 颜色自定义 - 调色盘支持 HEX 颜色值自定义输入</li>\n<li>深色背景适配 - 完善深色主题支持</li>\n<li>高级动画组件 - 添加高级动画组件和视觉效果</li>\n<li>关闭确认优化 - 添加取消按钮并优化关闭确认对话框</li>\n</ul>\n<h2>Bug 修复</h2>\n<ul>\n<li>修复 macOS DMG 打包问题</li>\n<li>修复音频处理器库加载问题</li>\n<li>修复 Kotlin 字符串模板与 PowerShell 管道变量冲突</li>\n<li>优化桌面端启动性能</li>\n<li>优化 Windows 防火墙检测逻辑，避免界面卡顿</li>\n<li>修复 C# 代码编译错误</li>\n<li>避免 VBCable 安装后自动更改系统音频输出设备</li>\n<li>修复 PipeWire 虚拟音频设备创建问题</li>\n<li>修正 pw-loopback 命令参数格式为 JSON</li>\n<li>移除 USB 模式下的 IP 输入框</li>\n</ul>\n<h2>改进</h2>\n<ul>\n<li>升级 Compose Multiplatform 至 1.10.1</li>\n<li>使用 ComposeNativeTray 替换 dorkbox SystemTray（提升 Linux/macOS 托盘兼容性）</li>\n<li>添加 ONNX Runtime 库和 PFFFT 库的预编译支持</li>\n<li>改进原生库加载机制</li>\n<li>添加 AUR 安装指南</li>\n<li>多项国际化翻译更新</li>\n</ul>\n",
+			"name": "v1.1.3"
+		},
+		{
+			"tag_name": "v1.1.2-20260223-0254",
+			"published_at": "2026-02-23T02:54:41Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.2-20260223-0254",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>refactor(jvm): 重构包结构，优化代码组织 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/47</li>\n<li>添加繁体中文本地化 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/54</li>\n<li>Add support for macOS by @WhatDamon in https://github.com/LanRhyme/MicYou/pull/50</li>\n<li>添加粵語本地化 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/59</li>\n<li>chore(i18n): 从Crowdin更新翻译 by @github-actions[bot] in https://github.com/LanRhyme/MicYou/pull/61</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@WingChunWong made their first contribution in https://github.com/LanRhyme/MicYou/pull/54</li>\n<li>@WhatDamon made their first contribution in https://github.com/LanRhyme/MicYou/pull/50</li>\n<li>@github-actions[bot] made their first contribution in https://github.com/LanRhyme/MicYou/pull/61</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.1.1-20260220-0620...v1.1.2-20260223-0254</p>\n",
+			"name": "v1.1.2-20260223-0254"
+		},
+		{
+			"tag_name": "v1.1.1-20260220-0620",
+			"published_at": "2026-02-20T06:20:12Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.1-20260220-0620",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>chore: 添加 .gitattributes 将第三方库标记为 vendored by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/41</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.1.0-20260216-1523...v1.1.1-20260220-0620</p>\n",
+			"name": "v1.1.1-20260220-0620"
+		},
+		{
+			"tag_name": "v1.1.0-20260216-1523",
+			"published_at": "2026-02-16T15:23:24Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.0-20260216-1523",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>docs: 更新Readme中有关Linux与构建相关内容 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/24</li>\n<li>docs: 更新README中的截图与安装方式 by @xpe-online in https://github.com/LanRhyme/MicYou/pull/29</li>\n<li>由于 pffft 和 ONNX Runtime 版本已稳定，不再更新 ，将其直接嵌入项目 by @a2heng in https://github.com/LanRhyme/MicYou/pull/30</li>\n<li>chore: 更新ulunas.onnx模型文件 by @a2heng in https://github.com/LanRhyme/MicYou/pull/31</li>\n<li>修复 Linux 环境下 Tray 问题 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/32</li>\n<li>从 AudioEngine.jvm.kt 中剥离实现 ADB 工具的代码为独立文件 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/34</li>\n<li>异步执行防火墙检查 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/36</li>\n<li>修复 Linux 环境下缺少二进制包的图标路径导致托盘图标不显示的问题 by @raindropQWQ in https://github.com/LanRhyme/MicYou/pull/33</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@xpe-online made their first contribution in https://github.com/LanRhyme/MicYou/pull/29</li>\n<li>@raindropQWQ made their first contribution in https://github.com/LanRhyme/MicYou/pull/33</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.6hotfix-20260213-1447...v1.1.0-20260216-1523</p>\n",
+			"name": "v1.1.0-20260216-1523"
+		},
+		{
+			"tag_name": "v1.0.6hotfix-20260213-1447",
+			"published_at": "2026-02-13T14:47:16Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.6hotfix-20260213-1447",
+			"html_body": "<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.6-20260213-1209...v1.0.6hotfix-20260213-1447</p>\n",
+			"name": "v1.0.6hotfix-20260213-1447"
+		},
+		{
+			"tag_name": "v1.0.6-20260213-1209",
+			"published_at": "2026-02-13T12:09:14Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.6-20260213-1209",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>feat(platform): 增加Linux系统支持 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/13</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@ChinsaaWei made their first contribution in https://github.com/LanRhyme/MicYou/pull/13</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.5-20260213-0639...v1.0.6-20260213-1209</p>\n",
+			"name": "v1.0.6-20260213-1209"
+		},
+		{
+			"tag_name": "v1.0.5-20260213-0639",
+			"published_at": "2026-02-13T06:39:30Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.5-20260213-0639",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>docs: 添加FAQ文档，包含连接设备的常见问题及解决方案 by @Hakuin123 in https://github.com/LanRhyme/MicYou/pull/18</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@Hakuin123 made their first contribution in https://github.com/LanRhyme/MicYou/pull/18</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.4-20260212-0803...v1.0.5-20260213-0639</p>\n",
+			"name": "v1.0.5-20260213-0639"
+		},
+		{
+			"tag_name": "v1.0.4-20260212-0803",
+			"published_at": "2026-02-12T08:03:52Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.4-20260212-0803",
+			"html_body": "<h2>What's Changed</h2>\n<ul>\n<li>feat: 添加ONNX音频处理支持并实现ulunas模型降噪 by @a2heng in https://github.com/LanRhyme/MicYou/pull/10</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li>@a2heng made their first contribution in https://github.com/LanRhyme/MicYou/pull/10</li>\n</ul>\n<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.3-20260211-1741...v1.0.4-20260212-0803</p>\n",
+			"name": "v1.0.4-20260212-0803"
+		},
+		{
+			"tag_name": "v1.0.3-20260211-1741",
+			"published_at": "2026-02-11T17:41:27Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.3-20260211-1741",
+			"html_body": "<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.2-20260211-0649...v1.0.3-20260211-1741</p>\n",
+			"name": "v1.0.3-20260211-1741"
+		},
+		{
+			"tag_name": "v1.0.2-20260211-0649",
+			"published_at": "2026-02-11T06:49:44Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.2-20260211-0649",
+			"html_body": "<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.1-20260211-0436...v1.0.2-20260211-0649</p>\n",
+			"name": "v1.0.2-20260211-0649"
+		},
+		{
+			"tag_name": "v1.0.1-20260211-0436",
+			"published_at": "2026-02-11T04:37:04Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.1-20260211-0436",
+			"html_body": "<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/compare/v1.0.0-20260211-0143...v1.0.1-20260211-0436</p>\n",
+			"name": "v1.0.1-20260211-0436"
+		},
+		{
+			"tag_name": "v1.0.0-20260211-0143",
+			"published_at": "2026-02-11T01:43:11Z",
+			"html_url": "https://github.com/LanRhyme/MicYou/releases/tag/v1.0.0-20260211-0143",
+			"html_body": "<p><strong>Full Changelog</strong>: https://github.com/LanRhyme/MicYou/commits/v1.0.0-20260211-0143</p>\n",
+			"name": "v1.0.0-20260211-0143"
+		}
+	],
+	"fetchedAt": "2026-03-19T15:49:55.106Z"
 }
