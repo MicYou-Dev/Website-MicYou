@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
 // 远程 changelog URL
-const CHANGELOG_URL = "http://bot.micyou.top/changelog.md";
+const CHANGELOG_URL = "https://bot.micyou.top/changelog.md?secret=action";
 
 // 各语言的 frontmatter 配置
 const FRONTMATTER = {
