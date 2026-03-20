@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { ref, watch, nextTick } from "vue";
 import changelogData from "../../../../src/changelog.json";
 
 interface ChangelogEntry {
@@ -30,7 +29,7 @@ function formatDate(dateString: string): string {
   });
 }
 
-// 处理 changelog-body 内的链接点击
+// 处理 changelog-body 内的链接点击（事件委托，仅在客户端执行）
 const handleBodyClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
   const anchor = target.closest("a");
@@ -53,21 +52,6 @@ const handleBodyClick = (e: MouseEvent) => {
   const newWindow = window.open(href, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
 };
-
-// 可选：在 v-html 更新后为所有链接添加 target 和 rel（与事件委托二选一即可）
-const updateLinks = () => {
-  nextTick(() => {
-    document.querySelectorAll(".changelog-body a").forEach((link) => {
-      if (!link.hasAttribute("target")) {
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener noreferrer");
-      }
-    });
-  });
-};
-
-// 监听 entries 变化，更新链接属性
-watch(entries, updateLinks, { immediate: true, deep: true });
 </script>
 
 <template>
@@ -89,7 +73,7 @@ watch(entries, updateLinks, { immediate: true, deep: true });
         </h2>
         <span class="changelog-date">{{ formatDate(entry.published_at) }}</span>
       </div>
-      <!-- 监听点击事件处理链接跳转 -->
+      <!-- 使用事件委托处理内部链接跳转 -->
       <div
         class="changelog-body"
         v-html="entry.html_body"
@@ -103,7 +87,7 @@ watch(entries, updateLinks, { immediate: true, deep: true });
 </template>
 
 <style scoped>
-/* 原有样式不变，确保 :deep 正确生效 */
+/* 样式保持不变 */
 .changelog-list {
   max-width: 800px;
   margin: 0 auto;
