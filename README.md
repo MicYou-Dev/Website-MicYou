@@ -6,11 +6,11 @@
 
 Transform your Android device into a high-quality microphone for PC
 
-[![Deploy to GitHub Pages](https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml/badge.svg)](https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![VitePress](https://img.shields.io/badge/VitePress-2.0.0--alpha-646cff?logo=vitepress&logoColor=white)](https://vitepress.dev/)
-[![Vue](https://img.shields.io/badge/Vue-3.5-4fc08d?logo=vue.js&logoColor=white)](https://vuejs.org/)
-[![pnpm](https://img.shields.io/badge/pnpm-10.x-f69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![Deploy][badge-deploy]][deploy-url]
+[![License][badge-license]][license-url]
+[![VitePress][badge-vitepress]][vitepress-url]
+[![Vue][badge-vue]][vue-url]
+[![pnpm][badge-pnpm]][pnpm-url]
 
 [Live Site](https://lanrhyme.github.io/Website-MicYou/) | [Main Project](https://github.com/LanRhyme/MicYou) | [Telegram](https://t.me/MicYouChannel) | [Report Issues](https://github.com/LanRhyme/Website-MicYou/issues)
 
@@ -130,3 +130,17 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 [MIT License](./LICENSE)
 
 Copyright © 2026 LanRhyme
+
+<!-- Badge References -->
+[badge-deploy]: https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml/badge.svg
+[badge-license]: https://img.shields.io/badge/License-MIT-yellow.svg
+[badge-vitepress]: https://img.shields.io/badge/VitePress-2.0.0--alpha-646cff?logo=vitepress&logoColor=white
+[badge-vue]: https://img.shields.io/badge/Vue-3.5-4fc08d?logo=vue.js&logoColor=white
+[badge-pnpm]: https://img.shields.io/badge/pnpm-10.x-f69220?logo=pnpm&logoColor=white
+
+<!-- URL References -->
+[deploy-url]: https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml
+[license-url]: https://opensource.org/licenses/MIT
+[vitepress-url]: https://vitepress.dev/
+[vue-url]: https://vuejs.org/
+[pnpm-url]: https://pnpm.io/
