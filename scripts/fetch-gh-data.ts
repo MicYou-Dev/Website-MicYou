@@ -1,11 +1,12 @@
 /**
- * 从 GitHub API 获取贡献者和发布数据，保存到 public/ghdata.json
+ * 从 GitHub API 获取贡献者和发布数据，保存到 src/ghdata.json 和 src/changelog.json
  * 用于避免客户端 API 调用触发速率限制
  */
 
-import { writeFileSync, existsSync, readFileSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import MarkdownIt from "markdown-it";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -175,6 +176,64 @@ function isDataEqual(
 	);
 }
 
+const CHANGELOG_OUTPUT_FILE = join(SRC_DIR, "changelog.json");
+
+interface ChangelogEntry {
+	tag_name: string;
+	published_at: string;
+	html_url: string;
+	html_body: string;
+	name: string;
+}
+
+interface ChangelogOutput {
+	entries: ChangelogEntry[];
+	fetchedAt: string;
+}
+
+interface GitHubReleaseEntry {
+	tag_name: string;
+	name: string;
+	body: string;
+	html_url: string;
+	published_at: string;
+	draft: boolean;
+}
+
+async function fetchChangelog(
+	token?: string,
+): Promise<ChangelogEntry[] | null> {
+	try {
+		const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases`;
+		const releases = await fetchJSON<GitHubReleaseEntry[]>(url, token);
+
+		if (!Array.isArray(releases)) {
+			console.warn("Releases API returned non-array");
+			return null;
+		}
+
+		const md = new MarkdownIt();
+
+		return releases
+			.filter((r) => !r.draft)
+			.sort(
+				(a, b) =>
+					new Date(b.published_at).getTime() -
+					new Date(a.published_at).getTime(),
+			)
+			.map((entry) => ({
+				tag_name: entry.tag_name,
+				published_at: entry.published_at,
+				html_url: entry.html_url,
+				html_body: md.render(entry.body ?? ""),
+				name: entry.name,
+			}));
+	} catch (error) {
+		console.warn("Failed to fetch changelog data:", error);
+		return null;
+	}
+}
+
 async function main() {
 	console.log("Fetching GitHub data...");
 
@@ -183,9 +242,10 @@ async function main() {
 
 	try {
 		// 并行获取数据
-		const [release, contributors] = await Promise.all([
+		const [release, contributors, changelogEntries] = await Promise.all([
 			fetchLatestRelease(token),
 			fetchContributors(token),
+			fetchChangelog(token),
 		]);
 
 		const newData: Omit<OutputData, "fetchedAt"> = {
@@ -195,6 +255,9 @@ async function main() {
 			releaseNotes: release.notes,
 			contributors,
 		};
+
+		const fetchedAt = new Date().toISOString();
+		let shouldWriteGhData = true;
 
 		// 读取现有数据并比较
 		if (existsSync(OUTPUT_FILE)) {
@@ -206,24 +269,55 @@ async function main() {
 					console.log(`✓ Version: ${newData.version}`);
 					console.log(`✓ Contributors: ${newData.contributors.length}`);
 					console.log("✓ No changes detected, skipping file write");
-					return;
+					shouldWriteGhData = false;
 				}
 			} catch {
 				// 文件解析失败，继续写入
 			}
 		}
 
-		const output: OutputData = {
-			...newData,
-			fetchedAt: new Date().toISOString(),
-		};
+		if (shouldWriteGhData) {
+			const output: OutputData = {
+				...newData,
+				fetchedAt,
+			};
 
-		// 写入文件
-		writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2), "utf-8");
+			// 写入文件
+			writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2), "utf-8");
 
-		console.log(`✓ Version: ${output.version}`);
-		console.log(`✓ Contributors: ${output.contributors.length}`);
-		console.log(`✓ Saved to: ${OUTPUT_FILE}`);
+			console.log(`✓ Version: ${output.version}`);
+			console.log(`✓ Contributors: ${output.contributors.length}`);
+			console.log(`✓ Saved to: ${OUTPUT_FILE}`);
+		}
+
+		// changelog 获取失败时保留旧数据，避免空数组覆盖
+		if (changelogEntries !== null && changelogEntries.length > 0) {
+			const changelogOutput: ChangelogOutput = {
+				entries: changelogEntries,
+				fetchedAt,
+			};
+
+			writeFileSync(
+				CHANGELOG_OUTPUT_FILE,
+				JSON.stringify(changelogOutput, null, 2),
+				"utf-8",
+			);
+
+			console.log(`✓ Changelog entries: ${changelogOutput.entries.length}`);
+			console.log(`✓ Saved to: ${CHANGELOG_OUTPUT_FILE}`);
+		} else if (existsSync(CHANGELOG_OUTPUT_FILE)) {
+			console.log(
+				"⚠ Changelog fetch failed or returned empty, keeping existing data",
+			);
+		} else {
+			// 没有旧数据也没有新数据，写空文件
+			writeFileSync(
+				CHANGELOG_OUTPUT_FILE,
+				JSON.stringify({ entries: [], fetchedAt }, null, 2),
+				"utf-8",
+			);
+			console.log("⚠ No changelog data available, wrote empty file");
+		}
 	} catch (error) {
 		console.error("Failed to fetch GitHub data:", error);
 		process.exit(1);

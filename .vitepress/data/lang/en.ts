@@ -3,22 +3,31 @@ import type { DefaultTheme } from "vitepress";
 
 // Navigation
 export const nav: DefaultTheme.NavItem[] = [
-	{
-		text: '<iconify-icon class="i-mr" icon="mdi:home" style="color:#e74c3c"></iconify-icon>Home',
-		link: "/en/",
-	},
-	{
-		text: '<iconify-icon class="i-mr" icon="mdi:file-document" style="color:#3498db"></iconify-icon>Docs',
-		link: "/en/docs/quick-start",
-	},
-	{
-		text: '<iconify-icon class="i-mr" icon="mdi:download" style="color:#20c997"></iconify-icon>Download',
-		link: "/en/download",
-	},
-	{
-		text: '<iconify-icon class="i-mr" icon="mdi:video" style="color:#9c27b0"></iconify-icon>Videos',
-		link: "/en/video",
-	},
+  {
+    text: '<iconify-icon class="i-mr" icon="mdi:home" style="color:#e74c3c"></iconify-icon>Home',
+    link: "/en/",
+  },
+  {
+    text: '<iconify-icon class="i-mr" icon="mdi:file-document" style="color:#3498db"></iconify-icon>Docs',
+    link: "/en/docs/quick-start",
+  },
+  {
+    text: '<iconify-icon class="i-mr" icon="mdi:download" style="color:#20c997"></iconify-icon>Download',
+    link: "/en/download",
+  },
+  {
+    text: '<iconify-icon class="i-mr" icon="mdi:view-list" style="color:#9c27b0"></iconify-icon>More',
+    items: [
+      {
+        text: '<iconify-icon class="i-mr" icon="mdi:video" style="color:#9c27b0"></iconify-icon>Videos',
+        link: "/en/video",
+      },
+      {
+        text: '<iconify-icon class="i-mr" icon="mdi:history" style="color:#ff9800"></iconify-icon>Changelog',
+        link: "/en/changelog",
+      },
+    ],
+  },
 ];
 
 // Contributors component translations

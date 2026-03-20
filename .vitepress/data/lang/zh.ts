@@ -16,8 +16,17 @@ export const nav: DefaultTheme.NavItem[] = [
 		link: "/download",
 	},
 	{
-		text: '<iconify-icon class="i-mr" icon="mdi:video" style="color:#9c27b0"></iconify-icon>视频',
-		link: "/video",
+		text: '<iconify-icon class="i-mr" icon="mdi:view-list" style="color:#9c27b0"></iconify-icon>更多',
+		items: [
+			{
+				text: '<iconify-icon class="i-mr" icon="mdi:video" style="color:#9c27b0"></iconify-icon>视频',
+				link: "/video",
+			},
+			{
+				text: '<iconify-icon class="i-mr" icon="mdi:history" style="color:#ff9800"></iconify-icon>更新日志',
+				link: "/changelog",
+			},
+		],
 	},
 ];
 
