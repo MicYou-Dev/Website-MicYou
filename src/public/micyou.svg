@@ -6,65 +6,20 @@
    version="1.1"
    id="svg1"
    sodipodi:docname="micyou.svg"
-   inkscape:export-filename="micyou.svg"
-   inkscape:export-xdpi="72.407738"
-   inkscape:export-ydpi="72.407738"
-   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#334254"
-     bordercolor="#999999"
-     borderopacity="1"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showguides="true"
-     inkscape:export-bgcolor="#ffffffff"
-     inkscape:zoom="22.627417"
-     inkscape:cx="5.347495"
-     inkscape:cy="8.3306018"
-     inkscape:window-width="1880"
-     inkscape:window-height="998"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1">
-    <inkscape:page
-       x="0"
-       y="0"
-       width="24"
-       height="24"
-       id="page2"
-       margin="0"
-       bleed="0" />
-  </sodipodi:namedview>
-  <g
-     inkscape:groupmode="layer"
-     id="layer1"
-     inkscape:label="Layer 1"
-     style="display:inline;fill:#ffffff;fill-opacity:1">
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:279;stroke-opacity:0.608833"
-       id="rect1"
-       width="24"
-       height="24"
-       x="0"
-       y="-0.00045995787" />
-    <path
-       style="fill:#334254;fill-opacity:1;stroke-width:0.668132;stroke-opacity:0.608833"
-       d="M 0,11.998718 V -0.02209709 H 12.020815 24.041631 V 11.998718 24.019533 H 12.020815 0 Z"
-       id="path2" />
-  </g>
+  <rect
+     width="24"
+     height="24"
+     x="0"
+     y="0"
+     rx="4"
+     ry="4"
+     fill="#334254" />
   <path
-     fill="currentColor"
+     fill="#ffffff"
      d="m 10.784525,12.429524 q -0.500512,-0.500512 -0.500512,-1.21553 V 7.7819072 q 0,-0.715018 0.500512,-1.2155306 0.500513,-0.5005126 1.215531,-0.5005126 0.715018,0 1.215531,0.5005126 0.500512,0.5005126 0.500512,1.2155306 v 3.4320868 q 0,0.715018 -0.500512,1.21553 -0.500513,0.500513 -1.215531,0.500513 -0.715018,0 -1.215531,-0.500513 m 0.643517,3.932599 v -1.18693 Q 10.112409,14.989289 9.176021,14.059765 8.2396334,13.130242 8.0388563,11.800308 q -0.028601,-0.243106 0.1287033,-0.41471 0.1573039,-0.171604 0.4004101,-0.171604 0.2431061,0 0.4078462,0.16474 0.1647402,0.16474 0.2213696,0.407274 0.200205,1.001025 0.9941615,1.644541 0.793955,0.643517 1.808709,0.643517 1.029626,0 1.816146,-0.650381 0.78652,-0.65038 0.986725,-1.637677 0.0572,-0.243106 0.221941,-0.407274 0.16474,-0.164168 0.407274,-0.16474 0.242535,-5.72e-4 0.40041,0.171604 0.157876,0.172176 0.128704,0.41471 -0.200205,1.301333 -1.129729,2.245157 -0.929523,0.943824 -2.259457,1.129728 v 1.18693 q 0,0.243106 -0.16474,0.407846 -0.16474,0.164741 -0.407274,0.164168 -0.242534,-5.72e-4 -0.407274,-0.16474 -0.16474,-0.164168 -0.16474,-0.407274 m 0.97986,-4.740283 Q 12.57207,11.4571 12.57207,11.213994 V 7.7819072 q 0,-0.2431061 -0.16474,-0.4072743 -0.16474,-0.1641681 -0.407274,-0.1647401 -0.242534,-5.72e-4 -0.407274,0.1647401 -0.16474,0.1653122 -0.16474,0.4072743 v 3.4320868 q 0,0.243106 0.16474,0.407846 0.16474,0.16474 0.407274,0.164168 0.242534,-5.72e-4 0.407846,-0.16474"
-     id="path1"
-     style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:0.572014" />
+     id="path1" />
 </svg>
