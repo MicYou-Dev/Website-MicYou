@@ -1,4 +1,4 @@
-# MicYou Website
+<h1 align="center">MicYou Website</h1>
 
 <div align="center">
 
