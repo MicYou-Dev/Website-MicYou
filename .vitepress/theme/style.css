@@ -1,4 +1,5 @@
 /* MicYou 主题样式 */
+@import './blur.css';
 
 html {
 	font-display: swap;
@@ -173,10 +174,6 @@ a:focus-visible {
 	display: none;
 }
 
-.VPNavBar:not(.has-sidebar):not(.home.top) {
-	background-color: rgba(255, 255, 255, 0);
-	backdrop-filter: blur(10px);
-}
 
 .dark .VPNavBar:not(.has-sidebar):not(.home.top) {
 	background-color: rgba(30, 30, 32, 0);
@@ -200,22 +197,6 @@ a:focus-visible {
 
 .dark .curtain {
 	background-color: rgba(30, 30, 32, 0);
-}
-
-@media (min-width: 960px) {
-	.VPNavBar:not(.home.top) .content-body {
-		background-color: rgba(255, 255, 255, 0);
-		backdrop-filter: blur(10px);
-	}
-
-	.dark .VPNavBar:not(.home.top) .content-body {
-		background-color: rgba(30, 30, 32, 0);
-	}
-}
-
-.VPLocalNav {
-	background-color: rgba(255, 255, 255, 0);
-	backdrop-filter: blur(10px);
 }
 
 .dark .VPLocalNav {
