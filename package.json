@@ -23,6 +23,7 @@
 		"lint-staged": "^16.4.0",
 		"pngjs": "^7.0.0",
 		"tsx": "^4.21.0",
+		"vercel": "^42.0.0",
 		"vitepress": "2.0.0-alpha.17"
 	},
 	"lint-staged": {
