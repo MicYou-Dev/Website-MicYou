@@ -3,6 +3,73 @@
 	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.1.5",
 	"releaseDate": "2026-03-08T14:54:55Z",
 	"releaseNotes": "## 主要功能\r\n- 首次启动引导 - 新用户引导弹窗\r\n- 自动检查更新 - 支持应用内更新\r\n- 增益控制 (AGC) - 音频自动增益控制功能\r\n- 快速设置 Tile - Android 快速设置快捷操作\r\n\r\n## 核心优化\r\n- 音频处理重构 - Ulunas 改用 Kotlin 实现\r\n\r\n## What's Changed\r\n* 补全繁体中文及粤语本地化 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/125\r\n* Translate visualizer and background settings to Chinese by @Jack-Huang-2020 in https://github.com/LanRhyme/MicYou/pull/127\r\n* feat: 添加移动端保持屏幕常亮功能 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/132\r\n* feat: 添加快速设置Tile服务及相关功能 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/135\r\n* ref: 重构文档结构 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/137\r\n* docs: 优化贡献指南和常见问题部分的描述，提升可读性 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/138\r\n* refactor(audio): migrate ONNX to Maven, update Ulunas to Kotlin, add JTransforms by @a2heng in https://github.com/LanRhyme/MicYou/pull/139\r\n* feat(音频处理): 实现增益控制功能并重构放大器效果器 by @a2heng in https://github.com/LanRhyme/MicYou/pull/141\r\n* feat: 添加OLED优化功能，支持深色模式下使用纯黑背景 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/140\r\n* docs: 添加 Issue 模板 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/142\r\n* feat: 应用内更新 by @WingChunWong in https://github.com/LanRhyme/MicYou/pull/143\r\n\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.1.4...v1.1.5",
-	"contributors": [],
-	"fetchedAt": "2026-03-22T01:11:19.960Z"
+	"contributors": [
+		{
+			"login": "WingChunWong",
+			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?v=4",
+			"html_url": "https://github.com/WingChunWong",
+			"contributions": 27
+		},
+		{
+			"login": "WhatDamon",
+			"avatar_url": "https://avatars.githubusercontent.com/u/59256766?v=4",
+			"html_url": "https://github.com/WhatDamon",
+			"contributions": 26
+		},
+		{
+			"login": "snowdropQwQ",
+			"avatar_url": "https://avatars.githubusercontent.com/u/85062843?v=4",
+			"html_url": "https://github.com/snowdropQwQ",
+			"contributions": 7
+		},
+		{
+			"login": "Jack-Huang-2020",
+			"avatar_url": "https://avatars.githubusercontent.com/u/178568507?v=4",
+			"html_url": "https://github.com/Jack-Huang-2020",
+			"contributions": 6
+		},
+		{
+			"login": "a2heng",
+			"avatar_url": "https://avatars.githubusercontent.com/u/17189158?v=4",
+			"html_url": "https://github.com/a2heng",
+			"contributions": 3
+		},
+		{
+			"login": "raindropQWQ",
+			"avatar_url": "https://avatars.githubusercontent.com/u/102001942?v=4",
+			"html_url": "https://github.com/raindropQWQ",
+			"contributions": 3
+		},
+		{
+			"login": "UsonTong",
+			"avatar_url": "https://avatars.githubusercontent.com/u/87005444?v=4",
+			"html_url": "https://github.com/UsonTong",
+			"contributions": 2
+		},
+		{
+			"login": "Hakuin123",
+			"avatar_url": "https://avatars.githubusercontent.com/u/108911712?v=4",
+			"html_url": "https://github.com/Hakuin123",
+			"contributions": 2
+		},
+		{
+			"login": "moumoum0",
+			"avatar_url": "https://avatars.githubusercontent.com/u/93870731?v=4",
+			"html_url": "https://github.com/moumoum0",
+			"contributions": 1
+		},
+		{
+			"login": "PabloLIONA",
+			"avatar_url": "https://avatars.githubusercontent.com/u/264376422?v=4",
+			"html_url": "https://github.com/PabloLIONA",
+			"contributions": 1
+		},
+		{
+			"login": "ArturoAtomplay",
+			"avatar_url": "https://avatars.githubusercontent.com/u/64356325?v=4",
+			"html_url": "https://github.com/ArturoAtomplay",
+			"contributions": 1
+		}
+	],
+	"fetchedAt": "2026-03-22T04:11:06.817Z"
 }
