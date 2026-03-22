@@ -80,6 +80,17 @@ async function fetchJSON<T>(
 	}
 
 	if (!res.ok) {
+		// 403 通常是速率限制，提示用户设置 token
+		if (res.status === 403) {
+			const rateLimitRemaining = res.headers.get("x-ratelimit-remaining");
+			const rateLimitReset = res.headers.get("x-ratelimit-reset");
+			let message = `GitHub API rate limit exceeded (403).`;
+			if (rateLimitRemaining === "0") {
+				message += ` Rate limit reset at: ${rateLimitReset ? new Date(Number.parseInt(rateLimitReset, 10) * 1000).toISOString() : "unknown"}`;
+			}
+			message += ` Set GH_TOKEN environment variable to increase rate limit.`;
+			throw new Error(message);
+		}
 		throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
 	}
 
@@ -179,7 +190,7 @@ async function main() {
 	console.log("Fetching GitHub data...");
 
 	// GitHub Token 可通过环境变量 GITHUB_TOKEN 设置
-	const token = process.env.GITHUB_TOKEN;
+	const token = process.env.GH_TOKEN;
 
 	try {
 		// 并行获取数据
