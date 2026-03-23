@@ -122,7 +122,7 @@ async function fetchContributors(token?: string): Promise<
 		contributions: number;
 	}>
 > {
-	const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/stats/contributors`;
+	const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`;
 	const maxRetries = 10;
 	const retryDelay = 3000; // 3 秒
 
