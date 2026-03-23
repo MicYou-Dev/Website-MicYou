@@ -2,11 +2,11 @@
  
 # MicYou Website
   
-<img src="https://socialify.git.ci/MicYou-Dev/Website-MicYou/image?description=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2FMicYou-Dev%2FWebsite-MicYou%2Frefs%2Fheads%2Fmain%2Fsrc%2Fpublic%2Fmicyou.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto" alt="Website-MicYou"/>
+<img src="https://socialify.git.ci/MicYou-Dev/Website-MicYou/image?description=1&issues=1&language=1&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNOS44NzUgMTMuMTI1UTkgMTIuMjUgOSAxMVY1cTAtMS4yNS44NzUtMi4xMjVUMTIgMnQyLjEyNS44NzVUMTUgNXY2cTAgMS4yNS0uODc1IDIuMTI1VDEyIDE0dC0yLjEyNS0uODc1TTExIDIwdi0yLjA3NXEtMi4zLS4zMjUtMy45MzctMS45NXQtMS45ODgtMy45NXEtLjA1LS40MjUuMjI1LS43MjVUNiAxMXQuNzEzLjI4OFQ3LjEgMTJxLjM1IDEuNzUgMS43MzggMi44NzVUMTIgMTZxMS44IDAgMy4xNzUtMS4xMzdUMTYuOSAxMnEuMS0uNDI1LjM4OC0uNzEyVDE4IDExdC43LjN0LjIyNS43MjVxLS4zNSAyLjI3NS0xLjk3NSAzLjkyNVQxMyAxNy45MjVWMjBxMCAuNDI1LS4yODguNzEzVDEyIDIxdC0uNzEyLS4yODhUMTEgMjBtMS43MTMtOC4yODdRMTMgMTEuNDI1IDEzIDExVjVxMC0uNDI1LS4yODgtLjcxMlQxMiA0dC0uNzEyLjI4OFQxMSA1djZxMCAuNDI1LjI4OC43MTNUMTIgMTJ0LjcxMy0uMjg4Ii8%2BPC9zdmc%2B&owner=1&pulls=1&stargazers=1&theme=Dark" alt="Website-MicYou"/>
 
 ---
 
-**Official Documentation Website for MicYou**
+**Official Website for MicYou**
 
 Transform your Android device into a high-quality microphone for PC
 
