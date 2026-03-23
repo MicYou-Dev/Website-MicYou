@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "vitepress dev",
-		"build": "pnpm run fetch:ghdata && vitepress build",
+		"build": "vitepress build",
 		"preview": "vitepress preview",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
