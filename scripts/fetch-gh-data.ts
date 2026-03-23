@@ -81,9 +81,10 @@ async function fetchGraphQL(
 }
 
 async function main() {
-	const token = process.env.GH_TOKEN;
+	// 支持 GH_TOKEN 或 GITHUB_TOKEN（GitHub Actions 默认提供）
+	const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 	if (!token) {
-		console.error("Error: Set GH_TOKEN environment variable.");
+		console.error("Error: Set GH_TOKEN or GITHUB_TOKEN environment variable.");
 		process.exit(1);
 	}
 
