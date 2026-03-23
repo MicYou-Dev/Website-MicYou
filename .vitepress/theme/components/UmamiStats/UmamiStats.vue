@@ -90,7 +90,7 @@ onMounted(async () => {
   <div class="umami-stats">
     <span v-if="!stats">{{ t.loading }}</span>
     <span v-else>
-      <strong>{{ formatNum(displayStats.pageviews) }}</strong> {{ t.views }} ·
+      <strong>{{ formatNum(displayStats.pageviews) }}</strong> {{ t.views }}
       <strong>{{ formatNum(displayStats.visits) }}</strong> {{ t.visits }}
     </span>
   </div>
