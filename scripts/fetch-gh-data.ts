@@ -24,12 +24,11 @@ const EXCLUDE_USERS = new Set([
 ]);
 
 interface GitHubContributor {
-	author: {
-		login: string;
-		avatar_url: string;
-		html_url: string;
-	};
-	total: number;
+	login: string;
+	id: number;
+	avatar_url: string;
+	html_url: string;
+	contributions: number;
 }
 
 interface GitHubRelease {
@@ -154,15 +153,15 @@ async function fetchContributors(token?: string): Promise<
 
 		return data
 			.filter((c) => {
-				const login = c.author?.login;
+				const login = c.login;
 				return login && !EXCLUDE_USERS.has(login) && !login.includes("[bot]");
 			})
-			.sort((a, b) => b.total - a.total)
+			.sort((a, b) => b.contributions - a.contributions)
 			.map((c) => ({
-				login: c.author.login,
-				avatar_url: c.author.avatar_url,
-				html_url: c.author.html_url,
-				contributions: c.total,
+				login: c.login,
+				avatar_url: c.avatar_url,
+				html_url: c.html_url,
+				contributions: c.contributions,
 			}));
 	}
 
