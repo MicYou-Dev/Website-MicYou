@@ -1,7 +1,6 @@
 /* MicYou 主题样式 */
 @import "./blur.css";
 
-/* ===== 字体配置 ===== */
 :root {
 	--vp-font-family-base: "Noto Sans SC", "Noto Sans TC", "Noto Sans",
 		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
@@ -10,35 +9,18 @@
 		Consolas, "Courier New", monospace;
 }
 
-/* ===== 品牌色 ===== */
-:root {
-	--vp-c-brand-1: #4a5d73;
-	--vp-c-brand-2: #3d4f64;
-	--vp-c-brand-3: #334355;
-	--vp-c-brand-soft: rgba(51, 67, 85, 0.14);
-	--vp-home-hero-name-color: transparent;
-	--vp-home-hero-name-background: linear-gradient(
-		135deg,
-		#334355 0%,
-		#4a6a8d 50%,
-		#6b8aad 100%
-	);
-	--vp-home-hero-image-background-image: linear-gradient(
-		135deg,
-		#334355 0%,
-		#4a6a8d 50%,
-		#6b8aad 100%
-	);
+html {
+	font-display: swap;
 }
 
-.dark {
-	--vp-c-brand-1: #6b8aad;
-	--vp-c-brand-2: #5a7a9d;
-	--vp-c-brand-3: #4a6a8d;
-	--vp-c-brand-soft: rgba(107, 138, 173, 0.14);
+img,
+video,
+iframe {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
 }
 
-/* ===== Hero 图片 ===== */
 .VPHero .VPImage.image-src {
 	width: 192px !important;
 	height: 192px !important;
@@ -55,38 +37,25 @@
 	object-fit: contain;
 }
 
-/* ===== Dark 模式透明 ===== */
-.dark .VPNavBar:not(.has-sidebar):not(.home.top),
-.dark .curtain,
-.dark .VPLocalNav {
-	background-color: rgba(30, 30, 32, 0);
+.VPContent {
+	min-height: calc(100vh - var(--vp-nav-height) - 64px);
+	padding-bottom: 0 !important;
 }
 
-/* ===== Feature 卡片悬浮 ===== */
-.VPTeamMembers .item,
-.VPFeatures .items .item {
-	transition: transform 0.3s;
+:root {
+	--vp-c-brand-1: #4a5d73;
+	--vp-c-brand-2: #3d4f64;
+	--vp-c-brand-3: #334355;
+	--vp-c-brand-soft: rgba(51, 67, 85, 0.14);
 }
 
-.VPTeamMembers .item:hover,
-.VPFeatures .items .item:hover {
-	transform: translateY(-5px);
+.dark {
+	--vp-c-brand-1: #6b8aad;
+	--vp-c-brand-2: #5a7a9d;
+	--vp-c-brand-3: #4a6a8d;
+	--vp-c-brand-soft: rgba(107, 138, 173, 0.14);
 }
 
-/* ===== 导航栏统计 ===== */
-.nav-stats-center {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.VPNavBar:not(.home.top) .nav-stats-center {
-	opacity: 0;
-	pointer-events: none;
-}
-
-/* ===== 跳转链接 ===== */
 .skip-to-content {
 	position: absolute;
 	top: -100%;
@@ -106,17 +75,39 @@
 	top: 16px;
 }
 
-/* ===== 焦点样式 ===== */
+.VPNavBar {
+	position: relative;
+}
+
+.nav-stats-center {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.VPNavBar:not(.home.top) .nav-stats-center {
+	opacity: 0;
+	pointer-events: none;
+}
+
 :focus-visible {
 	outline: 2px solid var(--vp-c-brand-1);
 	outline-offset: 2px;
 }
 
+button:focus-visible,
+.btn:focus-visible {
+	outline: 2px solid var(--vp-c-brand-1);
+	outline-offset: 2px;
+}
+
 a:focus-visible {
+	outline: 2px solid var(--vp-c-brand-1);
+	outline-offset: 2px;
 	border-radius: 4px;
 }
 
-/* ===== 无障碍：减少动画 ===== */
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
@@ -127,7 +118,32 @@ a:focus-visible {
 	}
 }
 
-/* ===== Hero 模糊响应式 ===== */
+:root {
+	--vp-home-hero-name-color: transparent;
+	--vp-home-hero-name-background: linear-gradient(
+		135deg,
+		#334355 0%,
+		#4a6a8d 50%,
+		#6b8aad 100%
+	);
+	--vp-home-hero-image-background-image: linear-gradient(
+		135deg,
+		#334355 0%,
+		#4a6a8d 50%,
+		#6b8aad 100%
+	);
+	--vp-home-hero-image-filter: blur(68px);
+	--vp-button-brand-border: transparent;
+	--vp-button-brand-text: #fff;
+	--vp-button-brand-bg: var(--vp-c-brand-1);
+	--vp-button-brand-hover-border: transparent;
+	--vp-button-brand-hover-text: #fff;
+	--vp-button-brand-hover-bg: var(--vp-c-brand-2);
+	--vp-button-brand-active-border: transparent;
+	--vp-button-brand-active-text: #fff;
+	--vp-button-brand-active-bg: var(--vp-c-brand-3);
+}
+
 @media (min-width: 640px) {
 	:root {
 		--vp-home-hero-image-filter: blur(80px);
@@ -140,15 +156,19 @@ a:focus-visible {
 	}
 }
 
-/* ===== 其他调整 ===== */
-.VPContent {
-	min-height: calc(100vh - var(--vp-nav-height) - 64px);
-	padding-bottom: 0 !important;
-}
-
 .VPHero .text {
 	font-size: 36px;
 	line-height: 1.2;
+}
+
+.VPTeamMembers .item,
+.VPFeatures .items .item {
+	transition: transform 0.3s;
+}
+
+.VPTeamMembers .item:hover,
+.VPFeatures .items .item:hover {
+	transform: translateY(-5px);
 }
 
 .VPNavBar.screen-open,
@@ -160,6 +180,34 @@ a:focus-visible {
 
 .divider {
 	display: none;
+}
+
+.dark .VPNavBar:not(.has-sidebar):not(.home.top) {
+	background-color: rgba(30, 30, 32, 0);
+}
+
+.DocSearch-Button {
+	background-color: rgba(255, 255, 255, 0);
+	backdrop-filter: blur(10px);
+}
+
+.VPFeature {
+	border: none;
+	box-shadow: 0 10px 30px 0 rgb(0 0 0 / 15%);
+	background-color: transparent;
+}
+
+.curtain {
+	background-color: rgba(255, 255, 255, 0);
+	backdrop-filter: blur(10px);
+}
+
+.dark .curtain {
+	background-color: rgba(30, 30, 32, 0);
+}
+
+.dark .VPLocalNav {
+	background-color: rgba(30, 30, 32, 0);
 }
 
 .footer {
@@ -174,8 +222,4 @@ a:focus-visible {
 
 .footer .footer-info {
 	margin-bottom: 0 !important;
-}
-
-html:focus-within {
-  scroll-behavior: smooth;
 }
