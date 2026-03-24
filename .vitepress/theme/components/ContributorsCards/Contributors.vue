@@ -126,7 +126,7 @@ const contributors = computed(() =>
 
 .contributors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   width: 100%;
   max-width: 1152px;
@@ -136,7 +136,9 @@ const contributors = computed(() =>
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 16px;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 16px;
   border-radius: 12px;
   background: var(--vp-c-bg-soft);
   text-decoration: none;
@@ -184,7 +186,7 @@ const contributors = computed(() =>
   }
 
   .contributors-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
   }
 }
@@ -206,12 +208,12 @@ const contributors = computed(() =>
   }
 
   .contributors-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 
   .contributor-card {
-    padding: 16px 12px;
+    padding: 12px;
   }
 
   .avatar {
