@@ -2,11 +2,13 @@
 @import "./blur.css";
 
 :root {
-	--vp-font-family-base: "Noto Sans SC", "Noto Sans TC", "Noto Sans",
+	--vp-font-family-base:
+		"Noto Sans SC", "Noto Sans TC", "Noto Sans",
 		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
 		Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-	--vp-font-family-mono: "Noto Sans Mono", source-code-pro, Menlo, Monaco,
-		Consolas, "Courier New", monospace;
+	--vp-font-family-mono:
+		"Noto Sans Mono", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }
 
 html {

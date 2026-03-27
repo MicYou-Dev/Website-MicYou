@@ -29,7 +29,6 @@ import ViewTrans from "./components/ViewTrans.vue";
 export default {
 	extends: DefaultTheme,
 	setup() {
-		const router = useRouter();
 		onMounted(() => {
 			// 仅在 Chromium 内核浏览器启用视图过渡 API（Firefox/Safari 会闪烁）
 			const isChromium =
@@ -45,12 +44,6 @@ export default {
 			) {
 				return;
 			}
-			router.onBeforeRouteChange = (to) => {
-				document.startViewTransition(async () => {
-					await router.go(to);
-				});
-				return false;
-			};
 		});
 	},
 	Layout: () => {
