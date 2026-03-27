@@ -35,7 +35,14 @@ export default {
 			const isChromium =
 				navigator.userAgent.includes("Chrome") ||
 				navigator.userAgent.includes("Chromium");
-			if (!isChromium || !document.startViewTransition) {
+			const prefersReducedMotion = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches;
+			if (
+				!isChromium ||
+				prefersReducedMotion ||
+				!document.startViewTransition
+			) {
 				return;
 			}
 			router.onBeforeRouteChange = (to) => {
