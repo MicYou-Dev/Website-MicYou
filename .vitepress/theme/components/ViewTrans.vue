@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
 import DefaultTheme from "vitepress/theme";
-import { nextTick, provide } from "vue";
+import { nextTick, provide, useSlots } from "vue";
 
 const { isDark } = useData();
+const slots = useSlots();
 
 const isChromium =
 	navigator.userAgent.includes("Chrome") ||
@@ -46,7 +47,11 @@ provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
 </script>
 
 <template>
-  <DefaultTheme.Layout />
+  <DefaultTheme.Layout>
+    <template v-for="(_, name) in slots" #[name]="slotProps">
+      <slot :name="name" v-bind="slotProps" />
+    </template>
+  </DefaultTheme.Layout>
 </template>
 
 <style>
