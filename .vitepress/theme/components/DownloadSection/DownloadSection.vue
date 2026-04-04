@@ -39,7 +39,14 @@ async function fetchLatestNightlyRun() {
 		// 获取最新成功的 workflow run
 		const runsUrl = `https://api.github.com/repos/${NIGHTLY_OWNER}/${NIGHTLY_REPO}/actions/workflows/${NIGHTLY_WORKFLOW}/runs?status=success&per_page=1`;
 		const runsRes = await fetch(runsUrl);
-		if (!runsRes.ok) throw new Error("Failed to fetch runs");
+		if (runsRes.status === 403)
+			throw new Error("GitHub API rate limit exceeded");
+		if (runsRes.status === 401)
+			throw new Error("GitHub API authentication failed");
+		if (!runsRes.ok)
+			throw new Error(
+				`GitHub API error: HTTP ${runsRes.status} ${runsRes.statusText}`,
+			);
 		const runsData = await runsRes.json();
 
 		if (!runsData.workflow_runs?.length) {
@@ -52,7 +59,14 @@ async function fetchLatestNightlyRun() {
 		// 获取该 run 的 artifacts
 		const artifactsUrl = `https://api.github.com/repos/${NIGHTLY_OWNER}/${NIGHTLY_REPO}/actions/runs/${runId}/artifacts`;
 		const artifactsRes = await fetch(artifactsUrl);
-		if (!artifactsRes.ok) throw new Error("Failed to fetch artifacts");
+		if (artifactsRes.status === 403)
+			throw new Error("GitHub API rate limit exceeded");
+		if (artifactsRes.status === 401)
+			throw new Error("GitHub API authentication failed");
+		if (!artifactsRes.ok)
+			throw new Error(
+				`GitHub API error: HTTP ${artifactsRes.status} ${artifactsRes.statusText}`,
+			);
 		const artifactsData = await artifactsRes.json();
 
 		// 构建 artifact 名称映射 (pattern prefix -> actual name)
