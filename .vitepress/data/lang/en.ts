@@ -61,6 +61,10 @@ export const download = {
 	sourceGithub: "GitHub",
 	sourceMirror: "Mirror",
 	mirrorTip: "Mirror recommended for users in China Mainland",
+	// Version type
+	stable: "Stable",
+	nightly: "Nightly",
+	nightlyTip: "Nightly includes latest features, may be unstable",
 };
 
 // Changelog component translations

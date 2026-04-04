@@ -61,6 +61,10 @@ export const download = {
 	sourceGithub: "GitHub",
 	sourceMirror: "镜像",
 	mirrorTip: "中国大陆用户推荐使用镜像下载",
+	// 版本类型
+	stable: "稳定版",
+	nightly: "快照版",
+	nightlyTip: "快照版包含最新功能，可能不稳定",
 };
 
 // Changelog 组件翻译

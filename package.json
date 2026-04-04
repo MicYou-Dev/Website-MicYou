@@ -28,7 +28,7 @@
 		"lint-staged": "^16.4.0",
 		"pngjs": "^7.0.0",
 		"tsx": "^4.21.0",
-		"vitepress": "2.0.0-alpha.17"
+		"vitepress": "^2.0.0-alpha.17"
 	},
 	"lint-staged": {
 		"*.{js,ts,vue,json,mts,mjs,cjs,cts}": "biome format --write"
