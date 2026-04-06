@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { computed, ref, watch, onMounted } from "vue";
+import { computed, ref } from "vue";
 import {
 	downloadTranslations,
 	type DownloadKey,
@@ -16,94 +16,6 @@ const t = computed(
 const version = ref(ghdata.version);
 const copied = ref<string | null>(null);
 const useMirror = ref(false);
-const useNightly = ref(false);
-
-// Nightly 配置
-const NIGHTLY_OWNER = "LanRhyme";
-const NIGHTLY_REPO = "MicYou";
-const NIGHTLY_WORKFLOW = "development.yml";
-
-// 存储 nightly run 和 artifacts 信息
-const nightlyRunId = ref<number | null>(null);
-const nightlyArtifacts = ref<Map<string, string>>(new Map());
-const nightlyLoading = ref(false);
-const nightlyError = ref<string | null>(null);
-
-// GitHub API 获取最新成功 run
-async function fetchLatestNightlyRun() {
-	if (!useNightly.value) return;
-	nightlyLoading.value = true;
-	nightlyError.value = null;
-
-	try {
-		// 获取最新成功的 workflow run
-		const runsUrl = `https://api.github.com/repos/${NIGHTLY_OWNER}/${NIGHTLY_REPO}/actions/workflows/${NIGHTLY_WORKFLOW}/runs?status=success&per_page=1`;
-		const runsRes = await fetch(runsUrl);
-		if (runsRes.status === 403)
-			throw new Error("GitHub API rate limit exceeded");
-		if (runsRes.status === 401)
-			throw new Error("GitHub API authentication failed");
-		if (!runsRes.ok)
-			throw new Error(
-				`GitHub API error: HTTP ${runsRes.status} ${runsRes.statusText}`,
-			);
-		const runsData = await runsRes.json();
-
-		if (!runsData.workflow_runs?.length) {
-			throw new Error("No successful runs found");
-		}
-
-		const runId = runsData.workflow_runs[0].id;
-		nightlyRunId.value = runId;
-
-		// 获取该 run 的 artifacts
-		const artifactsUrl = `https://api.github.com/repos/${NIGHTLY_OWNER}/${NIGHTLY_REPO}/actions/runs/${runId}/artifacts`;
-		const artifactsRes = await fetch(artifactsUrl);
-		if (artifactsRes.status === 403)
-			throw new Error("GitHub API rate limit exceeded");
-		if (artifactsRes.status === 401)
-			throw new Error("GitHub API authentication failed");
-		if (!artifactsRes.ok)
-			throw new Error(
-				`GitHub API error: HTTP ${artifactsRes.status} ${artifactsRes.statusText}`,
-			);
-		const artifactsData = await artifactsRes.json();
-
-		// 构建 artifact 名称映射 (pattern prefix -> actual name)
-		const map = new Map<string, string>();
-		for (const artifact of artifactsData.artifacts || []) {
-			const name = artifact.name;
-			map.set(name, name);
-		}
-		nightlyArtifacts.value = map;
-	} catch (e) {
-		nightlyError.value = e instanceof Error ? e.message : "Unknown error";
-		console.error("Failed to fetch nightly info:", e);
-	} finally {
-		nightlyLoading.value = false;
-	}
-}
-
-// 监听 nightly 模式切换
-watch(useNightly, (newVal) => {
-	if (newVal) fetchLatestNightlyRun();
-});
-
-// 初始化时如果 nightly 已开启则加载
-onMounted(() => {
-	if (useNightly.value) fetchLatestNightlyRun();
-});
-
-// 正则匹配 artifact 名称
-function findArtifact(pattern: string): string | null {
-	const regex = new RegExp(
-		`^${pattern.replace("{version}", "\\d+\\.\\d+\\.\\d+")}$`,
-	);
-	for (const [name] of nightlyArtifacts.value) {
-		if (regex.test(name)) return name;
-	}
-	return null;
-}
 
 const platforms: {
 	name: string;
@@ -113,7 +25,6 @@ const platforms: {
 		name: DownloadKey;
 		pattern?: string;
 		copy?: string;
-		nightlyPattern?: string;
 	}[];
 }[] = [
 	{
@@ -124,17 +35,14 @@ const platforms: {
 			{
 				name: "installer",
 				pattern: "MicYou-Win-{version}-installer.exe",
-				nightlyPattern: "MicYou-Win-{version}",
 			},
 			{
 				name: "portableJRE",
 				pattern: "MicYou-Win-{version}.zip",
-				nightlyPattern: "MicYou-Win-{version}",
 			},
 			{
 				name: "portableNoJRE",
 				pattern: "MicYou-Win-NoJRE-{version}.zip",
-				nightlyPattern: "MicYou-Win-NoJRE-{version}",
 			},
 		],
 	},
@@ -146,17 +54,14 @@ const platforms: {
 			{
 				name: "dmgArm",
 				pattern: "MicYou-macOS-{version}-arm64.dmg",
-				nightlyPattern: "MicYou-macOS-arm64-{version}",
 			},
 			{
 				name: "dmgIntel",
 				pattern: "MicYou-macOS-{version}-x64.dmg",
-				nightlyPattern: "MicYou-macOS-x64-{version}",
 			},
 			{
 				name: "portableNoJRE",
 				pattern: "MicYou-macOS-NoJRE-{version}.tar.gz",
-				nightlyPattern: "MicYou-macOS-NoJRE-arm64-{version}",
 			},
 		],
 	},
@@ -168,18 +73,15 @@ const platforms: {
 			{
 				name: "deb",
 				pattern: "MicYou-Linux-{version}.deb",
-				nightlyPattern: "MicYou-Linux-{version}",
 			},
 			{
 				name: "rpm",
 				pattern: "MicYou-Linux-{version}.rpm",
-				nightlyPattern: "MicYou-Linux-{version}",
 			},
 			{ name: "arch", copy: "paru -S micyou-bin" },
 			{
 				name: "portableNoJRE",
 				pattern: "MicYou-Linux-NoJRE-{version}.tar.gz",
-				nightlyPattern: "MicYou-Linux-NoJRE-{version}",
 			},
 		],
 	},
@@ -191,7 +93,6 @@ const platforms: {
 			{
 				name: "apk",
 				pattern: "MicYou-Android-{version}.apk",
-				nightlyPattern: "MicYou-Android-{version}",
 			},
 		],
 	},
@@ -203,25 +104,8 @@ const githubUrl = (pattern: string) =>
 const mirrorUrl = (pattern: string) =>
 	`https://atomgit.com/gh_mirrors/mi/MicYou/releases/download/v${version.value}/${pattern.replace("{version}", version.value)}`;
 
-// nightly.link URL - 需要动态获取 artifact 名称
-const getNightlyUrl = (pattern: string): string | null => {
-	if (!nightlyRunId.value) return null;
-	const artifactName = findArtifact(pattern);
-	if (!artifactName) return null;
-	return `https://nightly.link/${NIGHTLY_OWNER}/${NIGHTLY_REPO}/actions/runs/${nightlyRunId.value}/${artifactName}.zip`;
-};
-
-const getUrl = (pattern: string, nightlyPattern?: string) => {
-	if (useNightly.value && nightlyPattern && nightlyRunId.value) {
-		const url = getNightlyUrl(nightlyPattern);
-		return url || githubUrl(pattern);
-	}
+const getUrl = (pattern: string) => {
 	return useMirror.value ? mirrorUrl(pattern) : githubUrl(pattern);
-};
-
-const isNightlyAvailable = (pattern?: string): boolean => {
-	if (!pattern || !nightlyRunId.value) return false;
-	return findArtifact(pattern) !== null;
 };
 
 const copyCmd = async (cmd: string) => {
@@ -251,29 +135,8 @@ const changelogLink = computed(() => {
     </header>
 
     <div class="card">
-      <!-- 版本类型切换 -->
-      <div class="version-switch">
-        <span class="version-label" :class="{ active: !useNightly }">{{ t.stable }}</span>
-        <label class="switch">
-          <input type="checkbox" v-model="useNightly">
-          <span class="slider"></span>
-        </label>
-        <span class="version-label" :class="{ active: useNightly }">{{ t.nightly }}</span>
-        <span class="switch-tip" v-if="useNightly">{{ t.nightlyTip }}</span>
-        <span class="loading-indicator" v-if="useNightly && nightlyLoading">
-          <iconify-icon icon="mdi:loading" class="spin" />
-        </span>
-      </div>
-      <!-- 错误提示 -->
-      <div class="error-msg" v-if="useNightly && nightlyError">
-        <iconify-icon icon="mdi:alert-circle" />
-        {{ nightlyError }}
-        <button class="retry-btn" @click="fetchLatestNightlyRun">
-          <iconify-icon icon="mdi:refresh" />
-        </button>
-      </div>
-      <!-- 下载源切换 (仅稳定版显示) -->
-      <div class="mirror-switch" v-if="!useNightly">
+      <!-- 下载源切换 -->
+      <div class="mirror-switch">
         <span class="source-label" :class="{ active: !useMirror }">{{ t.sourceGithub }}</span>
         <label class="switch">
           <input type="checkbox" v-model="useMirror">
@@ -292,16 +155,15 @@ const changelogLink = computed(() => {
         </div>
         <div class="opts">
           <template v-for="f in p.files" :key="f.pattern || f.copy">
-            <a 
-              v-if="f.pattern" 
-              :href="getUrl(f.pattern, f.nightlyPattern)" 
-              class="btn" 
-              :class="{ disabled: useNightly && !isNightlyAvailable(f.nightlyPattern) }"
+            <a
+              v-if="f.pattern"
+              :href="getUrl(f.pattern)"
+              class="btn"
               target="_blank"
             >
               <iconify-icon icon="mdi:download" />{{ t[f.name] }}
             </a>
-            <button v-else class="btn" :class="{ done: copied === f.copy }" @click="copyCmd(f.copy!)" :disabled="useNightly">
+            <button v-else class="btn" :class="{ done: copied === f.copy }" @click="copyCmd(f.copy!)">
               <iconify-icon :icon="copied === f.copy ? 'mdi:check' : 'mdi:content-copy'" />
               {{ copied === f.copy ? t.copied : t[f.name] }}
             </button>
@@ -312,6 +174,8 @@ const changelogLink = computed(() => {
 
     <p class="notes">
       <a :href="changelogLink">{{ t.viewReleaseNotes }}</a>
+      <span class="separator">|</span>
+      <a href="https://nightly.link/LanRhyme/MicYou/workflows/development/master?preview" target="_blank">{{ t.nightly }}</a>
     </p>
   </div>
 </template>
@@ -356,27 +220,6 @@ const changelogLink = computed(() => {
   padding: 12px 24px;
   background: var(--vp-c-bg);
   border-bottom: 1px solid var(--vp-c-divider);
-}
-
-.version-switch {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px 24px;
-  background: var(--vp-c-bg);
-  border-bottom: 1px solid var(--vp-c-divider);
-}
-
-.version-label {
-  font-size: 0.875rem;
-  color: var(--vp-c-text-3);
-  transition: color 0.2s;
-}
-
-.version-label.active {
-  color: var(--vp-c-brand-1);
-  font-weight: 500;
 }
 
 .source-label {
@@ -518,50 +361,11 @@ input:checked + .slider:before {
   transform: translateY(-1px);
 }
 
-.btn:disabled,
-.btn.disabled {
+.btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   pointer-events: none;
-}
-
-.loading-indicator {
-  margin-left: 8px;
-}
-
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.error-msg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: var(--vp-c-danger-soft);
-  color: var(--vp-c-danger-1);
-  font-size: 0.875rem;
-}
-
-.retry-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  cursor: pointer;
-}
-
-.retry-btn:hover {
-  background: var(--vp-c-brand-soft);
 }
 
 .notes {
@@ -579,6 +383,11 @@ input:checked + .slider:before {
 
 .notes a:hover {
   text-decoration: underline;
+}
+
+.separator {
+  color: var(--vp-c-divider);
+  margin: 0 12px;
 }
 
 @media (max-width: 768px) {
