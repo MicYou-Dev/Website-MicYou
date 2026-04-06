@@ -85,6 +85,9 @@ export const footer = {
 	project: "專案",
 	community: "社群",
 	support: "支援",
+	llm: "LLM",
+	llmTxt: "llms.txt",
+	llmFullTxt: "llms-full.txt",
 	githubRepo: "GitHub 儲存庫",
 	downloadLatest: "下載最新版本",
 	feedback: "問題回饋",
@@ -259,6 +262,34 @@ export function getFooterData(): FooterData {
 						name: footer.sponsor,
 						link: "https://afdian.com/a/LanRhyme",
 						rel: "noopener noreferrer sponsored",
+					},
+				],
+			},
+			{
+				icon: {
+					light: "mdi:robot-outline",
+					dark: "mdi:robot-outline",
+					color: { light: "#334355", dark: "#6b8aad" },
+				},
+				title: footer.llm,
+				links: [
+					{
+						icon: {
+							light: "mdi:file-document-outline",
+							dark: "mdi:file-document-outline",
+							color: { light: "#334355", dark: "#6b8aad" },
+						},
+						name: footer.llmTxt,
+						link: "/llms.txt",
+					},
+					{
+						icon: {
+							light: "mdi:file-document-multiple-outline",
+							dark: "mdi:file-document-multiple-outline",
+							color: { light: "#334355", dark: "#6b8aad" },
+						},
+						name: footer.llmFullTxt,
+						link: "/llms-full.txt",
 					},
 				],
 			},
