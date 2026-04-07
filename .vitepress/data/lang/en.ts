@@ -57,14 +57,10 @@ export const download = {
 	arch: "Arch",
 	apk: "APK",
 	copied: "Copied",
-	// Download source
-	sourceGithub: "GitHub",
-	sourceMirror: "Mirror",
-	mirrorTip: "Mirror recommended for users in China Mainland",
-	// Version type
 	stable: "Stable",
 	nightly: "Nightly",
 	nightlyTip: "Nightly includes latest features, may be unstable",
+	mirror: "MirrorChyan High-Speed Download",
 };
 
 // Changelog component translations

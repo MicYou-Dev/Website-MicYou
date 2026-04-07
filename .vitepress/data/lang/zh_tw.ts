@@ -57,14 +57,10 @@ export const download = {
 	arch: "Arch",
 	apk: "APK",
 	copied: "已複製",
-	// 下載源
-	sourceGithub: "GitHub",
-	sourceMirror: "鏡像",
-	mirrorTip: "中國大陸用戶推薦使用鏡像下載",
-	// 版本類型
 	stable: "穩定版",
 	nightly: "快照版",
 	nightlyTip: "快照版包含最新功能，可能不穩定",
+	mirror: "Mirror 酱高速下載",
 };
 
 // Changelog 組件翻譯
