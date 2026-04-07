@@ -2,7 +2,7 @@
 	"version": "1.2.1",
 	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.2.1",
 	"releaseDate": "2026-04-06T15:25:40Z",
-	"releaseNotes": "## 更新日志:\r\n\r\n### ✨ 新功能\r\n\r\n- 新增详细的错误处理和用户友好的错误提示\r\n- 新增错误对话框组件，显示恢复建议\r\n- 桌面端配置存储从注册表改为文件存储\r\n\r\n### 🐛 Bug 修复\r\n\r\n- 修复音频处理缓冲区大小问题\r\n- 修复 VB-Cable 虚拟音频设备安装和管理功能\r\n- 修复内存泄漏问题\r\n\r\n### ⚡ 性能优化\r\n\r\n- 优化音频处理性能，减少内存分配\r\n- 改进协程生命周期管理\r\n\r\n<img width=\"726\" height=\"122\" alt=\"image\" src=\"https://github.com/user-attachments/assets/08d8c898-a9e1-4478-b010-8a669c8bd0eb\" />\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.2.0...v1.2.1",
+	"releaseNotes": "## 更新日志:\r\n\r\n### ✨ 新功能\r\n\r\n- 新增详细的错误处理和用户友好的错误提示\r\n- 新增错误对话框组件，显示恢复建议\r\n- 桌面端配置存储从注册表改为文件存储\r\n\r\n### 🐛 Bug 修复\r\n\r\n- 修复音频处理缓冲区大小问题\r\n- 修复 VB-Cable 虚拟音频设备安装和管理功能\r\n- 修复内存泄漏问题\r\n\r\n### ⚡ 性能优化\r\n\r\n- 优化音频处理性能，减少内存分配\r\n- 改进协程生命周期管理\r\n\r\n<img width=\"726\" height=\"122\" alt=\"image\" src=\"https://github.com/user-attachments/assets/08d8c898-a9e1-4478-b010-8a669c8bd0eb\" />\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.2.0...v1.2.1\r\n\r\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MicYou)",
 	"contributors": [
 		{
 			"login": "WingChunWong",
@@ -59,6 +59,12 @@
 			"contributions": 2
 		},
 		{
+			"login": "MistEO",
+			"avatar_url": "https://avatars.githubusercontent.com/u/18511905?u=86a13ce58179c1422436cbb8f1239b03df949f10&v=4",
+			"html_url": "https://github.com/MistEO",
+			"contributions": 1
+		},
+		{
 			"login": "PabloLIONA",
 			"avatar_url": "https://avatars.githubusercontent.com/u/264376422?v=4",
 			"html_url": "https://github.com/PabloLIONA",
@@ -71,5 +77,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-04-06T15:43:53.844Z"
+	"fetchedAt": "2026-04-07T12:54:41.134Z"
 }
