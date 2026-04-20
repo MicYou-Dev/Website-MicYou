@@ -74,7 +74,7 @@ export default defineConfig({
 
 	head: [
 		["link", { rel: "icon", href: "/favicon.ico" }],
-		["meta", { name: "theme-color", content: "#334355" }],
+		["meta", { name: "theme-color", content: "#021f4d" }],
 		// SEO 基础标签
 		["meta", { name: "author", content: "LanRhyme" }],
 		["meta", { name: "keywords", content: DEFAULT_KEYWORDS }],
