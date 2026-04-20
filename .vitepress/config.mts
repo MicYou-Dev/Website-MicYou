@@ -73,7 +73,7 @@ export default defineConfig({
 	},
 
 	head: [
-		["link", { rel: "icon", href: "/app_icon.png" }],
+		["link", { rel: "icon", href: "/favicon.ico" }],
 		["meta", { name: "theme-color", content: "#334355" }],
 		// SEO 基础标签
 		["meta", { name: "author", content: "LanRhyme" }],
@@ -92,7 +92,7 @@ export default defineConfig({
 			"link",
 			{
 				rel: "preload",
-				href: "/app_icon.png",
+				href: "/favicon.ico",
 				as: "image",
 				fetchpriority: "high",
 			},
