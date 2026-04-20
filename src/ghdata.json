@@ -1,8 +1,8 @@
 {
-	"version": "1.2.2",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.2.2",
-	"releaseDate": "2026-04-19T04:01:08Z",
-	"releaseNotes": "## 更新日志 / Changelog v1.2.2\r\n\r\n### 新功能 ✨ / New Features ✨\r\n- **音频增强功能**：新增音频增强功能与性能优化，添加性能模式说明和帮助弹窗\r\n  **Audio Enhancement**: Added audio enhancement features with performance optimization, added performance mode description and help dialog\r\n- **Android权限管理**：添加Android权限管理功能\r\n  **Android Permission Management**: Added Android permission management functionality\r\n- **蓝牙诊断工具**：添加蓝牙诊断工具和错误处理\r\n  **Bluetooth Diagnostics**: Added Bluetooth diagnostic tools and error handling\r\n- **Mirror酱对接**：对接 Mirror 酱更新渠道\r\n  **MirrorChyan Integration**: Integrated MirrorChyan update channel\r\n\r\n### 修复 🐛 / Bug Fixes 🐛\r\n- **音频处理修复**：修复音频处理中的缓冲区问题，优化音频处理参数，修复进程状态检查中的异常处理\r\n  **Audio Processing**: Fixed buffer issues in audio processing, optimized audio processing parameters, fixed exception handling in process state checking\r\n- **动画修复**：修复动画延迟计算的整数溢出问题并优化音频可视化器配置\r\n  **Animation**: Fixed integer overflow in animation delay calculation and optimized audio visualizer configuration\r\n- **网络连接修复**：增强数据包大小验证，改进网络连接处理和资源清理逻辑\r\n  **Network Connection**: Enhanced packet size validation, improved network connection handling and resource cleanup logic\r\n- **协程泄漏修复**：添加停止操作检查避免协程泄漏\r\n  **Coroutine Leak**: Added stop operation check to prevent coroutine leaks\r\n- **自动启动修复**：实现应用启动时自动开始流传输\r\n  **Auto-start**: Implemented auto-start streaming on app launch\r\n\r\n### 重构 ♻️ / Refactoring ♻️\r\n- **音频处理优化**：优化进程启动检测逻辑，提取动画常量到统一配置对象，移除音频预设功能\r\n  **Audio Processing Optimization**: Optimized process startup detection logic, extracted animation constants to unified configuration object, removed audio preset feature\r\n- **插件系统重构**：重构插件宿主实现，提取公共基类，简化类加载逻辑\r\n  **Plugin System Refactoring**: Refactored plugin host implementation, extracted common base class, simplified class loading logic\r\n- **代码优化**：集中管理常量并优化错误处理，代码优化整合\r\n  **Code Optimization**: Centralized constant management and optimized error handling, code optimization integration\r\n\r\n### 构建 📦 / Build 📦\r\n- 添加发布签名配置和ProGuard规则以优化APK大小\r\n  Added release signing configuration and ProGuard rules to optimize APK size\r\n- 添加额外的Java模块支持\r\n  Added additional Java module support\r\n- 更新项目版本号为1.2.2和版本码为15\r\n  Updated project version to 1.2.2 and version code to 15\r\n\r\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MicYou)\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.2.1...v1.2.2",
+	"version": "1.2.3",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.2.3",
+	"releaseDate": "2026-04-20T06:58:55Z",
+	"releaseNotes": "## v1.2.3\r\n\r\n### ✨ 新功能 / New Features\r\n\r\n- 🎨 **主题系统重构为 Material 3 Expressive** - 全面升级主题系统，带来更现代的视觉体验 (#190)\r\n  - **Theme system refactored to Material 3 Expressive** - Complete theme system upgrade with a more modern visual experience (#190)\r\n\r\n- 📁 **集成 FileKit 库** - 优化文件选择体验，提升跨平台文件操作的一致性 (#186)\r\n  - **Integrated FileKit library** - Optimized file selection experience and improved cross-platform file operation consistency (#186)\r\n\r\n\r\n### 🐛 问题修复 / Bug Fixes\r\n\r\n- 🛠️ **修复镜像CDK空值问题** - 当镜像CDK为空时直接返回，避免无效操作\r\n  - **Fixed mirror CDK empty value issue** - Directly return when mirror CDK is empty to avoid invalid operations\r\n\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.2.2...v1.2.3\r\n\r\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MicYou)",
 	"contributors": [
 		{
 			"login": "WingChunWong",
@@ -77,5 +77,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-04-19T12:35:04.311Z"
+	"fetchedAt": "2026-04-20T07:20:57.551Z"
 }
