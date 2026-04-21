@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Update GitHub Data"]
+    types: [ completed ]
 
 concurrency:
   group: deploy
