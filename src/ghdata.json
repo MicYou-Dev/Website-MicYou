@@ -5,9 +5,9 @@
 	"releaseNotes": "## v1.2.3\r\n\r\n### ✨ 新功能 / New Features\r\n\r\n- 🎨 **主题系统重构为 Material 3 Expressive** - 全面升级主题系统，带来更现代的视觉体验 (https://github.com/LanRhyme/MicYou/pull/190)\r\n  - **Theme system refactored to Material 3 Expressive** - Complete theme system upgrade with a more modern visual experience (https://github.com/LanRhyme/MicYou/pull/190)\r\n\r\n- 📁 **集成 FileKit 库** - 优化文件选择体验，提升跨平台文件操作的一致性 (https://github.com/LanRhyme/MicYou/pull/186)\r\n  - **Integrated FileKit library** - Optimized file selection experience and improved cross-platform file operation consistency (https://github.com/LanRhyme/MicYou/pull/186)\r\n\r\n\r\n### 🐛 问题修复 / Bug Fixes\r\n\r\n- 🛠️ **修复镜像CDK空值问题** - 当镜像CDK为空时直接返回，避免无效操作\r\n  - **Fixed mirror CDK empty value issue** - Directly return when mirror CDK is empty to avoid invalid operations\r\n\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.2.2...v1.2.3\r\n\r\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MicYou)",
 	"contributors": [
 		{
-			"login": "WingChunWong",
+			"login": "ChouChiu",
 			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?v=4",
-			"html_url": "https://github.com/WingChunWong",
+			"html_url": "https://github.com/ChouChiu",
 			"contributions": 38
 		},
 		{
@@ -83,5 +83,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-04-23T12:58:03.212Z"
+	"fetchedAt": "2026-04-24T01:22:34.822Z"
 }
