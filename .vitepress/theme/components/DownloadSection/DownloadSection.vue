@@ -1,19 +1,28 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import {
 	downloadTranslations,
 	type DownloadKey,
 	type Lang,
 } from "../../../data/i18n";
-import ghdata from "../../../../src/ghdata.json";
 
 const { lang } = useData();
 const t = computed(
 	() =>
 		downloadTranslations[lang.value as Lang] || downloadTranslations["zh-CN"],
 );
-const version = ref(ghdata.version);
+const version = ref("");
+
+onMounted(async () => {
+	try {
+		const res = await fetch(`/ghdata.json?t=${Date.now()}`);
+		if (res.ok) {
+			const data = await res.json();
+			version.value = data.version;
+		}
+	} catch {}
+});
 const copied = ref<string | null>(null);
 
 const platforms: {

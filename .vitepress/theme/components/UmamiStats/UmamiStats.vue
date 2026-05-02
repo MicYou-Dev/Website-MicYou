@@ -72,9 +72,12 @@ onMounted(async () => {
 		if (!token || !websiteId) return;
 
 		const statsRes = await fetch(
-			`${BASE}/api/websites/${websiteId}/stats?startAt=0&endAt=${Date.now()}`,
+			`${BASE}/api/websites/${websiteId}/stats?startAt=0&endAt=${Date.now()}&_t=${Date.now()}`,
 			{
-				headers: { "x-umami-share-token": token },
+				headers: {
+					"x-umami-share-token": token,
+					"Cache-Control": "no-cache",
+				},
 			},
 		);
 		if (!statsRes.ok) return;

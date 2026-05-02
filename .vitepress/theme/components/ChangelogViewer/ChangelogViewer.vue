@@ -114,7 +114,7 @@ onMounted(async () => {
 	}
 
 	try {
-		const res = await fetch(CHANGELOG_URL);
+		const res = await fetch(`${CHANGELOG_URL}?t=${Date.now()}`);
 		if (!res.ok) throw new Error(`HTTP ${res.status}`);
 		const content = await res.text();
 		changelog.value = content;

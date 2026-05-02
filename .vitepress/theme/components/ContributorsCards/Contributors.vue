@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useData } from "vitepress";
 import VPTeamMembers from "vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
 import { contributorsTranslations, type Lang } from "../../../data/i18n";
 import { svgIcon } from "../../icon";
-import ghdata from "../../../../src/ghdata.json";
 
 const { lang } = useData();
 const t = computed(
@@ -41,10 +40,15 @@ const authors = computed(() => [
 	},
 ]);
 
-// 从预获取的数据中获取贡献者
+// 运行时获取贡献者数据，避免浏览器缓存
+const ghdata = ref<{ contributors: unknown[]; version: string }>({
+	contributors: [],
+	version: "",
+});
+
 const contributors = computed(() =>
 	(
-		ghdata.contributors as Array<{
+		ghdata.value.contributors as Array<{
 			avatar_url: string;
 			login: string;
 			contributions: number;
@@ -57,6 +61,15 @@ const contributors = computed(() =>
 		link: c.html_url,
 	})),
 );
+
+onMounted(async () => {
+	try {
+		const res = await fetch(`/ghdata.json?t=${Date.now()}`);
+		if (res.ok) {
+			ghdata.value = await res.json();
+		}
+	} catch {}
+});
 </script>
 
 <template>

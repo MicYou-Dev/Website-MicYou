@@ -1,5 +1,5 @@
 /**
- * 从 GitHub API 获取贡献者和发布数据，保存到 src/ghdata.json
+ * 从 GitHub API 获取贡献者和发布数据，保存到 src/public/ghdata.json
  *
  * 贡献者数据通过 GraphQL API 统计 master 分支上的非 merge 提交，
  * 与 GitHub /graphs/contributors 页面的计数方式一致。
@@ -16,6 +16,7 @@ const OUTPUT_FILE = join(
 	dirname(fileURLToPath(import.meta.url)),
 	"..",
 	"src",
+	"public",
 	"ghdata.json",
 );
 const REPO = { owner: "LanRhyme", name: "MicYou" };

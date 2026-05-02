@@ -7,6 +7,9 @@
   Access-Control-Allow-Origin: *
   X-Robots-Tag: all
 
+/ghdata.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
 # 其他文件保持默认
 /*
   X-Content-Type-Options: nosniff
