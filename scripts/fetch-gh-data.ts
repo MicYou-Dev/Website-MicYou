@@ -1,5 +1,8 @@
 /**
- * 从 GitHub GraphQL API 获取贡献者和发布数据，保存到 src/ghdata.json
+ * 从 GitHub API 获取贡献者和发布数据，保存到 src/ghdata.json
+ *
+ * 贡献者数据通过 GraphQL API 统计 master 分支上的非 merge 提交，
+ * 与 GitHub /graphs/contributors 页面的计数方式一致。
  */
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -21,6 +24,7 @@ const EXCLUDE_USERS = new Set([
 	"ChinsaaWei",
 	"dependabot[bot]",
 	"crowdin-bot",
+	"github-actions[bot]",
 ]);
 
 interface OutputData {
@@ -36,32 +40,6 @@ interface OutputData {
 	}>;
 	fetchedAt: string;
 }
-
-// 合并的 GraphQL 查询
-const QUERY = `
-  query($owner: String!, $name: String!, $after: String) {
-    repository(owner: $owner, name: $name) {
-      latestRelease {
-        tagName
-        publishedAt
-        url
-        description
-      }
-      defaultBranchRef {
-        target {
-          ... on Commit {
-            history(first: 100, after: $after) {
-              pageInfo { hasNextPage endCursor }
-              nodes {
-                author { user { login avatarUrl url } }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 async function fetchGraphQL(
 	query: string,
@@ -81,7 +59,6 @@ async function fetchGraphQL(
 }
 
 async function main() {
-	// 支持 GH_TOKEN 或 GITHUB_TOKEN（GitHub Actions 默认提供）
 	const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 	if (!token) {
 		console.error("Error: Set GH_TOKEN or GITHUB_TOKEN environment variable.");
@@ -104,27 +81,28 @@ async function main() {
 		const release = releaseRes.data?.repository?.latestRelease;
 		if (!release) throw new Error("No releases found");
 
-		// 分页获取所有 commits
-		const commits: Array<{
-			author?: {
-				user?: { login: string; avatarUrl: string; url: string } | null;
-			} | null;
-		}> = [];
-		let after: string | null = null;
-		let page = 0;
+		// 统计 master 分支上的非 merge 提交（与 GitHub /graphs/contributors 一致）
+		console.log("Counting commits on master (excluding merges)...");
+		const QUERY = `
+      query($owner: String!, $name: String!, $after: String) {
+        repository(owner: $owner, name: $name) {
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history(first: 100, after: $after) {
+                  pageInfo { hasNextPage endCursor }
+                  nodes {
+                    author { user { login avatarUrl url } }
+                    parents { totalCount }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
 
-		while (true) {
-			page++;
-			const res = await fetchGraphQL(QUERY, { ...REPO, after }, token);
-			const history = res.data?.repository?.defaultBranchRef?.target?.history;
-			if (!history) break;
-			commits.push(...history.nodes);
-			console.log(`  Page ${page}: ${commits.length} commits`);
-			if (!history.pageInfo.hasNextPage) break;
-			after = history.pageInfo.endCursor;
-		}
-
-		// 统计贡献者
 		const contributorMap = new Map<
 			string,
 			{
@@ -134,20 +112,47 @@ async function main() {
 				contributions: number;
 			}
 		>();
-		for (const c of commits) {
-			const u = c.author?.user;
-			if (!u?.login || EXCLUDE_USERS.has(u.login) || u.login.includes("[bot]"))
-				continue;
-			const existing = contributorMap.get(u.login);
-			if (existing) existing.contributions++;
-			else
-				contributorMap.set(u.login, {
-					login: u.login,
-					avatar_url: u.avatarUrl,
-					html_url: u.url,
-					contributions: 1,
-				});
+		let after: string | null = null;
+		let page = 0;
+		let totalCommits = 0;
+		let mergeSkipped = 0;
+
+		while (true) {
+			page++;
+			const res = await fetchGraphQL(QUERY, { ...REPO, after }, token);
+			const history = res.data?.repository?.defaultBranchRef?.target?.history;
+			if (!history) break;
+			for (const node of history.nodes) {
+				// 跳过 merge commit（有多个 parent）
+				if (node.parents?.totalCount > 1) {
+					mergeSkipped++;
+					continue;
+				}
+				const u = node.author?.user;
+				totalCommits++;
+				if (
+					!u?.login ||
+					EXCLUDE_USERS.has(u.login) ||
+					u.login.includes("[bot]")
+				)
+					continue;
+				const existing = contributorMap.get(u.login);
+				if (existing) existing.contributions++;
+				else
+					contributorMap.set(u.login, {
+						login: u.login,
+						avatar_url: u.avatarUrl,
+						html_url: u.url,
+						contributions: 1,
+					});
+			}
+			console.log(
+				`  Page ${page}: ${totalCommits} commits (+${mergeSkipped} merges skipped)`,
+			);
+			if (!history.pageInfo.hasNextPage) break;
+			after = history.pageInfo.endCursor;
 		}
+
 		const contributors = Array.from(contributorMap.values()).sort(
 			(a, b) => b.contributions - a.contributions,
 		);
