@@ -164,7 +164,7 @@ Fetch GitHub releases and statistics data.
 
 **Steps**:
 1. Run `pnpm fetch:ghdata` to fetch latest data
-2. Data is saved to `src/ghdata.json`
+2. Data is saved to `src/public/ghdata.json`
 3. Used by ChangelogViewer and other components
 
 **Notes**:
