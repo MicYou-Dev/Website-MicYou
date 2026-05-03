@@ -66,7 +66,6 @@ brew install switchaudio-osx --formulae
 ```bash
 sudo xattr -r -d com.apple.quarantine /Applications/MicYou.app
 ```
-
 执行时需要输入您的用户账号密码，输入时密码不可见，完成后回车即可。
 
 ## Linux
