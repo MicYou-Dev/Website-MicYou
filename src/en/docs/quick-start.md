@@ -4,9 +4,9 @@ description: MicYou quick start guide with detailed instructions on how to insta
 keywords: MicYou install,MicYou setup,MicYou quick start,ADB setup,USB debugging,Wi-Fi connection,Bluetooth connection
 ---
 
-## Quick Start
+# Quick Start
 
-### 1. Download ADB
+## 1. Download ADB
 
 Download from [Android Developers](https://developer.android.com/tools/releases/platform-tools?hl=zh_cn), or install via package manager:
 
@@ -16,7 +16,7 @@ Download from [Android Developers](https://developer.android.com/tools/releases/
 
 Other platforms, please refer to [official documentation](https://developer.android.com/tools/releases/platform-tools)
 
-### 2. Enable USB Debugging
+## 2. Enable USB Debugging
 
 Using OneUI 8 as an example:
 
@@ -24,25 +24,25 @@ Using OneUI 8 as an example:
 2. Tap Software information, find Build number and tap it 7 times to enable Developer Options
 3. Go back to Settings > Developer options, and enable USB debugging
 
-### 3. USB connection
+## 3. USB connection
 
 Use a **stable** data cable, and set the connection mode to `USB` on **both** the desktop app and the Android app.
 
-### 4. Wi-Fi connection
+## 4. Wi-Fi connection
 
 Ensure your Android device and PC are on the **same network**, and set the connection mode to `Wi-Fi` on **both** the desktop app and the Android app.
 
-### Android
+## Android
 
 1. Download and install the APK on your Android device.
 2. Ensure your device is on the same network as your PC (for Wi-Fi) or connected via USB.
 
-### Windows
+## Windows
 
 1. Run the desktop application.
 2. Configure the connection mode to match the Android app.
 
-### macOS
+## macOS
 
 > [!IMPORTANT]
 > If you are using an Apple Silicon Mac, Bluetooth mode cannot be used without Rosetta 2 translation.
@@ -69,9 +69,9 @@ sudo xattr -r -d com.apple.quarantine /Applications/MicYou.app
 
 You will need to enter your account password during the process. The password will be hidden while you are entering it. Press Enter after you have finished entering it.
 
-### Linux
+## Linux
 
-#### Using pre-built packages (recommended)
+### Using pre-built packages (recommended)
 
 Pre-built packages are available in [GitHub Releases](https://github.com/LanRhyme/MicYou/releases). Choose the appropriate package for your Linux distribution.
 

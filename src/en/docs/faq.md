@@ -4,11 +4,11 @@ description: MicYou frequently asked questions including device connection issue
 keywords: MicYou FAQ,MicYou troubleshooting,MicYou cannot connect,firewall settings,ADB issues,audio issues
 ---
 
-## FAQ
+# FAQ
 
-### Cannot connect to device
+## Cannot connect to device
 
-#### Wi-Fi Mode
+### Wi-Fi Mode
 
 1. **Check Firewall Settings**
 
@@ -33,7 +33,7 @@ keywords: MicYou FAQ,MicYou troubleshooting,MicYou cannot connect,firewall setti
 > [!TIP]
 > Advanced users can try using tools like Nmap or ping to check connectivity.
 
-#### USB (ADB) Mode
+### USB (ADB) Mode
 
 1. **Enable Developer Options**
 
@@ -60,7 +60,7 @@ keywords: MicYou FAQ,MicYou troubleshooting,MicYou cannot connect,firewall setti
 
    > The device serial number can be found in the output of `adb devices`.
 
-### No audio output after connecting
+## No audio output after connecting
 
 Please ensure that the VB-Audio driver is correctly installed and that the following devices are **not disabled**:
 
