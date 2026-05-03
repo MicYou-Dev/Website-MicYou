@@ -1,8 +1,8 @@
 ---
 layout: home
 title: MicYou - 將手機變成電腦麥克風
-description: MicYou 是一款高品質、低延遲、跨平台的音訊傳輸解決方案，支援 Wi-Fi、USB 和藍牙連線，可將 Android 手機變成電腦麥克風。
-keywords: MicYou,手機麥克風,電腦麥克風,Android麥克風,無線麥克風,藍牙麥克風,USB麥克風,Wi-Fi麥克風,跨平台音訊,低延遲音訊
+description: MicYou 是一款高品質、低延遲、跨平台的音訊傳輸解決方案，支援 Wi-Fi 和 USB 連線，可將 Android 手機變成電腦麥克風。
+keywords: MicYou,手機麥克風,電腦麥克風,Android麥克風,無線麥克風,USB麥克風,Wi-Fi麥克風,跨平台音訊,低延遲音訊
 
 hero:
   name: "MicYou"
@@ -25,7 +25,7 @@ hero:
 features:
   - icon: 📡
     title: 多種連線模式
-    details: 支援 Wi-Fi、USB (ADB/AOA) 和藍牙連線，適應不同使用場景，靈活便捷
+    details: 支援 Wi-Fi、USB (ADB/AOA) 連線，適應不同使用場景，靈活便捷
   - icon: 🎵
     title: 專業音訊處理
     details: 內建雜訊抑制、自動增益控制 (AGC) 和去混響功能，提供清晰高品質的音訊體驗

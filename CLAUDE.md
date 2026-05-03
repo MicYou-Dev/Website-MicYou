@@ -63,7 +63,7 @@ UI translations live in `.vitepress/data/lang/` and are exported through `.vitep
 ## Conventions
 
 - **Formatting**: Biome with tabs, double quotes for JS/TS
-- **Vue files**: Biome linting rules for `noUnusedImports` and `noUnusedVariables` are disabled for `.vue` files
+- **Vue files**: Biome disables `noUnusedImports`, `noUnusedVariables`, and `organizeImports` for `.vue` files (auto-reordering can break template refs)
 - **Pre-commit hook**: Husky runs `lint-staged` which auto-formats staged `*.{js,ts,vue,json,mts,mjs,cjs,cts}` files
 - **Commit messages**: Conventional commits format (`feat:`, `fix:`, `docs:`, `chore:`, etc.)
 - **Frontmatter**: All doc pages require `title` and `description` fields for SEO

@@ -1,7 +1,7 @@
 ---
 title: Quick Start - MicYou Installation Guide
 description: MicYou quick start guide with detailed instructions on how to install and configure MicYou on Windows, macOS, Linux, and Android to turn your phone into a PC microphone.
-keywords: MicYou install,MicYou setup,MicYou quick start,ADB setup,USB debugging,Wi-Fi connection,Bluetooth connection
+keywords: MicYou install,MicYou setup,MicYou quick start,ADB setup,USB debugging,Wi-Fi connection
 ---
 
 # Quick Start
@@ -43,9 +43,6 @@ Ensure your Android device and PC are on the **same network**, and set the conne
 2. Configure the connection mode to match the Android app.
 
 ## macOS
-
-> [!IMPORTANT]
-> If you are using an Apple Silicon Mac, Bluetooth mode cannot be used without Rosetta 2 translation.
 
 For the best experience, install the following dependencies via Homebrew:
 

@@ -9,7 +9,7 @@ const SITE_NAME = "MicYou";
 const DEFAULT_DESCRIPTION =
 	"将 Android 设备转变为 PC 的高质量麦克风 - 高质量、低延迟、跨平台的音频传输解决方案";
 const DEFAULT_KEYWORDS =
-	"MicYou,Android麦克风,手机麦克风,电脑麦克风,Wi-Fi麦克风,USB麦克风,蓝牙麦克风,音频传输,跨平台音频";
+	"MicYou,Android麦克风,手机麦克风,电脑麦克风,Wi-Fi麦克风,USB麦克风,音频传输,跨平台音频";
 
 // JSON-LD 结构化数据
 const jsonLdWebSite = {

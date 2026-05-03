@@ -8,7 +8,7 @@ MicYou Website is the official documentation site for the MicYou application. Mi
 
 ### Core Features
 
-- Multiple connection modes: Wi-Fi, USB (ADB/AOA), Bluetooth
+- Multiple connection modes: Wi-Fi, USB (ADB/AOA)
 - Professional audio processing: noise suppression, AGC, de-reverberation
 - Virtual microphone support (with VB-Cable)
 - Cross-platform: Windows, Linux, macOS

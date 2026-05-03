@@ -23,7 +23,7 @@ const LLMS_FULL_TXT_FILE = join(PUBLIC_DIR, "llms-full.txt");
 const SITE_URL = "https://micyou.top";
 const SITE_NAME = "MicYou";
 const SITE_DESCRIPTION =
-	"MicYou 将 Android 设备转变为 PC 的高质量麦克风，支持 Wi-Fi、USB、蓝牙多种连接模式，提供专业音频处理功能。";
+	"MicYou 将 Android 设备转变为 PC 的高质量麦克风，支持 Wi-Fi、USB 多种连接模式，提供专业音频处理功能。";
 
 interface DocInfo {
 	path: string;
@@ -130,7 +130,7 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	);
 	lines.push("");
 	lines.push("核心功能：");
-	lines.push("- 多种连接模式：Wi-Fi、USB (ADB/AOA)、蓝牙");
+	lines.push("- 多种连接模式：Wi-Fi、USB (ADB/AOA)");
 	lines.push("- 专业音频处理：噪声抑制、自动增益控制 (AGC)、去混响");
 	lines.push("- 虚拟麦克风支持：配合 VB-Cable 作为系统麦克风输入");
 	lines.push("- 跨平台：支持 Windows、Linux、macOS");

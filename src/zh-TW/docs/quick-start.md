@@ -1,7 +1,7 @@
 ---
 title: 快速開始 - MicYou 安裝設定指南
 description: MicYou 快速開始指南，詳細介紹如何在 Windows、macOS、Linux 和 Android 上安裝和設定 MicYou，將手機變成電腦麥克風。
-keywords: MicYou安裝,MicYou設定,MicYou快速開始,ADB設定,USB偵錯,Wi-Fi連線,藍牙連線
+keywords: MicYou安裝,MicYou設定,MicYou快速開始,ADB設定,USB偵錯,Wi-Fi連線
 ---
 
 # 快速開始
@@ -46,9 +46,6 @@ keywords: MicYou安裝,MicYou設定,MicYou快速開始,ADB設定,USB偵錯,Wi-Fi
 
 
 ## macOS
-
-> [!IMPORTANT]
-> 若您使用 Apple Silicon（如 M1/M2）Mac，未啟用 Rosetta 2 時，藍牙模式可能無法正常使用。
 
 為了獲得更佳的使用體驗，建議透過 Homebrew 安裝以下套件：
 

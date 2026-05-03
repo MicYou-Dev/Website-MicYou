@@ -1,8 +1,8 @@
 ---
 layout: home
 title: MicYou - Turn Your Phone into a PC Microphone
-description: MicYou is a high quality, low latency, cross-platform audio transmission solution that supports Wi-Fi, USB, and Bluetooth connections to turn your Android phone into a PC microphone.
-keywords: MicYou,phone microphone,PC microphone,Android microphone,wireless microphone,bluetooth microphone,USB microphone,Wi-Fi microphone,cross-platform audio,low latency audio
+description: MicYou is a high quality, low latency, cross-platform audio transmission solution that supports Wi-Fi and USB connections to turn your Android phone into a PC microphone.
+keywords: MicYou,phone microphone,PC microphone,Android microphone,wireless microphone,USB microphone,Wi-Fi microphone,cross-platform audio,low latency audio
 
 hero:
   name: "MicYou"
@@ -25,7 +25,7 @@ hero:
 features:
   - icon: 📡
     title: Multiple Connection Modes
-    details: Supports Wi-Fi, USB (ADB/AOA), and Bluetooth connections to adapt to different usage scenarios with flexibility
+    details: Supports Wi-Fi, USB (ADB/AOA) connections to adapt to different usage scenarios with flexibility
   - icon: 🎵
     title: Professional Audio Processing
     details: Built-in noise suppression, automatic gain control (AGC), and dereverberation for clear, high-quality audio experience
