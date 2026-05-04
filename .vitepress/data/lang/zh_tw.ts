@@ -61,6 +61,8 @@ export const download = {
 	nightly: "快照版",
 	nightlyTip: "快照版包含最新功能，可能不穩定",
 	mirror: "Mirror 酱高速下載",
+	mirrorCqu: "重慶大學鏡像下載",
+	mirrorWarning: "請勿使用多線程下載器，否則 IP 可能遭到封禁",
 };
 
 // Changelog 組件翻譯

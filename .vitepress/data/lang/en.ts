@@ -61,6 +61,9 @@ export const download = {
 	nightly: "Nightly",
 	nightlyTip: "Nightly includes latest features, may be unstable",
 	mirror: "MirrorChyan High-Speed Download",
+	mirrorCqu: "CQU Mirror Download",
+	mirrorWarning:
+		"Do not use multi-threaded download tools, or your IP may be banned",
 };
 
 // Changelog component translations

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
 	downloadTranslations,
 	type DownloadKey,
@@ -109,7 +109,11 @@ const platforms: {
 const githubUrl = (pattern: string) =>
 	`https://github.com/LanRhyme/MicYou/releases/download/v${version.value}/${pattern.replace("{version}", version.value)}`;
 
-const getUrl = (pattern: string) => githubUrl(pattern);
+const cquMirrorUrl = (pattern: string) =>
+	`https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/${pattern.replace("{version}", version.value)}`;
+
+const getUrl = (pattern: string) =>
+	useMirror.value ? cquMirrorUrl(pattern) : githubUrl(pattern);
 
 const copyCmd = async (cmd: string) => {
 	await navigator.clipboard.writeText(cmd);
@@ -135,6 +139,18 @@ const mirrorLink = computed(() => {
 		? "https://mirrorchyan.com/en/projects?rid=MicYou"
 		: "https://mirrorchyan.com/zh/projects?rid=MicYou";
 });
+
+const useMirror = ref(false);
+const showWarning = ref(false);
+let warningTimer: ReturnType<typeof setTimeout> | null = null;
+
+watch(useMirror, (val) => {
+	if (val) {
+		if (warningTimer) clearTimeout(warningTimer);
+		showWarning.value = true;
+		warningTimer = setTimeout(() => (showWarning.value = false), 4000);
+	}
+});
 </script>
 
 <template>
@@ -149,6 +165,14 @@ const mirrorLink = computed(() => {
         <iconify-icon icon="mdi:cloud-download-outline" />
         {{ t.mirror }}
       </a>
+      <div class="source-toggle">
+        <span :class="{ active: !useMirror }">GitHub</span>
+        <label class="switch">
+          <input v-model="useMirror" type="checkbox" />
+          <span class="slider" />
+        </label>
+        <span :class="{ active: useMirror }">CQU Mirror</span>
+      </div>
       <div v-for="(p, i) in platforms" :key="p.name" class="row" :class="{ border: i }">
         <div class="info">
           <iconify-icon :icon="p.icon" class="icon" />
@@ -175,6 +199,13 @@ const mirrorLink = computed(() => {
         </div>
       </div>
     </div>
+
+    <Transition name="snackbar">
+      <div v-if="showWarning" class="snackbar">
+        <iconify-icon icon="mdi:alert-circle-outline" />
+        {{ t.mirrorWarning }}
+      </div>
+    </Transition>
 
     <p class="notes">
       <a :href="changelogLink">{{ t.viewReleaseNotes }}</a>
@@ -313,6 +344,96 @@ const mirrorLink = computed(() => {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
   transform: translateY(-1px);
+}
+
+.source-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.source-toggle .active {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+.switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: var(--vp-c-divider);
+  border-radius: 22px;
+  transition: background 0.25s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.25s;
+}
+
+.switch input:checked + .slider {
+  background: var(--vp-c-brand-1);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+.snackbar {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #e65100;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+.dark .snackbar {
+  background: #ef6c00;
+}
+
+.snackbar-enter-active,
+.snackbar-leave-active {
+  transition: all 0.3s ease;
+}
+
+.snackbar-enter-from,
+.snackbar-leave-to {
+  opacity: 0;
+  transform: translateY(16px);
 }
 
 .btn:disabled {
