@@ -54,14 +54,18 @@ onMounted(async () => {
 	try {
 		const cached = localStorage.getItem(CACHE_KEY);
 		if (cached) {
-			const { data } = JSON.parse(cached);
+			const { data } = JSON.parse(cached) as {
+				data: { pageviews?: number; visits?: number };
+			};
 			displayStats.value = {
 				pageviews: data.pageviews ?? 0,
 				visits: data.visits ?? 0,
 			};
 			stats.value = data;
 		}
-	} catch {}
+	} catch {
+		// 缓存格式异常，忽略
+	}
 
 	// 2. 后台获取新数据
 	try {

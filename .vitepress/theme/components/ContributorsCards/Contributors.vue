@@ -41,20 +41,18 @@ const authors = computed(() => [
 ]);
 
 // 运行时获取贡献者数据，避免浏览器缓存
-const ghdata = ref<{ contributors: unknown[]; version: string }>({
-	contributors: [],
-	version: "",
-});
+const ghdata = ref<{
+	contributors: Array<{
+		avatar_url: string;
+		login: string;
+		contributions: number;
+		html_url: string;
+	}>;
+	version: string;
+}>({ contributors: [], version: "" });
 
 const contributors = computed(() =>
-	(
-		ghdata.value.contributors as Array<{
-			avatar_url: string;
-			login: string;
-			contributions: number;
-			html_url: string;
-		}>
-	).map((c) => ({
+	ghdata.value.contributors.map((c) => ({
 		avatar: `${c.avatar_url}?size=80`,
 		name: c.login,
 		title: `${c.contributions} ${t.value.contributions}`,
@@ -68,7 +66,9 @@ onMounted(async () => {
 		if (res.ok) {
 			ghdata.value = await res.json();
 		}
-	} catch {}
+	} catch {
+		// 静默处理：贡献者数据未加载时不阻塞页面
+	}
 });
 </script>
 

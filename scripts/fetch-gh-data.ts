@@ -19,7 +19,7 @@ const OUTPUT_FILE = join(
 	"public",
 	"ghdata.json",
 );
-const REPO = { owner: "LanRhyme", name: "MicYou" };
+const REPO = { owner: "LanRhyme" as const, name: "MicYou" as const };
 const EXCLUDE_USERS = new Set([
 	"LanRhyme",
 	"ChinsaaWei",
@@ -42,11 +42,15 @@ interface OutputData {
 	fetchedAt: string;
 }
 
-async function fetchGraphQL(
+interface GraphQLResponse<T = unknown> {
+	data?: T;
+}
+
+async function fetchGraphQL<T = unknown>(
 	query: string,
 	variables: Record<string, string | null>,
 	token: string,
-) {
+): Promise<GraphQLResponse<T>> {
 	const res = await fetch("https://api.github.com/graphql", {
 		method: "POST",
 		headers: {
@@ -104,15 +108,8 @@ async function main() {
       }
     `;
 
-		const contributorMap = new Map<
-			string,
-			{
-				login: string;
-				avatar_url: string;
-				html_url: string;
-				contributions: number;
-			}
-		>();
+		type ContributorEntry = OutputData["contributors"][number];
+		const contributorMap = new Map<string, ContributorEntry>();
 		let after: string | null = null;
 		let page = 0;
 		let totalCommits = 0;

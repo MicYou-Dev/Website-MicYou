@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import {
 	downloadTranslations,
 	type DownloadKey,
@@ -21,8 +21,15 @@ onMounted(async () => {
 			const data = await res.json();
 			version.value = data.version;
 		}
-	} catch {}
+	} catch {
+		// 静默处理：版本号未加载时不阻塞页面
+	}
 });
+
+onUnmounted(() => {
+	if (warningTimer) clearTimeout(warningTimer);
+});
+
 const copied = ref<string | null>(null);
 
 const platforms: {
@@ -115,11 +122,18 @@ const cquMirrorUrl = (pattern: string) =>
 const getUrl = (pattern: string) =>
 	useMirror.value ? cquMirrorUrl(pattern) : githubUrl(pattern);
 
+let copyTimer: ReturnType<typeof setTimeout> | null = null;
+
 const copyCmd = async (cmd: string) => {
 	await navigator.clipboard.writeText(cmd);
 	copied.value = cmd;
-	setTimeout(() => (copied.value = null), 2000);
+	if (copyTimer) clearTimeout(copyTimer);
+	copyTimer = setTimeout(() => (copied.value = null), 2000);
 };
+
+onUnmounted(() => {
+	if (copyTimer) clearTimeout(copyTimer);
+});
 
 const changelogLink = computed(() => {
 	const currentLang = lang.value as Lang;
@@ -434,13 +448,6 @@ watch(useMirror, (val) => {
 .snackbar-leave-to {
   opacity: 0;
   transform: translateY(16px);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  pointer-events: none;
 }
 
 .notes {

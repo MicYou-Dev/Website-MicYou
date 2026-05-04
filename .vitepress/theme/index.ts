@@ -1,8 +1,8 @@
 // https://vitepress.dev/guide/custom-theme
 import type { EnhanceAppContext, Theme } from "vitepress";
-import { useData, useRouter } from "vitepress";
+import { useData } from "vitepress";
 import DefaultTheme from "vitepress/theme-without-fonts";
-import { h, onMounted, watch } from "vue";
+import { h } from "vue";
 import "@theojs/lumen/style";
 import "@fontsource/noto-sans/latin.css";
 import "@fontsource/noto-sans-sc/400.css";
@@ -29,24 +29,6 @@ import ViewTrans from "./components/ViewTrans.vue";
 
 export default {
 	extends: DefaultTheme,
-	setup() {
-		onMounted(() => {
-			// 仅在 Chromium 内核浏览器启用视图过渡 API（Firefox/Safari 会闪烁）
-			const isChromium =
-				navigator.userAgent.includes("Chrome") ||
-				navigator.userAgent.includes("Chromium");
-			const prefersReducedMotion = window.matchMedia(
-				"(prefers-reduced-motion: reduce)",
-			).matches;
-			if (
-				!isChromium ||
-				prefersReducedMotion ||
-				!document.startViewTransition
-			) {
-				return;
-			}
-		});
-	},
 	Layout: () => {
 		return h(ViewTrans, null, {
 			"layout-top": () => {

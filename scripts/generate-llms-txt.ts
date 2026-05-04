@@ -40,10 +40,12 @@ const langLabels: Record<string, string> = {
 	"zh-TW": "繁體中文",
 };
 
-function extractFrontmatter(content: string): {
+interface Frontmatter {
 	title: string;
 	description: string;
-} {
+}
+
+function extractFrontmatter(content: string): Frontmatter {
 	const match = content.match(/^---\n([\s\S]*?)\n---/);
 	if (!match) return { title: "", description: "" };
 

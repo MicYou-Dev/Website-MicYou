@@ -4,6 +4,18 @@ import { computed, onMounted, ref } from "vue";
 import { marked, type Tokens } from "marked";
 import { changelogTranslations, type Lang } from "../../../data/i18n";
 
+interface GitHubLinkToken extends Tokens.Generic {
+	type: "githubLink";
+	href: string;
+	text: string;
+	isCode?: boolean;
+}
+
+interface MentionToken extends Tokens.Generic {
+	type: "mention";
+	username: string;
+}
+
 const { lang } = useData();
 const t = computed(
 	() =>
@@ -42,6 +54,7 @@ const isCacheValid = (cache: ReturnType<typeof getCache>) =>
 	cache && Date.now() - cache.timestamp < CACHE_DURATION;
 
 // GitHub 链接处理：PR/Issue 链接和 @username 提及
+let extensionsRegistered = false;
 const githubExtensions = [
 	{
 		name: "githubLink",
@@ -77,8 +90,9 @@ const githubExtensions = [
 			return { type: "githubLink", raw: match[0], href, text: href };
 		},
 		renderer(token: Tokens.Generic) {
-			const content = token.isCode ? `<code>${token.text}</code>` : token.text;
-			return `<a href="${token.href}" target="_blank" rel="noopener noreferrer">${content}</a>`;
+			const t = token as GitHubLinkToken;
+			const content = t.isCode ? `<code>${t.text}</code>` : t.text;
+			return `<a href="${t.href}" target="_blank" rel="noopener noreferrer">${content}</a>`;
 		},
 	},
 	{
@@ -92,12 +106,16 @@ const githubExtensions = [
 				: undefined;
 		},
 		renderer(token: Tokens.Generic) {
-			return `<a href="https://github.com/${token.username}" target="_blank" rel="noopener noreferrer">@${token.username}</a>`;
+			const t = token as MentionToken;
+			return `<a href="https://github.com/${t.username}" target="_blank" rel="noopener noreferrer">@${t.username}</a>`;
 		},
 	},
 ];
 
-marked.use({ extensions: githubExtensions });
+if (!extensionsRegistered) {
+	marked.use({ extensions: githubExtensions });
+	extensionsRegistered = true;
+}
 
 const renderedContent = computed(() =>
 	changelog.value
