@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import {
 	downloadTranslations,
 	type DownloadKey,
@@ -24,10 +24,6 @@ onMounted(async () => {
 	} catch {
 		// 静默处理：版本号未加载时不阻塞页面
 	}
-});
-
-onUnmounted(() => {
-	if (warningTimer) clearTimeout(warningTimer);
 });
 
 const copied = ref<string | null>(null);
@@ -116,12 +112,6 @@ const platforms: {
 const githubUrl = (pattern: string) =>
 	`https://github.com/LanRhyme/MicYou/releases/download/v${version.value}/${pattern.replace("{version}", version.value)}`;
 
-const cquMirrorUrl = (pattern: string) =>
-	`https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/${pattern.replace("{version}", version.value)}`;
-
-const getUrl = (pattern: string) =>
-	useMirror.value ? cquMirrorUrl(pattern) : githubUrl(pattern);
-
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
 const copyCmd = async (cmd: string) => {
@@ -154,16 +144,11 @@ const mirrorLink = computed(() => {
 		: "https://mirrorchyan.com/zh/projects?rid=MicYou";
 });
 
-const useMirror = ref(false);
-const showWarning = ref(false);
-let warningTimer: ReturnType<typeof setTimeout> | null = null;
-
-watch(useMirror, (val) => {
-	if (val) {
-		if (warningTimer) clearTimeout(warningTimer);
-		showWarning.value = true;
-		warningTimer = setTimeout(() => (showWarning.value = false), 4000);
-	}
+const cquMirrorLink = computed(() => {
+	const currentLang = lang.value as Lang;
+	return currentLang === "en"
+		? "https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/"
+		: "https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/";
 });
 </script>
 
@@ -175,17 +160,15 @@ watch(useMirror, (val) => {
     </header>
 
     <div class="card">
-      <a :href="mirrorLink" target="_blank" class="mirror-banner">
-        <iconify-icon icon="mdi:cloud-download-outline" />
-        {{ t.mirror }}
-      </a>
-      <div class="source-toggle">
-        <span :class="{ active: !useMirror }">GitHub</span>
-        <label class="switch">
-          <input v-model="useMirror" type="checkbox" />
-          <span class="slider" />
-        </label>
-        <span :class="{ active: useMirror }">CQU Mirror</span>
+      <div class="mirror-banners">
+        <a :href="mirrorLink" target="_blank" class="mirror-banner mirror-banner--primary">
+          <iconify-icon icon="mdi:cloud-download-outline" />
+          {{ t.mirror }}
+        </a>
+        <a :href="cquMirrorLink" target="_blank" class="mirror-banner mirror-banner--secondary">
+          <iconify-icon icon="mdi:school-outline" />
+          {{ t.mirrorCqu }}
+        </a>
       </div>
       <div v-for="(p, i) in platforms" :key="p.name" class="row" :class="{ border: i }">
         <div class="info">
@@ -199,7 +182,7 @@ watch(useMirror, (val) => {
           <template v-for="f in p.files" :key="f.pattern || f.copy">
             <a
               v-if="f.pattern"
-              :href="getUrl(f.pattern)"
+              :href="githubUrl(f.pattern)"
               class="btn"
               target="_blank"
             >
@@ -213,13 +196,6 @@ watch(useMirror, (val) => {
         </div>
       </div>
     </div>
-
-    <Transition name="snackbar">
-      <div v-if="showWarning" class="snackbar">
-        <iconify-icon icon="mdi:alert-circle-outline" />
-        {{ t.mirrorWarning }}
-      </div>
-    </Transition>
 
     <p class="notes">
       <a :href="changelogLink">{{ t.viewReleaseNotes }}</a>
@@ -268,13 +244,18 @@ watch(useMirror, (val) => {
   overflow: hidden;
 }
 
+.mirror-banners {
+  display: flex;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
 .mirror-banner {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  flex: 1;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--vp-c-brand-soft), var(--vp-c-brand-1));
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -283,12 +264,24 @@ watch(useMirror, (val) => {
   transition: all 0.2s;
 }
 
+.mirror-banner + .mirror-banner {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .mirror-banner:hover {
   opacity: 0.9;
 }
 
 .mirror-banner iconify-icon {
   font-size: 1.25rem;
+}
+
+.mirror-banner--primary {
+  background: linear-gradient(135deg, var(--vp-c-brand-soft), var(--vp-c-brand-1));
+}
+
+.mirror-banner--secondary {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
 }
 
 .row {
@@ -358,96 +351,6 @@ watch(useMirror, (val) => {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
   transform: translateY(-1px);
-}
-
-.source-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--vp-c-divider);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--vp-c-text-2);
-}
-
-.source-toggle .active {
-  color: var(--vp-c-brand-1);
-  font-weight: 600;
-}
-
-.switch {
-  position: relative;
-  width: 40px;
-  height: 22px;
-  cursor: pointer;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  inset: 0;
-  background: var(--vp-c-divider);
-  border-radius: 22px;
-  transition: background 0.25s;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 3px;
-  bottom: 3px;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform 0.25s;
-}
-
-.switch input:checked + .slider {
-  background: var(--vp-c-brand-1);
-}
-
-.switch input:checked + .slider::before {
-  transform: translateX(18px);
-}
-
-.snackbar {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  background: #e65100;
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  z-index: 1000;
-}
-
-.dark .snackbar {
-  background: #ef6c00;
-}
-
-.snackbar-enter-active,
-.snackbar-leave-active {
-  transition: all 0.3s ease;
-}
-
-.snackbar-enter-from,
-.snackbar-leave-to {
-  opacity: 0;
-  transform: translateY(16px);
 }
 
 .notes {
