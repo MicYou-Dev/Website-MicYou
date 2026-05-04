@@ -10,7 +10,6 @@
 
 Transform your Android device into a high-quality microphone for PC
 
-[![Deploy][badge-deploy]][deploy-url]
 [![License][badge-license]][license-url]
 [![VitePress][badge-vitepress]][vitepress-url]
 [![Vue][badge-vue]][vue-url]
@@ -134,14 +133,12 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 Copyright © 2026 LanRhyme
 
 <!-- Badge References -->
-[badge-deploy]: https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml/badge.svg
 [badge-license]: https://img.shields.io/badge/License-MIT-yellow.svg
 [badge-vitepress]: https://img.shields.io/badge/VitePress-2.0.0--alpha-646cff?logo=vitepress&logoColor=white
 [badge-vue]: https://img.shields.io/badge/Vue-3.5-4fc08d?logo=vue.js&logoColor=white
 [badge-pnpm]: https://img.shields.io/badge/pnpm-10.x-f69220?logo=pnpm&logoColor=white
 
 <!-- URL References -->
-[deploy-url]: https://github.com/LanRhyme/Website-MicYou/actions/workflows/deploy.yml
 [license-url]: https://opensource.org/licenses/MIT
 [vitepress-url]: https://vitepress.dev/
 [vue-url]: https://vuejs.org/
