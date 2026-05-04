@@ -42,8 +42,41 @@ interface OutputData {
 	fetchedAt: string;
 }
 
-interface GraphQLResponse<T = unknown> {
+interface GraphQLResponse<T = Record<string, unknown>> {
 	data?: T;
+}
+
+interface ReleaseResponse {
+	repository: {
+		latestRelease: {
+			tagName: string;
+			publishedAt: string;
+			url: string;
+			description: string;
+		} | null;
+	};
+}
+
+interface CommitHistoryResponse {
+	repository: {
+		defaultBranchRef: {
+			target: {
+				history: {
+					pageInfo: { hasNextPage: boolean; endCursor: string };
+					nodes: Array<{
+						author: {
+							user: {
+								login: string;
+								avatarUrl: string;
+								url: string;
+							} | null;
+						} | null;
+						parents: { totalCount: number };
+					}>;
+				};
+			};
+		};
+	};
 }
 
 async function fetchGraphQL<T = unknown>(
@@ -74,15 +107,16 @@ async function main() {
 
 	try {
 		// 获取 release
-		const releaseRes = await fetchGraphQL(
-			`query($owner: String!, $name: String!) {
+		const releaseRes: GraphQLResponse<ReleaseResponse> =
+			await fetchGraphQL<ReleaseResponse>(
+				`query($owner: String!, $name: String!) {
         repository(owner: $owner, name: $name) {
           latestRelease { tagName publishedAt url description }
         }
       }`,
-			REPO,
-			token,
-		);
+				REPO,
+				token,
+			);
 		const release = releaseRes.data?.repository?.latestRelease;
 		if (!release) throw new Error("No releases found");
 
@@ -117,7 +151,12 @@ async function main() {
 
 		while (true) {
 			page++;
-			const res = await fetchGraphQL(QUERY, { ...REPO, after }, token);
+			const res: GraphQLResponse<CommitHistoryResponse> =
+				await fetchGraphQL<CommitHistoryResponse>(
+					QUERY,
+					{ ...REPO, after },
+					token,
+				);
 			const history = res.data?.repository?.defaultBranchRef?.target?.history;
 			if (!history) break;
 			for (const node of history.nodes) {

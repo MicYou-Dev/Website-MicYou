@@ -34,9 +34,9 @@
 		"*.{js,ts,vue,json,mts,mjs,cjs,cts}": "biome format --write"
 	},
 	"dependencies": {
-		"@biomejs/biome": "^2.4.12",
+		"@biomejs/biome": "^2.4.14",
 		"@theojs/lumen": "^6.4.6",
-		"marked": "^18.0.2",
-		"vue": "^3.5.32"
+		"marked": "^18.0.3",
+		"vue": "^3.5.33"
 	}
 }
