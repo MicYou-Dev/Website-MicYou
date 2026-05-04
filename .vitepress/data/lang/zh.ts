@@ -76,6 +76,15 @@ export const umami = {
 	loading: "加载中...",
 };
 
+// 致谢组件翻译
+export const thankYou = {
+	title: "特别感谢",
+	cquName: "重庆大学开源软件镜像站",
+	cquDesc: "特别感谢 重庆大学开源软件镜像站 为本项目提供镜像下载服务",
+	mirrorName: "Mirror 酱",
+	mirrorDesc: "特别感谢 Mirror 酱 为本项目提供高速镜像下载服务",
+};
+
 // 页脚翻译
 export const footer = {
 	project: "项目",

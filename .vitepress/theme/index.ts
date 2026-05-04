@@ -24,6 +24,7 @@ import ChangelogViewer from "./components/ChangelogViewer/ChangelogViewer.vue";
 import DownloadSection from "./components/DownloadSection/DownloadSection.vue";
 import UmamiStats from "./components/UmamiStats/UmamiStats.vue";
 import "./style.css";
+import ThankYou from "./components/ThankYou.vue";
 import ViewTrans from "./components/ViewTrans.vue";
 
 export default {
@@ -92,6 +93,7 @@ export default {
 		app.component("ChangelogViewer", ChangelogViewer);
 		app.component("DownloadSection", DownloadSection);
 		app.component("UmamiStats", UmamiStats);
+		app.component("ThankYou", ThankYou);
 		app.component("ViewTrans", ViewTrans);
 		// 注册 Umami Analytics 插件 - 延迟加载优化 INP
 		if (typeof window !== "undefined") {

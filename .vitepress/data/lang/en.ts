@@ -76,6 +76,17 @@ export const umami = {
 	loading: "Loading...",
 };
 
+// ThankYou component translations
+export const thankYou = {
+	title: "Special Thanks",
+	cquName: "CQU Open Source Software Mirror",
+	cquDesc:
+		"Special thanks to CQU Open Source Software Mirror for providing mirror download services",
+	mirrorName: "MirrorChyan",
+	mirrorDesc:
+		"Special thanks to MirrorChyan for providing high-speed mirror download services",
+};
+
 // Footer translations
 export const footer = {
 	project: "Project",

@@ -44,6 +44,13 @@ export const umamiTranslations = {
 	"zh-TW": zh_tw.umami,
 };
 
+// 致谢组件翻译
+export const thankYouTranslations = {
+	"zh-CN": zh.thankYou,
+	en: en.thankYou,
+	"zh-TW": zh_tw.thankYou,
+};
+
 // 主题配置翻译
 export const themeConfigTranslations = {
 	"zh-CN": zh.themeConfig,

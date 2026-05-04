@@ -45,3 +45,5 @@ features:
 ---
 
 <Contributors />
+
+<ThankYou />
