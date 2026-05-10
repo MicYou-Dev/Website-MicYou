@@ -16,6 +16,31 @@ Download from [Android Developers](https://developer.android.com/tools/releases/
 
 Other platforms, please refer to [official documentation](https://developer.android.com/tools/releases/platform-tools)
 
+### Add ADB to Environment Variables
+
+After downloading and extracting, you need to add the ADB directory to your system's `PATH` environment variable so that the `adb` command is available in the terminal.
+
+**Windows:**
+
+1. Press `Win+R`, type `sysdm.cpl` and press Enter to open System Properties
+2. Go to the "Advanced" tab and click "Environment Variables"
+3. Under "System variables", find the `Path` variable, select it, and click "Edit"
+4. Click "New" and enter the full path of the extracted ADB directory (e.g., `C:\platform-tools`)
+5. Click "OK" to close all dialogs
+6. Reopen the terminal and run `adb --version` to verify the configuration
+
+> If you installed via <Copy text="winget install -e --id Google.PlatformTools" type="info" />, ADB is added to `PATH` automatically — no manual configuration is needed.
+
+**macOS / Linux:**
+
+If installed via a package manager, ADB is usually already in your `PATH`. If you extracted it manually, add the following line to your `~/.bashrc`, `~/.zshrc`, or `~/.profile`:
+
+```bash
+export PATH=$PATH:/path/to/platform-tools
+```
+
+Then run `source ~/.zshrc` (or the corresponding config file) to apply the changes, and verify with `adb --version`.
+
 ## 2. Enable USB Debugging
 
 Using OneUI 8 as an example:

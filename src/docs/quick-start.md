@@ -16,6 +16,31 @@ keywords: MicYou安装,MicYou配置,MicYou快速开始,ADB配置,USB调试,Wi-Fi
 
 其他平台请参考 [官方文档](https://developer.android.com/tools/releases/platform-tools)
 
+### 将 ADB 添加到环境变量
+
+下载并解压后，需要将 ADB 所在目录添加到系统环境变量 `PATH` 中，才能在终端中直接使用 `adb` 命令。
+
+**Windows：**
+
+1. 按下 `Win+R`，输入 `sysdm.cpl` 并回车，打开「系统属性」
+2. 切换到「高级」选项卡，点击「环境变量」
+3. 在「系统变量」中找到 `Path` 变量，双击编辑
+4. 点击「新建」，输入 ADB 解压后的完整路径（例如 `C:\platform-tools`）
+5. 点击「确定」保存所有窗口
+6. 重新打开终端，输入 `adb --version` 验证配置是否成功
+
+> 若使用 <Copy text="winget install -e --id Google.PlatformTools" type="info" /> 安装，ADB 会自动添加到环境变量，无需手动配置。
+
+**macOS / Linux：**
+
+如果通过包管理器安装，ADB 通常已自动加入 `PATH`。若手动解压，可将以下命令添加到 `~/.bashrc`、`~/.zshrc` 或 `~/.profile` 中：
+
+```bash
+export PATH=$PATH:/path/to/platform-tools
+```
+
+然后执行 `source ~/.zshrc`（或对应的配置文件）使其生效，最后运行 `adb --version` 验证。
+
 ## 2. 启用 USB 调试
 
 以 OneUI 8 为例：

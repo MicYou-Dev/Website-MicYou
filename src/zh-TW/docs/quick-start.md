@@ -16,7 +16,30 @@ keywords: MicYou安裝,MicYou設定,MicYou快速開始,ADB設定,USB偵錯,Wi-Fi
 
 其他平台請參考 [官方文檔](https://developer.android.com/tools/releases/platform-tools)
 
-大多數情況下 ADB 會自動加入系統環境變數，如未加入請自行設定。
+### 將 ADB 加入環境變數
+
+下載並解壓縮後，需要將 ADB 所在目錄加入系統環境變數 `PATH`，才能在終端中直接使用 `adb` 命令。
+
+**Windows：**
+
+1. 按下 `Win+R`，輸入 `sysdm.cpl` 並回車，開啟「系統內容」
+2. 切換到「進階」索引標籤，點選「環境變數」
+3. 在「系統變數」中找到 `Path` 變數，點兩下編輯
+4. 點選「新增」，輸入 ADB 解壓縮後的完整路徑（例如 `C:\platform-tools`）
+5. 點選「確定」儲存所有視窗
+6. 重新開啟終端機，輸入 `adb --version` 驗證設定是否成功
+
+> 若使用 <Copy text="winget install -e --id Google.PlatformTools" type="info" /> 安裝，ADB 會自動加入環境變數，無需手動設定。
+
+**macOS / Linux：**
+
+若透過套件管理工具安裝，ADB 通常已自動加入 `PATH`。若手動解壓縮，可將以下命令加入 `~/.bashrc`、`~/.zshrc` 或 `~/.profile` 中：
+
+```bash
+export PATH=$PATH:/path/to/platform-tools
+```
+
+然後執行 `source ~/.zshrc`（或對應的設定檔）使其生效，最後執行 `adb --version` 驗證。
 
 ## 2. 啟用 USB 偵錯
 
