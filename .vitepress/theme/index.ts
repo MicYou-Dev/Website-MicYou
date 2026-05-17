@@ -82,8 +82,8 @@ export default {
 			// 使用 requestIdleCallback 延迟加载分析脚本
 			const loadAnalytics = () => {
 				umamiAnalytics({
-					id: "7f5e889c-6a31-4074-95b7-78d52bb559ce",
-					src: "https://umami.micyou.top/script.js",
+					id: "0811bb0f-dafa-45bc-9f9b-81506f8d9829",
+					src: "https://cloud.umami.is/script.js",
 				});
 			};
 			if ("requestIdleCallback" in window) {
