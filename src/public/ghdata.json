@@ -1,14 +1,14 @@
 {
-	"version": "1.3.2",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.3.2",
-	"releaseDate": "2026-05-16T06:54:08Z",
-	"releaseNotes": "## What's Changed\r\n- fix: 改进 IP 地址获取逻辑 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/225\r\n\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.1...v1.3.2",
+	"version": "1.3.3",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.3.3",
+	"releaseDate": "2026-05-20T11:11:53Z",
+	"releaseNotes": "## What's Changed\r\n* fix(audio): 修复pw-cat命令参数，确保正确设置目标音频输出 by @shulng in https://github.com/LanRhyme/MicYou/pull/233\r\n* feat: 选择TCP/TCP+UDP连接 by @shulng in https://github.com/LanRhyme/MicYou/pull/234\r\n* And 8 commit by @LanRhyme\r\n\r\n## New Contributors\r\n* @shulng made their first contribution in https://github.com/LanRhyme/MicYou/pull/233\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.2...v1.3.3",
 	"contributors": [
 		{
 			"login": "ChouChiu",
 			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?v=4",
 			"html_url": "https://github.com/ChouChiu",
-			"contributions": 56
+			"contributions": 57
 		},
 		{
 			"login": "WhatDamon",
@@ -35,16 +35,16 @@
 			"contributions": 4
 		},
 		{
+			"login": "shulng",
+			"avatar_url": "https://avatars.githubusercontent.com/u/132723284?u=886da6b6c1412d3494bf3d44cd89b9128fcca485&v=4",
+			"html_url": "https://github.com/shulng",
+			"contributions": 3
+		},
+		{
 			"login": "a2heng",
 			"avatar_url": "https://avatars.githubusercontent.com/u/17189158?u=2a8d4a4b181c855830cb4ea9deb2e2b061b2c1d0&v=4",
 			"html_url": "https://github.com/a2heng",
 			"contributions": 3
-		},
-		{
-			"login": "shulng",
-			"avatar_url": "https://avatars.githubusercontent.com/u/132723284?u=886da6b6c1412d3494bf3d44cd89b9128fcca485&v=4",
-			"html_url": "https://github.com/shulng",
-			"contributions": 2
 		},
 		{
 			"login": "moumoum0",
@@ -89,5 +89,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-05-20T08:51:18.825Z"
+	"fetchedAt": "2026-05-20T14:31:49.972Z"
 }
