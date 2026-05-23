@@ -63,6 +63,8 @@ keywords: MicYou FAQ,MicYou troubleshooting,MicYou cannot connect,firewall setti
 
 ## No audio output after connecting
 
+### Windows
+
 Please ensure that the VB-Audio driver is correctly installed and that the following devices are **not disabled**:
 
 - **Output Device**: CABLE Input (VB-Audio Virtual Cable)
@@ -73,3 +75,21 @@ To check: Open Settings > Sound, and verify both devices are **Enabled**:
 ![Input device](/input-device.png)
 
 ![Output device](/output-device.png)
+
+### macOS
+
+Please ensure that the BlackHole driver is properly installed!
+
+If `switchaudio-osx` is not installed, you will need to manually change the input to BlackHole in “System Settings” / “System Preferences” > ‘Sound’ > “Input”.
+
+![Input Device](/macos-sound-en.png)
+
+## Built-in microphone not working after exiting the app
+
+## macOS
+
+If your Mac has a built-in microphone, the microphone settings will not revert to normal if you haven’t installed `switchaudio-osx` or if the app exits abnormally.
+
+You need to manually change the setting in “System Settings” / “System Preferences” > ‘Sound’ > “Input” to your device's microphone.
+
+> For built-in microphones, they may be named “MacBook Pro Microphone,” “MacBook Air Microphone,” or similar names
