@@ -86,7 +86,7 @@ If `switchaudio-osx` is not installed, you will need to manually change the inpu
 
 ## Built-in microphone not working after exiting the app
 
-## macOS
+### macOS
 
 If your Mac has a built-in microphone, the microphone settings will not revert to normal if you haven’t installed `switchaudio-osx` or if the app exits abnormally.
 
