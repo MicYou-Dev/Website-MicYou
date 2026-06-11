@@ -2,7 +2,7 @@
 	"version": "1.3.5",
 	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.3.5",
 	"releaseDate": "2026-06-07T17:39:57Z",
-	"releaseNotes": "## What's Changed\n* 新增iOS客户端协议支持 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/240\n* feat(desktop): 添加 IP 地址选择与自动绑定支持 by @qiuyongjun in https://github.com/LanRhyme/MicYou/pull/238\n* docs: improve documents [skip ci] by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/243\n* fix:修复 Linux PipeWire 虚拟音频输出路由 by @LemonAdorable in https://github.com/LanRhyme/MicYou/pull/242\n\n## New Contributors\n* @qiuyongjun made their first contribution in https://github.com/LanRhyme/MicYou/pull/238\n* @LemonAdorable made their first contribution in https://github.com/LanRhyme/MicYou/pull/242\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.4...v1.3.5",
+	"releaseNotes": "## What's Changed\r\n* 新增iOS客户端协议支持 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/240\r\n* feat(desktop): 添加 IP 地址选择与自动绑定支持 by @qiuyongjun in https://github.com/LanRhyme/MicYou/pull/238\r\n* fix:修复 Linux PipeWire 虚拟音频输出路由 by @LemonAdorable in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n## New Contributors\r\n* @qiuyongjun made their first contribution in https://github.com/LanRhyme/MicYou/pull/238\r\n* @LemonAdorable made their first contribution in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.4...v1.3.5",
 	"contributors": [
 		{
 			"login": "ChouChiu",
@@ -14,7 +14,7 @@
 			"login": "WhatDamon",
 			"avatar_url": "https://avatars.githubusercontent.com/u/59256766?u=71c9ab35a75b83a1240ca5e78ee437b84531839d&v=4",
 			"html_url": "https://github.com/WhatDamon",
-			"contributions": 27
+			"contributions": 28
 		},
 		{
 			"login": "Jack-Huang-2020",
@@ -101,5 +101,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-06-08T19:59:18.282Z"
+	"fetchedAt": "2026-06-11T10:01:59.337Z"
 }
