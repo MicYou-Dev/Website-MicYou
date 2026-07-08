@@ -29,16 +29,16 @@
 			"contributions": 5
 		},
 		{
+			"login": "TianFengrui20090305",
+			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
+			"html_url": "https://github.com/TianFengrui20090305",
+			"contributions": 4
+		},
+		{
 			"login": "raindropQwQ",
 			"avatar_url": "https://avatars.githubusercontent.com/u/102001942?u=e75c3ea5f885ffcf25208707870d88a471ab70fd&v=4",
 			"html_url": "https://github.com/raindropQwQ",
 			"contributions": 4
-		},
-		{
-			"login": "TianFengrui20090305",
-			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
-			"html_url": "https://github.com/TianFengrui20090305",
-			"contributions": 3
 		},
 		{
 			"login": "shulng",
@@ -107,5 +107,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-07-06T09:52:20.000Z"
+	"fetchedAt": "2026-07-08T13:26:41.662Z"
 }
