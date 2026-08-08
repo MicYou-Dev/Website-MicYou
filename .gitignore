@@ -1,7 +1,6 @@
 node_modules/
 .vitepress/cache/
 .vitepress/dist/
-pnpm-workspace.yaml
 .DS_Store
 .vercel
 .env*.local
