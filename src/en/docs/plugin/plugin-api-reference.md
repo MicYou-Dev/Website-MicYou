@@ -1,6 +1,6 @@
 ---
 title: MicYou Plugin API Reference
-description: Complete Host API reference: C ABI, WASM imports, permissions, message protocol and error codes
+description: "Complete Host API reference: C ABI, WASM imports, permissions, message protocol and error codes"
 keywords: MicYou,plugin API,Host API,WASM,native,C ABI,permissions
 ---
 

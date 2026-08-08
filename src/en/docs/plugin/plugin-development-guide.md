@@ -1,6 +1,6 @@
 ---
 title: MicYou Plugin Development Guide
-description: Quick start for the plugin system: dual runtime, manifest, example plugins and dev tools
+description: "Quick start for the plugin system: dual runtime, manifest, example plugins and dev tools"
 keywords: MicYou,plugin development,WASM,native,manifest,example plugins
 ---
 

@@ -46,7 +46,7 @@ keywords: MicYou,插件开发,WASM,native,manifest,示例插件
 | `entry` | string | 是 | 入口文件名（相对插件目录） |
 | `platforms` | string[] | 否 | `linux` / `windows` / `macos` / `android`，空 = 全部 |
 | `apiVersion` | number | 否 | Host API 版本，默认 1；与宿主不一致拒绝加载 |
-| `capabilities` | string[] | 否 | 申请的能力，见 [API 参考](api-reference.md#权限清单) |
+| `capabilities` | string[] | 否 | 申请的能力，见 [API 参考](plugin-api-reference.md#权限清单) |
 | `kind` | string | 否 | `dsp` / `utility` / `ui` / `bridge`，默认 `utility` |
 | `ui` | object | 否 | UI 面板注册（kind 为 `ui` 时必填）：`{ route, label, entry? }` |
 | `dsp` | object | 否 | DSP 节点注册（kind 为 `dsp`）：`{ insertAfter?, first?, frameSize?, realtimeSafe }` |
@@ -197,7 +197,7 @@ micyou plugin package ./myplugin -o out.zip       # 打包为可导入 zip
 ## 编写 Native 插件
 
 Native 插件是平台 cdylib，通过版本化 C ABI 与宿主交互，ABI 定义在
-[`micyou_plugin_abi.h`](../../tauri-app/crates/micyou-plugin/include/micyou_plugin_abi.h)
+`micyou_plugin_abi.h`
 
 ### 必需符号
 
@@ -295,7 +295,7 @@ pub unsafe extern "C" fn micyou_plugin_process(
 
 - 所有跨 FFI 的函数必须 `#[unsafe(no_mangle)] extern "C"`，返回值用 `mpl_result_t`
 - panic 必须被捕获（`catch_unwind`），绝不跨 ABI 边界传播
-- 字符串通过 NUL 结尾指针传递；host 回调的 `out/out_size` 采用缓冲区契约（详见 [API 参考](api-reference.md#缓冲区契约)）
+- 字符串通过 NUL 结尾指针传递；host 回调的 `out/out_size` 采用缓冲区契约（详见 [API 参考](plugin-api-reference.md#缓冲区契约)）
 - 配置读取：`init` 时通过 `host.get_config("gain")` 获取 JSON 字符串
 
 ### 用 C 编写
