@@ -1,473 +1,127 @@
 ---
-title: MicYou 插件开发最佳实践
-description: MicYou 插件开发最佳实践指南，包含项目结构、生命周期管理、音频效果开发和性能优化建议
-keywords: MicYou插件,插件最佳实践,Kotlin插件开发,音频插件优化,JVM插件架构
+title: MicYou 插件最佳实践与扩展性
+description: 插件架构、安全模型、版本兼容策略与 Android 扩展路线
+keywords: MicYou,插件,最佳实践,安全模型,版本兼容,Android
 ---
 
-# MicYou 插件开发最佳实践
-
-本文档提供 MicYou 插件开发的最佳实践和建议。
-
-## 项目结构
-
-### 推荐目录结构
-
-```
-my-plugin/
-├── build.gradle.kts
-├── src/
-│   └── main/
-│       ├── kotlin/
-│       │   └── com/example/myplugin/
-│       │       ├── MyPlugin.kt           # 主类
-│       │       ├── MyPluginUI.kt         # UI 组件
-│       │       ├── MyPluginSettings.kt   # 设置页面
-│       │       ├── AudioEffects.kt       # 音频效果（可选）
-│       │       └── model/                # 数据模型
-│       │           └── Config.kt
-│       └── resources/
-│           └── plugin.json               # 清单文件
-└── README.md
-```
-
-### 代码组织
-
-将不同功能分离到不同文件：
-
-```kotlin
-// MyPlugin.kt - 主类
-class MyPlugin : Plugin {
-    override val manifest = PluginManifest(...)
-    // 生命周期方法
-}
-
-// MyPluginUI.kt - UI 组件
-class MyPluginUI : PluginUIProvider {
-    // UI 实现
-}
-
-// MyPluginSettings.kt - 设置页面
-class MyPluginSettings : PluginSettingsProvider {
-    // 设置页面实现
-}
-```
-
-## 生命周期管理
-
-### 正确管理状态
-
-```kotlin
-class MyPlugin : Plugin {
-    private var context: PluginContext? = null
-    private var isRunning = false
-
-    override fun onLoad(context: PluginContext) {
-        this.context = context
-        context.log("Plugin loaded")
-    }
-
-    override fun onEnable() {
-        if (isRunning) return
-        isRunning = true
-        startBackgroundTask()
-    }
-
-    override fun onDisable() {
-        if (!isRunning) return
-        isRunning = false
-        stopBackgroundTask()
-    }
-
-    override fun onUnload() {
-        context = null
-        releaseAllResources()
-    }
-}
-```
-
-### 避免内存泄漏
-
-```kotlin
-class MyPlugin : Plugin {
-    private val jobs = mutableListOf<Job>()
-
-    override fun onEnable() {
-        jobs.add(startTask1())
-        jobs.add(startTask2())
-    }
-
-    override fun onDisable() {
-        jobs.forEach { it.cancel() }
-        jobs.clear()
-    }
-}
-```
-
-## 访问主机能力
-
-### 监听状态变化
-
-```kotlin
-@Composable
-override fun MainWindow(onClose: () -> Unit) {
-    val host = context?.host ?: return
-
-    // 监听流状态
-    val streamState by host.streamState.collectAsState()
-
-    // 监听音频电平
-    val audioLevel by host.audioLevels.collectAsState()
-
-    // 监听音频配置
-    val audioConfig by host.audioConfig.collectAsState()
-
-    Column {
-        Text("Stream: $streamState")
-        Text("Level: $audioLevel")
-        Text("NS: ${audioConfig.enableNS}")
-    }
-}
-```
-
-### 修改音频配置
-
-```kotlin
-class MyPlugin : Plugin {
-    fun enableNoiseReduction() {
-        context?.host?.updateAudioConfig { config ->
-            config.copy(
-                enableNS = true,
-                nsType = NoiseReductionType.RNNoise
-            )
-        }
-    }
-
-    fun setAmplification(gainDb: Float) {
-        context?.host?.updateAudioConfig { config ->
-            config.copy(amplification = gainDb)
-        }
-    }
-}
-```
-
-## 音频效果开发
-
-### 实现自定义降噪
-
-```kotlin
-class CustomNoiseReducer : AudioEffectProvider {
-    override val id = "com.example.custom-ns"
-    override val name = "Custom Noise Reducer"
-    override val description = "AI-powered noise reduction"
-    override var isEnabled = true
-
-    private var model: NoiseModel? = null
-
-    override fun process(input: ShortArray, channelCount: Int, sampleRate: Int): ShortArray {
-        if (!isEnabled) return input
-
-        // 实现降噪算法
-        val output = ShortArray(input.size)
-        for (i in input.indices) {
-            output[i] = reduceNoise(input[i])
-        }
-        return output
-    }
-
-    private fun reduceNoise(sample: Short): Short {
-        // 降噪逻辑
-        return sample
-    }
-
-    override fun reset() {
-        model?.reset()
-    }
-
-    override fun release() {
-        model?.close()
-        model = null
-    }
-
-    override fun onConfigChanged(config: AudioConfig) {
-        // 根据配置调整参数
-    }
-}
-```
-
-### 注册音频效果
-
-```kotlin
-class MyPlugin : Plugin {
-    private val noiseReducer = CustomNoiseReducer()
-
-    override fun onLoad(context: PluginContext) {
-        // 注册效果器，优先级 50（数值越小越先执行）
-        context.host.registerAudioEffect(noiseReducer, priority = 50)
-    }
-
-    override fun onUnload() {
-        // 注销效果器
-        context?.host?.unregisterAudioEffect(noiseReducer)
-        noiseReducer.release()
-    }
-}
-```
-
-### 使用 AudioEffectPlugin 简化
-
-```kotlin
-class MyPlugin : AudioEffectPlugin {
-    override val manifest = PluginManifest(...)
-
-    override val audioEffectProvider = CustomNoiseReducer()
-    override val effectPriority = 50
-
-    // 生命周期由 AudioEffectPlugin 自动处理
-}
-```
-
-## 数据存储
-
-### 使用 PluginContext 存储
-
-```kotlin
-class MyPlugin : Plugin {
-    private var context: PluginContext? = null
-
-    fun saveConfig(config: Config) {
-        context?.apply {
-            putString("serverUrl", config.serverUrl)
-            putInt("port", config.port)
-            putBoolean("ssl", config.useSsl)
-        }
-    }
-
-    fun loadConfig(): Config {
-        return context?.let {
-            Config(
-                serverUrl = it.getString("serverUrl", "localhost"),
-                port = it.getInt("port", 8080),
-                useSsl = it.getBoolean("ssl", false)
-            )
-        } ?: Config()
-    }
-}
-```
-
-### 文件存储
-
-```kotlin
-class MyPlugin : Plugin {
-    private fun saveDataFile(data: String) {
-        val context = context ?: return
-        val file = File(context.pluginDataDir, "data.json")
-        file.writeText(data)
-    }
-
-    private fun loadDataFile(): String? {
-        val context = context ?: return null
-        val file = File(context.pluginDataDir, "data.json")
-        return if (file.exists()) file.readText() else null
-    }
-}
-```
-
-## UI 开发
-
-### 响应式 UI
-
-```kotlin
-class MyPluginUI : PluginUIProvider {
-    override val hasMainWindow = true
-
-    @Composable
-    override fun MainWindow(onClose: () -> Unit) {
-        var data by remember { mutableStateOf(emptyList<Item>()) }
-        var loading by remember { mutableStateOf(true) }
-
-        LaunchedEffect(Unit) {
-            data = loadData()
-            loading = false
-        }
-
-        if (loading) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn {
-                items(data) { item ->
-                    ItemRow(item)
-                }
-            }
-        }
-    }
-}
-```
-
-### 移动端 UI 模式选择
-
-```kotlin
-class MyPlugin : Plugin, PluginUIProvider {
-    // 对于复杂 UI，使用新页面模式
-    override val mobileUIMode = MobileUIMode.NewScreen
-
-    // 对于简单对话框，使用对话框模式
-    // override val mobileUIMode = MobileUIMode.Dialog
-}
-```
-
-### 设置页面最佳实践
-
-```kotlin
-class MyPluginSettings : PluginSettingsProvider {
-    @Composable
-    override fun SettingsContent() {
-        var serverUrl by remember { mutableStateOf("") }
-        var port by remember { mutableStateOf(8080) }
-
-        Column(Modifier.padding(16.dp).fillMaxWidth()) {
-            Text("Connection Settings", style = MaterialTheme.typography.titleMedium)
-
-            Spacer(Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = serverUrl,
-                onValueChange = { serverUrl = it },
-                label = { Text("Server URL") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = port.toString(),
-                onValueChange = { port = it.toIntOrNull() ?: 8080 },
-                label = { Text("Port") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            Spacer(Modifier.height(16.dp))
-
-            Button(
-                onClick = { saveSettings(serverUrl, port) },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Save")
-            }
-        }
-    }
-}
-```
-
-## 通知和反馈
-
-### 显示消息
-
-```kotlin
-class MyPlugin : Plugin {
-    fun showFeedback() {
-        val host = context?.host ?: return
-
-        // 简短消息
-        host.showSnackbar("Operation completed!")
-
-        // 系统通知
-        host.showNotification(
-            title = "My Plugin",
-            message = "Background task finished successfully"
-        )
-    }
-}
-```
-
-## 错误处理
-
-### 优雅处理错误
-
-```kotlin
-class MyPlugin : Plugin {
-    fun performOperation() {
-        try {
-            val result = riskyOperation()
-            context?.log("Operation succeeded: $result")
-        } catch (e: Exception) {
-            context?.logError("Operation failed", e)
-            context?.host?.showSnackbar("Operation failed: ${e.message}")
-        }
-    }
-}
-```
-
-### 验证主机状态
-
-```kotlin
-class MyPlugin : Plugin {
-    fun startStreaming() {
-        val host = context?.host ?: run {
-            context?.logError("Host not available")
-            return
-        }
-
-        if (host.streamState.value != StreamState.Idle) {
-            host.showSnackbar("Please stop current stream first")
-            return
-        }
-
-        // 启动流
-    }
-}
-```
-
-## 性能优化
-
-### 音频处理优化
-
-```kotlin
-class OptimizedEffect : AudioEffectProvider {
-    private var buffer: ShortArray = ShortArray(0)
-
-    override fun process(input: ShortArray, channelCount: Int, sampleRate: Int): ShortArray {
-        // 重用缓冲区避免分配
-        if (buffer.size != input.size) {
-            buffer = ShortArray(input.size)
-        }
-
-        // 使用 SIMD 或其他优化技术
-        for (i in input.indices) {
-            buffer[i] = processSample(input[i])
-        }
-
-        return buffer
-    }
-}
-```
-
-### 协程使用
-
-```kotlin
-class MyPlugin : Plugin {
-    private val scope = CoroutineScope(Dispatchers.Default)
-
-    override fun onEnable() {
-        scope.launch {
-            while (isActive) {
-                performBackgroundTask()
-                delay(1000)
-            }
-        }
-    }
-
-    override fun onDisable() {
-        scope.cancel()
-    }
-}
-```
-
-## 相关文档
-
-- [插件开发指南](./plugin-development-guide)
-- [插件 API 参考](./plugin-api-reference)
-- [插件包格式规范](./plugin-package-format)
+
+## 为安卓端预留的扩展点
+
+### 协议统一 + 实现分离
+
+插件系统按「协议统一 + 实现分离」设计，安卓端不照搬桌面实现：
+
+- **统一**：Manifest 模型（`plugin.json`）、Host API 能力描述、跨端消息协议（protobuf `PluginMessage`）、总线语义（发布订阅 / RPC）两端共用
+- **分离**：插件加载实现（Native 加载器 / WASM 运行时）、宿主接线（HostApi 实现、传输适配器）按平台各自实现
+
+### 桌面端的可复用部分
+
+| 模块 | 是否可复用于安卓 | 说明 |
+| --- | --- | --- |
+| `manifest.rs` | 是 | 纯 Rust，无平台依赖 |
+| `plugin.rs`（统一抽象） | 是 | 运行时无关的契约 |
+| `bus.rs`（PluginBus） | 是 | 纯 Rust 逻辑，仅替换 transport |
+| `sync.rs`（线协议编解码） | 是 | 依赖 micyou-protocol |
+| `wasm.rs`（wasmi 运行时） | 是 | wasmi 纯 Rust，无原生依赖，可直接嵌入 Android JNI |
+| `native.rs`（libloading） | 否 | Android 用其他加载方式（见下） |
+| `abi.rs` + `micyou_plugin_abi.h` | 参考 | 安卓可另定 JNI 绑定，但保持能力语义一致 |
+
+## 安卓端规划
+
+### 为什么不用重型插件化框架
+
+RePlugin / Shadow / VirtualAPK 等动态插件框架面向「应用级插件化」（Activity / Service / 资源 / 热修复），对 MicYou 属于过度设计：
+
+- **体积**：框架与打包链开销大，MicYou 是单模块轻量应用
+- **能力不匹配**：插件需求是 DSP 节点、事件、跨端消息，不是页面跳转与组件热插拔
+- **安全模型冲突**：框架追求「动态加载任意 APK」，与插件沙箱/能力授权模型不一致
+- **维护成本**：与 AGP/Kotlin 版本强绑定，升级成本高
+
+推荐路径：**协议对齐 → 轻量运行时 → 跨端同步**，加载方式可选（轻量 DEX、受信 .so、WASM），不强制上重型框架
+
+### 分阶段路线图
+
+#### 阶段 1：协议对齐（核心）
+
+- 在安卓端实现 `plugin.json` 解析与校验（可与桌面共享同一份 manifest 描述，Kotlin 侧按 proto/JSON schema 对齐）
+- 引入 protobuf `PluginMessage` 到安卓的 TCP 控制通道（与桌面 `tcp_server` 对称）
+- 实现轻量 `PluginBus`（发布订阅 + RPC 关联）——语义与桌面 `bus.rs` 一致
+- 验收：安卓客户端能解析/发送 `PluginMessage`，与桌面端插件完成一次双向消息往返
+
+#### 阶段 2：轻量运行时
+
+- **WASM**：优先（wasmi 可编译到 Android，纯 Rust 无原生依赖，天然沙箱）
+- **受信 .so**：面向实时 DSP 场景，走 JNI + 手写 ABI（或复用桌面 C ABI 头文件），仅加载受信来源（应用内置 / 官方商店）
+- **轻量 DEX**：工具类插件可选，用 `PathClassLoader` 隔离加载，不做 Activity/资源插件化
+- 验收：安卓端可启用一个 WASM 工具插件与一个受信 .so DSP 插件
+
+#### 阶段 3：跨端同步
+
+- 接入与桌面一致的 `PluginMessage` 路由（本地分发 + 远端转发）
+- 两端插件互发现（通过总线广播插件清单）
+- 典型场景落地：手机传感器 → 电脑处理 → 回传
+- 验收：双向 RPC 与订阅推送端到端可用
+
+### 能力矩阵（两端对齐）
+
+| 能力 | 桌面 | 安卓 | 说明 |
+| --- | --- | --- | --- |
+| Manifest / 能力声明 | ✅ | ✅ | 同一 schema |
+| Host API 逻辑接口 | ✅ | ✅ | 同一语义，不同绑定 |
+| WASM 运行时 | ✅ | ✅（规划） | 同一模块产物 |
+| Native 运行时 | cdylib + libloading | 受信 .so + JNI（规划） | 加载方式不同 |
+| 跨端消息协议 | ✅ | ✅（阶段 1） | 同一 protobuf |
+| 插件总线（本地） | ✅ | ✅（阶段 1） | 同一语义 |
+| 插件总线（跨端） | ✅ | ✅（阶段 3） | 同一传输协议 |
+| DSP 链节点 | ✅（`Plugins` 链节点） | 规划 | 安卓侧处理链在 AudioRecord 管线内 |
+| UI 按钮面板（`ui.route=buttons`） | ✅ | 规划 | 音效板等声明式面板 |
+| 专属设置页（`ui.panels`） | ✅ | 规划 | 沙箱 iframe + postMessage 桥 |
+| 全局快捷键（register_hotkey） | ✅ | 规划 | 系统级快捷键消息 |
+| `audio.play`（播放音效） | ✅ | 规划 | 安卓可映射到 MediaPlayer |
+| 前端管理界面 | ✅（Vue） | 规划 | Compose 面板 |
+| `network.io` / `fs.read` | 预留 | 预留 | — |
+
+## 版本兼容策略
+
+- **Host API 版本**（`apiVersion`）：插件声明构建时版本，宿主不匹配即拒绝加载（错误码 7），未来新增能力只加不减，保持向后兼容
+- **ABI 版本**（Native）：`MPL_ABI_VERSION` 保护结构体布局；破坏性变更升级 ABI 版本，旧插件按新版本头重新构建
+- **Host 函数表追加式演进**：`mpl_host_api_t` 新字段只能追加在 `ctx` 之后，禁止插入中间——旧布局插件读取正确偏移不受影响（实测修复过插入字段导致的段错误）
+- **minHostVersion**：插件声明所需最低宿主 API 版本（semver），major 超过宿主版本即拒绝加载
+- **WASM 导入表**：新增导入不影响不引用它的旧插件；导入签名不匹配的调用在宿主侧报错而非崩溃
+- **线协议**：`MessageWrapper` 采用 proto3 未知字段兼容——旧客户端不识别 `pluginMessage` 字段时自动跳过，新字段只在双方都支持时生效
+- **错误码**：wire 错误码（0-12）冻结，新增错误只追加
+- **配置格式**：`plugin-state.json` 按 id 组织，缺失字段走默认值
+- **API 变更流程**：新增能力 = 追加字段 + 新能力名（旧插件不受影响）；破坏性变更 = 升级 `HOST_API_VERSION`，新旧插件并存（按 apiVersion 分发）
+
+## 安全模型
+
+### Native 插件
+
+- 全权进程内执行，等同本地应用代码——宿主只做「能力授权」与「版本校验」，不做代码沙箱
+- 安装来源信任：用户手动放入插件目录，或未来接入签名校验（预留）
+- 实时安全：`realtimeSafe` 声明是宿主信任依据，违反者造成音频质量问题由插件负责
+
+### WASM 插件
+
+- **内存沙箱**：wasmi 解释器，插件无法越界访问宿主内存
+- **燃料计量**：每次入口调用注入固定燃料预算（默认 100 000），死循环被 trap，插件无法挂起宿主
+- **能力授权**：所有 host 函数按 manifest capabilities 逐调用校验，未授权返回 `MPL_ERR_PERMISSION`
+- **无系统访问**：不提供 WASI / 文件 / 网络导入，需系统能力请用 Native 插件
+
+### 消息安全
+
+- 跨端消息按插件 id 路由，未注册的 target 返回 unknown plugin
+- RPC 带超时，不会无限阻塞
+- 总线事件可广播到远端设备——插件需自行评估发布内容的敏感性
+
+### 审计与日志
+
+- 插件日志独立缓冲（每插件 500 行环形），GUI 可查看
+- 宿主日志记录插件启停、加载失败与错误
+
+## 性能预算
+
+- DSP 插件节点：单节点单帧处理建议 < 1 ms（48 kHz / 480 样本帧）
+- WASM DSP：best-effort，禁止声称 realtimeSafe
+- 插件调度：音频线程通过 `Arc<Mutex<PluginInstance>>` 持有节点句柄，稳态无锁竞争（插件仅启停时变更）
+- 总线消息：控制通道容量 100，`try_send` 非阻塞发送，满则丢弃并报错

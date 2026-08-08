@@ -1,145 +1,71 @@
 ---
 title: MicYou 插件包格式规范
-description: MicYou 插件包结构规范详解，包含 plugin.json 配置、JAR 文件要求和图标规范
-keywords: MicYou插件格式,plugin.json配置,插件包结构,JVM插件打包,插件开发规范
+description: 插件目录结构、zip 打包、市场仓库与更新机制
+keywords: MicYou,插件包,zip,市场,更新
 ---
 
 # MicYou 插件包格式规范
 
-## 插件包结构
+## 目录结构
 
-插件包是一个 ZIP 压缩文件，扩展名为 `.micyou-plugin.zip`，包含以下结构：
+一个插件是一个目录，至少包含：
 
-```
-my-plugin.micyou-plugin.zip
-├── plugin.json        # 必需：插件元数据清单
-├── plugin.jar         # 必需：插件代码（Kotlin/JVM 编译产物）
-├── assets/            # 可选：资源文件目录
-│   ├── images/
-│   ├── sounds/
-│   └── ...
-└── icon.png           # 可选：插件图标（建议 128x128 PNG）
+```text
+<plugin-id>/
+├── plugin.json      # manifest（必填）
+├── <entry>          # 入口产物：native 为 .so/.dylib/.dll，wasm 为 .wasm
+└── panel.html       # 可选：设置侧边栏/独立窗口页面（ui.panels.entry）
 ```
 
-## plugin.json 规范
+插件目录名与 manifest 中的 `id` 一致，安装在 `~/.config/micyou/plugins/<id>/`
+（Windows 为 `%APPDATA%\micyou\plugins\<id>\`）
 
-### JSON Schema
+## plugin.json 字段
 
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["id", "name", "version", "author", "description", "minApiVersion", "mainClass"],
-  "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
-      "description": "插件唯一标识符，采用反向域名格式，如 com.example.myplugin"
-    },
-    "name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 100,
-      "description": "插件显示名称"
-    },
-    "version": {
-      "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$",
-      "description": "版本号，遵循语义化版本规范，如 1.0.0 或 1.0.0-beta"
-    },
-    "author": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 100,
-      "description": "作者名称"
-    },
-    "description": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 500,
-      "description": "插件描述"
-    },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": ["camera", "streaming", "audio", "video", "utility", "effect", "network", "storage"]
-      },
-      "description": "插件标签，用于分类和筛选"
-    },
-    "platform": {
-      "type": "string",
-      "enum": ["mobile", "desktop", "both"],
-      "default": "both",
-      "description": "支持的平台：mobile=仅移动端，desktop=仅桌面端，both=两端都需要安装"
-    },
-    "minApiVersion": {
-      "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "description": "最低 API 版本要求"
-    },
-    "mainClass": {
-      "type": "string",
-      "description": "插件主类全限定名，必须实现 Plugin 接口"
-    }
-  }
-}
+必填：`id`（反向域名）、`name`、`version`（semver）、`runtime`（wasm|native）、`entry`
+
+常用可选字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `author` / `license` | 作者与许可 |
+| `homepage` / `repository` | 项目地址与源码仓库（市场收录要求） |
+| `capabilities` | 声明请求的能力（dsp.node/config.read/config.write/audio.play/fs.read/fs.write/network.io/open.url/clipboard.read/clipboard.write/event.emit/message.send/audio.state/device.list） |
+| `kind` | dsp \| utility \| ui \| bridge |
+| `dsp` | DSP 节点描述（insertAfter/first/frameSize/realtimeSafe） |
+| `ui` | 面板描述（route/label/panels[{id,label,entry,sidebar}]） |
+| `config` | 默认配置 JSON |
+| `configSchema` | 声明式配置 schema，宿主自动生成设置表单 |
+| `dependencies` | 前置插件依赖 [{id,version,optional}] |
+| `updateUrl` | 远端 manifest URL（更新检查与一键更新） |
+| `arches` | native 插件支持的 CPU 架构 |
+| `nameI18n` / `descriptionI18n` | 本地化名称与描述（BCP-47） |
+
+## zip 打包
+
+应用「导入插件」接受 `.zip`，要求：
+
+- 内含 `plugin.json`（可在子目录，安装时自动剥离前缀）
+- 安装前宿主展示权限预览（能力/作者/许可），确认后才解压
+- 解压路径防穿越（zip slip 防护）
+
+打包命令：
+
+```bash
+micyou plugin package <插件目录> -o plugin.zip
 ```
 
-### 字段说明
+## 市场仓库
 
-| 字段 | 必需 | 类型 | 说明 |
-|------|------|------|------|
-| id | 是 | string | 插件唯一标识符，反向域名格式 |
-| name | 是 | string | 插件显示名称，1-100 字符 |
-| version | 是 | string | 语义化版本号 |
-| author | 是 | string | 作者名称 |
-| description | 是 | string | 插件描述，1-500 字符 |
-| tags | 否 | string[] | 标签数组，用于分类筛选 |
-| platform | 否 | string | 支持平台：mobile/desktop/both，默认 both |
-| minApiVersion | 是 | string | 最低 API 版本 |
-| mainClass | 是 | string | 主类全限定名 |
+官方市场：https://github.com/MicYou-Dev/MicYou-Plugins
 
-## 完整示例
-
-```json
-{
-  "id": "com.example.audio-enhancer",
-  "name": "Audio Enhancer",
-  "version": "1.0.0",
-  "author": "Developer Name",
-  "description": "A plugin that provides advanced audio enhancement features including custom noise reduction and equalization.",
-  "tags": ["audio", "effect"],
-  "platform": "both",
-  "minApiVersion": "1.0.0",
-  "mainClass": "com.example.audioenhancer.AudioEnhancerPlugin"
-}
+```text
+/
+├── index.json                 # 插件清单（自动生成）
+└── plugin/<plugin-id>/
+    ├── plugin.json            # manifest（updateUrl 指向本仓库）
+    └── plugin.zip             # 打包产物
 ```
 
-## plugin.jar 要求
-
-- 必须是有效的 JVM JAR 文件
-- 主类必须实现 `com.lanrhyme.micyou.plugin.Plugin` 接口
-- 可以包含其他依赖类，但建议使用 shaded JAR 避免冲突
-- 文件大小建议不超过 50MB
-
-## 图标规范
-
-- 格式：PNG
-- 建议尺寸：128x128 像素
-- 支持透明背景
-- 文件名必须为 `icon.png`
-
-## 平台说明
-
-| 值 | 说明 |
-|------|------|
-| `mobile` | 仅 Android 端支持 |
-| `desktop` | 仅 JVM Desktop 端支持 |
-| `both` | 两端都需要安装，用于跨平台功能 |
-
-## 相关文档
-
-- [插件开发指南](./plugin-development-guide)
-- [插件 API 参考](./plugin-api-reference)
-- [插件开发最佳实践](./plugin-best-practices)
+应用内更新机制：插件 `updateUrl` 指向市场仓库的 `plugin.json`，点「检查更新」
+做 semver 对比，有新版下载同目录 `plugin.zip` 覆盖安装
