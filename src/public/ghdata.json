@@ -1,14 +1,14 @@
 {
-	"version": "1.3.5",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.3.5",
-	"releaseDate": "2026-06-07T17:39:57Z",
-	"releaseNotes": "## What's Changed\r\n* 新增iOS客户端协议支持 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/240\r\n* feat(desktop): 添加 IP 地址选择与自动绑定支持 by @qiuyongjun in https://github.com/LanRhyme/MicYou/pull/238\r\n* fix:修复 Linux PipeWire 虚拟音频输出路由 by @LemonAdorable in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n## New Contributors\r\n* @qiuyongjun made their first contribution in https://github.com/LanRhyme/MicYou/pull/238\r\n* @LemonAdorable made their first contribution in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.4...v1.3.5",
+	"version": "2.0.0",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.0",
+	"releaseDate": "2026-08-11T14:40:03Z",
+	"releaseNotes": "## What's Changed\n\n### 桌面端与跨平台\n\n* 移除 KMP 桌面端，为 Tauri 桌面端迁移做准备 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/251\n* 重构 Tauri 桌面端并优化项目结构与算法 by @LanRhyme in https://github.com/LanRhyme/MicYou/pull/272\n* 新增 macOS BlackHole 虚拟音频设备支持 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/250\n* 为非 macOS 平台补充 BlackHole 音频设备存根实现 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/253\n* 修复 macOS 毛玻璃效果与 ONNX 编译问题 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/248\n* 修复 Tauri 窗口拖动效果 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/254\n* 修复袖珍模式下的多项界面与交互问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/259\n* 修复系统托盘显示与隐藏问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/270\n* 修复 Tauri 桌面端的多项界面问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/290\n* 修复 Linux 白屏，并改善 NVIDIA 环境下的渲染兼容性 by @a2heng in https://github.com/LanRhyme/MicYou/pull/292\n* 改进 Linux 桌面透明窗口支持 by @ChouChiu in https://github.com/LanRhyme/MicYou/commit/37b2d305bcf396b13cb1f77a702a3834e86b8ffc\n\n### 主题与个性化\n\n* 新增主题选择器、自定义颜色与 Material 3 配色能力 by @LanRhyme in https://github.com/LanRhyme/MicYou/commit/c0675557ae5069742d58330f48abdf4ed2d63adb\n* 新增自定义 CSS 与毛玻璃效果，并优化界面动画 by @LanRhyme in https://github.com/LanRhyme/MicYou/commit/91496fcb37cef8a7fe4342d7212cc4336daf765c\n* 优化主题生成逻辑，新增主题变体与多语言本地化 by @LanRhyme in https://github.com/LanRhyme/MicYou/commit/e31d50a3fd85feb1669590828b49c10ca6a22c6a\n* 重构主题系统，新增系统强调色、主题商场与主题包管理 by @ChouChiu in https://github.com/LanRhyme/MicYou/commit/d58568d80d545c7eb653b0acffbb61d127fa4dcf\n* 完善主题商场的安装、切换与卸载操作 by @ChouChiu in https://github.com/LanRhyme/MicYou/commit/bdf527bc0c92b23f81aedab7ea0ae72f91b72ee3\n* 为插件市场与主题目录新增贡献入口 by @ChouChiu in https://github.com/LanRhyme/MicYou/commit/838a5e3fb7c4a06a986eaacf94c81994590b1faa\n\n### 音频、连接与稳定性\n\n* 新增 PureVox AI 降噪 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/278\n* 集成 AEC7 声学回声消除 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/279\n* 简化 AEC 架构，并使用 WASAPI Loopback 获取扬声器参考音频 by @a2heng in https://github.com/LanRhyme/MicYou/pull/280\n* 支持 Linux AEC，并完善运行时恢复与构建流程 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/291\n* 新增 Opus 弱网优化、通知保活与虚拟设备常驻，并修复 USB 绑定问题 by @a2heng in https://github.com/LanRhyme/MicYou/pull/295\n* 优化音频会话生命周期、内存占用与 FEC 恢复 by @sybxxx in https://github.com/LanRhyme/MicYou/pull/289\n* 修复连接错误导致的崩溃并优化端口输入逻辑 by @JF137575 in https://github.com/LanRhyme/MicYou/pull/282\n* 防止 GUI、CLI 与 TUI 模式并发切换 by @ChouChiu in https://github.com/LanRhyme/MicYou/commit/bdf527bc0c92b23f81aedab7ea0ae72f91b72ee3\n\n### 插件与扩展\n\n* 新增完整插件系统，包括双运行时、Host API、DSP 节点、插件市场与开发工具链 by @LanRhyme in https://github.com/LanRhyme/MicYou/pull/296\n* 修复插件前端与 CLI 构建问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/297\n* 修复静音状态同步、调试模式崩溃与多项插件问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/298\n\n### 工程维护与文档\n\n* 更新相关文档 by @WhatDamon in https://github.com/LanRhyme/MicYou/pull/247\n* 优化项目结构 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/249\n* 修复 Unix 与 Windows 条件编译造成的依赖缺失问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/257\n* 清理并优化代码 by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/263\n* 重构模块结构并清理废弃代码 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/275\n* 回滚 PR #275 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/277\n\n## New Contributors\n\n* @tfr0305 made their first contribution in https://github.com/LanRhyme/MicYou/pull/254\n* @JF137575 made their first contribution in https://github.com/LanRhyme/MicYou/pull/282\n* @sybxxx made their first contribution in https://github.com/LanRhyme/MicYou/pull/289\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.5...v2.0.0\n",
 	"contributors": [
 		{
 			"login": "ChouChiu",
 			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?u=3e46fc8c1895cfd644b3efe2f71708444ffab258&v=4",
 			"html_url": "https://github.com/ChouChiu",
-			"contributions": 84
+			"contributions": 91
 		},
 		{
 			"login": "WhatDamon",
@@ -119,5 +119,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-08-11T12:37:50.641Z"
+	"fetchedAt": "2026-08-11T18:44:02.225Z"
 }
