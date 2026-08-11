@@ -8,13 +8,19 @@
 			"login": "ChouChiu",
 			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?u=3e46fc8c1895cfd644b3efe2f71708444ffab258&v=4",
 			"html_url": "https://github.com/ChouChiu",
-			"contributions": 82
+			"contributions": 84
 		},
 		{
 			"login": "WhatDamon",
 			"avatar_url": "https://avatars.githubusercontent.com/u/59256766?u=71c9ab35a75b83a1240ca5e78ee437b84531839d&v=4",
 			"html_url": "https://github.com/WhatDamon",
 			"contributions": 28
+		},
+		{
+			"login": "tfr0305",
+			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
+			"html_url": "https://github.com/tfr0305",
+			"contributions": 15
 		},
 		{
 			"login": "Jack-Huang-2020",
@@ -27,12 +33,6 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/17189158?u=2a8d4a4b181c855830cb4ea9deb2e2b061b2c1d0&v=4",
 			"html_url": "https://github.com/a2heng",
 			"contributions": 6
-		},
-		{
-			"login": "tfr0305",
-			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
-			"html_url": "https://github.com/tfr0305",
-			"contributions": 5
 		},
 		{
 			"login": "snowdropQwQ",
@@ -119,5 +119,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-08-10T12:40:40.541Z"
+	"fetchedAt": "2026-08-11T12:37:50.641Z"
 }
