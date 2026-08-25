@@ -1,14 +1,14 @@
 {
-	"version": "1.3.5",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v1.3.5",
-	"releaseDate": "2026-06-07T17:39:57Z",
-	"releaseNotes": "## What's Changed\r\n* 新增iOS客户端协议支持 by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/240\r\n* feat(desktop): 添加 IP 地址选择与自动绑定支持 by @qiuyongjun in https://github.com/LanRhyme/MicYou/pull/238\r\n* fix:修复 Linux PipeWire 虚拟音频输出路由 by @LemonAdorable in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n## New Contributors\r\n* @qiuyongjun made their first contribution in https://github.com/LanRhyme/MicYou/pull/238\r\n* @LemonAdorable made their first contribution in https://github.com/LanRhyme/MicYou/pull/242\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v1.3.4...v1.3.5",
+	"version": "2.0.1",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.1",
+	"releaseDate": "2026-08-12T08:11:49Z",
+	"releaseNotes": "## What's Changed\n* 修复热切换语言和主题等相关问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/300\n* fix(desktop): repair packaging and CLI/TUI mode switching by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/303\n\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.0...v2.0.1",
 	"contributors": [
 		{
 			"login": "ChouChiu",
 			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?u=3e46fc8c1895cfd644b3efe2f71708444ffab258&v=4",
 			"html_url": "https://github.com/ChouChiu",
-			"contributions": 80
+			"contributions": 93
 		},
 		{
 			"login": "WhatDamon",
@@ -17,9 +17,15 @@
 			"contributions": 28
 		},
 		{
-			"login": "Jack-Huang-2020",
+			"login": "tfr0305",
+			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
+			"html_url": "https://github.com/tfr0305",
+			"contributions": 16
+		},
+		{
+			"login": "Jack-Huang-2010",
 			"avatar_url": "https://avatars.githubusercontent.com/u/178568507?u=376aeef55ea82f5ae027128c26efb94dd713c479&v=4",
-			"html_url": "https://github.com/Jack-Huang-2020",
+			"html_url": "https://github.com/Jack-Huang-2010",
 			"contributions": 7
 		},
 		{
@@ -27,12 +33,6 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/17189158?u=2a8d4a4b181c855830cb4ea9deb2e2b061b2c1d0&v=4",
 			"html_url": "https://github.com/a2heng",
 			"contributions": 6
-		},
-		{
-			"login": "tfr0305",
-			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
-			"html_url": "https://github.com/tfr0305",
-			"contributions": 5
 		},
 		{
 			"login": "snowdropQwQ",
@@ -69,6 +69,18 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/108911712?u=bfa41d98dcd5c77545891cec75d9c1a5c257f6f1&v=4",
 			"html_url": "https://github.com/Hakuin123",
 			"contributions": 2
+		},
+		{
+			"login": "OrientCOMPASS",
+			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
+			"html_url": "https://github.com/OrientCOMPASS",
+			"contributions": 1
+		},
+		{
+			"login": "MakkiShizu",
+			"avatar_url": "https://avatars.githubusercontent.com/u/142442886?u=b349b11076e3f2f1d759e4dd83511d6e32f33254&v=4",
+			"html_url": "https://github.com/MakkiShizu",
+			"contributions": 1
 		},
 		{
 			"login": "sybxxx",
@@ -119,5 +131,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-08-07T06:57:49.027Z"
+	"fetchedAt": "2026-08-22T12:15:34.079Z"
 }
