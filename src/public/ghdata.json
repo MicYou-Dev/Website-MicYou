@@ -41,6 +41,12 @@
 			"contributions": 5
 		},
 		{
+			"login": "OrientCOMPASS",
+			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
+			"html_url": "https://github.com/OrientCOMPASS",
+			"contributions": 4
+		},
+		{
 			"login": "raindropQwQ",
 			"avatar_url": "https://avatars.githubusercontent.com/u/102001942?u=e75c3ea5f885ffcf25208707870d88a471ab70fd&v=4",
 			"html_url": "https://github.com/raindropQwQ",
@@ -69,12 +75,6 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/108911712?u=bfa41d98dcd5c77545891cec75d9c1a5c257f6f1&v=4",
 			"html_url": "https://github.com/Hakuin123",
 			"contributions": 2
-		},
-		{
-			"login": "OrientCOMPASS",
-			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
-			"html_url": "https://github.com/OrientCOMPASS",
-			"contributions": 1
 		},
 		{
 			"login": "MakkiShizu",
@@ -131,5 +131,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-08-22T12:15:34.079Z"
+	"fetchedAt": "2026-08-27T05:32:04.812Z"
 }
