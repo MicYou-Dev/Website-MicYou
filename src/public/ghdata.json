@@ -35,16 +35,16 @@
 			"contributions": 6
 		},
 		{
+			"login": "OrientCOMPASS",
+			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
+			"html_url": "https://github.com/OrientCOMPASS",
+			"contributions": 5
+		},
+		{
 			"login": "snowdropQwQ",
 			"avatar_url": "https://avatars.githubusercontent.com/u/85062843?u=5675d9f8d16f73a2529e33288f13d176855ebf75&v=4",
 			"html_url": "https://github.com/snowdropQwQ",
 			"contributions": 5
-		},
-		{
-			"login": "OrientCOMPASS",
-			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
-			"html_url": "https://github.com/OrientCOMPASS",
-			"contributions": 4
 		},
 		{
 			"login": "raindropQwQ",
@@ -57,6 +57,12 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/132723284?u=886da6b6c1412d3494bf3d44cd89b9128fcca485&v=4",
 			"html_url": "https://github.com/shulng",
 			"contributions": 3
+		},
+		{
+			"login": "luminset",
+			"avatar_url": "https://avatars.githubusercontent.com/u/41487531?u=c2dfcf204ea33ce5dca354980e57c06f1fd15caa&v=4",
+			"html_url": "https://github.com/luminset",
+			"contributions": 2
 		},
 		{
 			"login": "moumoum0",
@@ -131,5 +137,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-08-27T05:32:04.812Z"
+	"fetchedAt": "2026-08-31T22:08:14.087Z"
 }
