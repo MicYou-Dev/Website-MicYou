@@ -1,8 +1,8 @@
 {
-	"version": "2.0.1",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.1",
-	"releaseDate": "2026-08-12T08:11:49Z",
-	"releaseNotes": "## What's Changed\n* 修复热切换语言和主题等相关问题 by @tfr0305 in https://github.com/LanRhyme/MicYou/pull/300\n* fix(desktop): repair packaging and CLI/TUI mode switching by @ChouChiu in https://github.com/LanRhyme/MicYou/pull/303\n\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.0...v2.0.1",
+	"version": "2.0.2",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.2",
+	"releaseDate": "2026-09-04T13:13:34Z",
+	"releaseNotes": "## What's Changed\n* chore: remove KMP migration leftover by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/305\n* 桌面端设置对话框新增 `恢复默认` 按钮 by @MakkiShizu in https://github.com/LanRhyme/MicYou/pull/306\n* docs: fix broken star history chart in READMEs by @CrustyMozarella in https://github.com/LanRhyme/MicYou/pull/313\n* fix: resolve notify interception caused by Windows notification mechanism by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/314\n* feat/native-multiplatform-plugins-entry-auto-complete-suffix-per-platform by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/317\n* fix(plugin): 修复 MessageTarget C ABI 序列化与文档不一致及 Windows 下集成测试稳定性问题 by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/321\n* feat(android): add Android 5.0+ (API 21) compatibility via multi-level Gradle property by @luminset in https://github.com/LanRhyme/MicYou/pull/319\n* fix: 修复 Windows 打包资源/悬浮窗/插件系统/虚拟设备回落系列问题 (Closes #307, #308, #309, #310, #322, #323) by @LanRhyme in https://github.com/LanRhyme/MicYou/pull/324\n\n## New Contributors\n* @MakkiShizu made their first contribution in https://github.com/LanRhyme/MicYou/pull/306\n* @CrustyMozarella made their first contribution in https://github.com/LanRhyme/MicYou/pull/313\n* @OrientCOMPASS made their first contribution in https://github.com/LanRhyme/MicYou/pull/314\n* @luminset made their first contribution in https://github.com/LanRhyme/MicYou/pull/319\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.1...v2.0.2",
 	"contributors": [
 		{
 			"login": "ChouChiu",
@@ -137,5 +137,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-09-02T01:47:10.699Z"
+	"fetchedAt": "2026-09-04T15:20:18.525Z"
 }
