@@ -1,8 +1,8 @@
 {
-	"version": "2.0.2",
-	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.2",
-	"releaseDate": "2026-09-04T13:13:34Z",
-	"releaseNotes": "## What's Changed\r\n* chore: remove KMP migration leftover by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/305\r\n* 桌面端设置对话框新增 `恢复默认` 按钮 by @MakkiShizu in https://github.com/LanRhyme/MicYou/pull/306\r\n* docs: fix broken star history chart in READMEs by @CrustyMozarella in https://github.com/LanRhyme/MicYou/pull/313\r\n* fix: resolve notify interception caused by Windows notification mechanism by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/314\r\n* feat/native-multiplatform-plugins-entry-auto-complete-suffix-per-platform by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/317\r\n* fix(plugin): 修复 MessageTarget C ABI 序列化与文档不一致及 Windows 下集成测试稳定性问题 by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/321\r\n* feat(android): add Android 5.0+ (API 21) compatibility via multi-level Gradle property by @luminset in https://github.com/LanRhyme/MicYou/pull/319\r\n* fix: 修复 Windows 打包资源/悬浮窗/插件系统/虚拟设备回落系列问题 (Closes #307, #308, #309, #310, #322, #323) by @LanRhyme in https://github.com/LanRhyme/MicYou/pull/324\r\n\r\n## New Contributors\r\n* @MakkiShizu made their first contribution in https://github.com/LanRhyme/MicYou/pull/306\r\n* @CrustyMozarella made their first contribution in https://github.com/LanRhyme/MicYou/pull/313\r\n* @OrientCOMPASS made their first contribution in https://github.com/LanRhyme/MicYou/pull/314\r\n* @luminset made their first contribution in https://github.com/LanRhyme/MicYou/pull/319\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.1...v2.0.2\r\n\r\n## What's Changed\r\n* chore: remove KMP migration leftover by @ChinsaaWei in https://github.com/LanRhyme/MicYou/pull/305\r\n* 桌面端设置对话框新增 `恢复默认` 按钮 by @MakkiShizu in https://github.com/LanRhyme/MicYou/pull/306\r\n* docs: fix broken star history chart in READMEs by @CrustyMozarella in https://github.com/LanRhyme/MicYou/pull/313\r\n* fix: resolve notify interception caused by Windows notification mechanism by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/314\r\n* feat/native-multiplatform-plugins-entry-auto-complete-suffix-per-platform by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/317\r\n* fix(plugin): 修复 MessageTarget C ABI 序列化与文档不一致及 Windows 下集成测试稳定性问题 by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/321\r\n* feat(android): add Android 5.0+ (API 21) compatibility via multi-level Gradle property by @luminset in https://github.com/LanRhyme/MicYou/pull/319\r\n* fix: 修复 Windows 打包资源/悬浮窗/插件系统/虚拟设备回落系列问题 (Closes #307, #308, #309, #310, #322, #323) by @LanRhyme in https://github.com/LanRhyme/MicYou/pull/324\r\n\r\n## New Contributors\r\n* @MakkiShizu made their first contribution in https://github.com/LanRhyme/MicYou/pull/306\r\n* @CrustyMozarella made their first contribution in https://github.com/LanRhyme/MicYou/pull/313\r\n* @OrientCOMPASS made their first contribution in https://github.com/LanRhyme/MicYou/pull/314\r\n* @luminset made their first contribution in https://github.com/LanRhyme/MicYou/pull/319\r\n\r\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.1...v2.0.2\r\n\r\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MicYou)",
+	"version": "2.0.3",
+	"releaseUrl": "https://github.com/LanRhyme/MicYou/releases/tag/v2.0.3",
+	"releaseDate": "2026-09-05T12:49:00Z",
+	"releaseNotes": "## What's Changed\n* 为cli/tui依赖Tauri的插件api提供纯后端实现 by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/327\n\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.2...v2.0.3",
 	"contributors": [
 		{
 			"login": "ChouChiu",
@@ -23,6 +23,12 @@
 			"contributions": 16
 		},
 		{
+			"login": "OrientCOMPASS",
+			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
+			"html_url": "https://github.com/OrientCOMPASS",
+			"contributions": 8
+		},
+		{
 			"login": "Shimmerfly",
 			"avatar_url": "https://avatars.githubusercontent.com/u/178568507?u=376aeef55ea82f5ae027128c26efb94dd713c479&v=4",
 			"html_url": "https://github.com/Shimmerfly",
@@ -33,12 +39,6 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/17189158?u=38ef9989ad9a9acf4551d94d8a4c4a575a453e7d&v=4",
 			"html_url": "https://github.com/a2heng",
 			"contributions": 6
-		},
-		{
-			"login": "OrientCOMPASS",
-			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
-			"html_url": "https://github.com/OrientCOMPASS",
-			"contributions": 5
 		},
 		{
 			"login": "snowdropQwQ",
@@ -137,5 +137,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-09-05T09:35:31.393Z"
+	"fetchedAt": "2026-09-05T14:08:21.141Z"
 }
