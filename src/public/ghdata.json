@@ -17,16 +17,16 @@
 			"contributions": 28
 		},
 		{
+			"login": "OrientCOMPASS",
+			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
+			"html_url": "https://github.com/OrientCOMPASS",
+			"contributions": 25
+		},
+		{
 			"login": "tfr0305",
 			"avatar_url": "https://avatars.githubusercontent.com/u/110520583?u=6954cb243d29280a8beab959d4670474e64f89d6&v=4",
 			"html_url": "https://github.com/tfr0305",
 			"contributions": 16
-		},
-		{
-			"login": "OrientCOMPASS",
-			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
-			"html_url": "https://github.com/OrientCOMPASS",
-			"contributions": 10
 		},
 		{
 			"login": "Shimmerfly",
@@ -143,5 +143,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-09-11T20:09:52.687Z"
+	"fetchedAt": "2026-09-20T19:54:58.837Z"
 }
