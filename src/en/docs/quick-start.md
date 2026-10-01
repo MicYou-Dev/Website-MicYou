@@ -1,136 +1,130 @@
 ---
-title: Quick Start - MicYou Installation Guide
-description: MicYou quick start guide with detailed instructions on how to install and configure MicYou on Windows, macOS, Linux, and Android to turn your phone into a PC microphone.
-keywords: MicYou install,MicYou setup,MicYou quick start,ADB setup,USB debugging,Wi-Fi connection
+title: Quick Start - MicYou Setup Guide
+description: MicYou quick start guide. Learn how to stream your phone microphone to your PC over Wi-Fi, Web browser, or USB (ADB), and use it as an audio input in Discord, OBS, Zoom, and games.
+keywords: MicYou,phone microphone,PC microphone,Wi-Fi mic,Web mic,ADB connection,virtual audio cable,VB-CABLE,BlackHole,PipeWire,firewall setup
 ---
 
 # Quick Start
 
-## 1. Download ADB
+MicYou turns your mobile phone into a high-quality microphone for your computer, supporting Wi-Fi LAN, Web browser, and USB cable connections.
 
-Download from [Android Developers](https://developer.android.com/tools/releases/platform-tools?hl=zh_cn), or install via package manager:
+## 1. Preparation
 
-- <Copy text="winget install -e --id Google.PlatformTools" type="info" />
-- <Copy text="sudo apt install android-tools-adb" type="info" />
-- <Copy text="sudo pacman -S android-tools" type="info" />
+### Step 1: Install MicYou Desktop & Virtual Audio Driver
 
-Other platforms, please refer to [official documentation](https://developer.android.com/tools/releases/platform-tools)
+To enable voice and conferencing apps (like Discord, Zoom, or games) to capture audio from your phone, your PC needs a **virtual microphone driver** to route the stream:
 
-### Add ADB to Environment Variables
+1. **Download & Install MicYou Desktop**: Head to the [Download page](/en/download) to get the installer for your OS (Windows / macOS / Linux).
+2. **Install a Virtual Audio Driver**:
+   - **Windows**: Download the free **VB-CABLE Driver** from [VB-Audio](https://vb-audio.com/Cable/). Extract the ZIP file, right-click `VBCABLE_Setup_x64.exe` and select "Run as Administrator". Restart your PC after installation.
+   - **macOS**: Install BlackHole via Homebrew:
+     ```bash
+     brew install blackhole-2ch --cask
+     ```
+     > If macOS blocks the app on first launch, open "System Settings" > "Privacy & Security" and click "Open Anyway".
+   - **Linux**: MicYou natively supports **PipeWire** and registers a virtual microphone source automatically. No third-party driver is typically needed.
 
-After downloading and extracting, you need to add the ADB directory to your system's `PATH` environment variable so that the `adb` command is available in the terminal.
+### Step 2: Prepare Your Mobile Device
 
-**Windows:**
+Choose either method according to your preference:
 
-1. Press `Win+R`, type `sysdm.cpl` and press Enter to open System Properties
-2. Go to the "Advanced" tab and click "Environment Variables"
-3. Under "System variables", find the `Path` variable, select it, and click "Edit"
-4. Click "New" and enter the full path of the extracted ADB directory (e.g., `C:\platform-tools`)
-5. Click "OK" to close all dialogs
-6. Reopen the terminal and run `adb --version` to verify the configuration
+- **Mobile App (Recommended)**: Download and install the MicYou Android APK from the [Download page](/en/download). Grant microphone permission upon first launch.
+- **Web Mode (Zero-Install)**: No app required. Simply scan a QR code using any modern mobile browser (Chrome, Safari, Edge, Firefox).
 
-> If you installed via <Copy text="winget install -e --id Google.PlatformTools" type="info" />, ADB is added to `PATH` automatically — no manual configuration is needed.
+## 2. Connection Mode 1: Wi-Fi LAN (Recommended)
 
-**macOS / Linux:**
+Wi-Fi mode requires no cables, sets up in seconds, and is ideal for everyday voice calls, meetings, and streaming.
 
-If installed via a package manager, ADB is usually already in your `PATH`. If you extracted it manually, add the following line to your `~/.bashrc`, `~/.zshrc`, or `~/.profile`:
+### Step 1: Connect to Wi-Fi & Configure Firewall
 
-```bash
-export PATH=$PATH:/path/to/platform-tools
-```
+1. **Join the Same Network**: Ensure both your phone and PC are connected to the **same Wi-Fi network** (same router).
+2. **Allow Through Firewall (Crucial)**:
+   - **First Launch Popup**: When launching MicYou for the first time on Windows, check both **Private Networks** and **Public Networks** and click "Allow access".
+   - **Manual Firewall Rules**: If you accidentally dismissed the popup or experience connection timeouts, open PowerShell as Administrator and run:
+     ```powershell
+     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     ```
+     > Linux users using `ufw` can run: `sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 
-Then run `source ~/.zshrc` (or the corresponding config file) to apply the changes, and verify with `adb --version`.
+### Step 2: Start Desktop Server
 
-## 2. Enable USB Debugging
+1. Open MicYou on your PC and select **Wi-Fi** mode.
+2. The interface displays your PC's local IP (e.g. `192.168.1.100`) and default ports (Control: `6000`, Audio: `6001`).
 
-Using OneUI 8 as an example:
+### Step 3: Connect from Mobile App
 
-1. Go to Settings > About phone
-2. Tap Software information, find Build number and tap it 7 times to enable Developer Options
-3. Go back to Settings > Developer options, and enable USB debugging
+1. Open the MicYou App on your phone.
+2. Enter the IP address and port shown on your PC, then tap **Connect**.
+3. Speak into your phone and check the audio level meter in the MicYou desktop window. If the meter reacts, your wireless mic stream is live!
 
-## 3. USB connection
+## 3. Connection Mode 2: Web Browser Mode (No App Needed)
 
-Use a **stable** data cable, and set the connection mode to `USB` on **both** the desktop app and the Android app.
+If you are on a borrowed computer or prefer not to install an APK on your phone:
 
-## 4. Wi-Fi connection
+1. Make sure your phone and PC are on the same Wi-Fi network (firewall ports 6000/6001 are shared with Wi-Fi mode).
+2. Switch MicYou on your PC to **Web** mode.
+3. The desktop app will generate a QR code and a local URL (e.g. `http://192.168.1.100:6000`).
+4. Scan the QR code with your phone's camera or browser.
+5. Tap **Allow** when the browser requests microphone access. Audio will stream in real time via WebRTC.
 
-Ensure your Android device and PC are on the **same network**, and set the connection mode to `Wi-Fi` on **both** the desktop app and the Android app.
+## 4. Connection Mode 3: USB Cable / ADB (Ultra-Low Latency)
 
-## Android
+If you play competitive games requiring ultra-low audio latency, or if your Wi-Fi router has AP isolation enabled:
 
-1. Download and install the APK on your Android device.
-2. Ensure your device is on the same network as your PC (for Wi-Fi) or connected via USB.
+### Step 1: Enable USB Debugging on Your Phone
 
-## Windows
+1. Go to "Settings" > "About Phone" on your Android device.
+2. Tap "Build Number" **7 times** quickly until you see "You are now a developer".
+3. Return to "Settings" > "System" / "Developer Options" and turn on **USB Debugging**.
 
-1. Run the desktop application.
-2. Configure the connection mode to match the Android app.
+### Step 2: Connect to PC & Grant Authorization
 
-## macOS
+1. Connect your phone to your PC with a USB cable.
+2. When the "Allow USB debugging?" prompt appears on your phone screen, check "Always allow from this computer" and tap OK.
 
-For the best experience, install the following dependencies via Homebrew:
+### Step 3: Start Streaming
 
-```bash
-brew install blackhole-2ch --cask
-brew install switchaudio-osx --formulae
-```
+1. Switch both the desktop and mobile MicYou apps to **USB** mode.
+2. Click Connect to start streaming audio over USB with minimal latency.
 
-> **BlackHole** is required (virtual audio driver). If you do not have Homebrew, go to https://existential.audio/blackhole/download/ to download the installer.
+> [!NOTE] ADB Environment
+> MicYou Desktop detects and invokes ADB automatically. If your system does not have ADB installed, you can install it via:
+> - Windows: <Copy text="winget install -e --id Google.PlatformTools" type="info" />
+> - macOS: <Copy text="brew install android-platform-tools" type="info" />
+> - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
+> - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
 
-Please restart your Mac after installation.
+## 5. Configure Microphone in Voice & Game Apps
 
-After downloading the app from [GitHub Releases](https://github.com/LanRhyme/MicYou/releases) and installing it in your Applications folder, Gatekeeper may block it during first use:
+Once audio is transmitting, route it to your target application:
 
-- If prompted with "Untrusted Developer," navigate to **System Settings/System Preferences > Privacy & Security** to allow the app to run.
-- If prompted with "The application is damaged," execute the following command:
+1. **Configure MicYou Desktop**:
+   - Set MicYou's **Audio Output Device** to the virtual driver's input:
+     - **Windows**: `CABLE Input (VB-Audio Virtual Cable)`
+     - **macOS**：`BlackHole 2ch`
+     - **Linux**: Default PipeWire virtual node
+2. **Configure Voice / Meeting / Game Apps**:
+   - Open your app (Discord, Zoom, OBS, Teams, Steam, etc.) and go to Audio/Voice Settings.
+   - Set the **Microphone (Input Device)** to:
+     - **Windows**: `CABLE Output (VB-Audio Virtual Cable)`
+     - **macOS**: `BlackHole 2ch`
+     - **Linux**: PipeWire `MicYou` input node
+3. Test your mic in the app—your teammates will now hear your mobile phone mic clearly!
 
-```bash
-sudo xattr -r -d com.apple.quarantine /Applications/MicYou.app
-```
+## Troubleshooting & Tips
 
-You will need to enter your account password during the process. The password will be hidden while you are entering it. Press Enter after you have finished entering it.
+### 1. Wi-Fi mode connection failed or timed out?
+- **Firewall Rule**: Ensure Windows Defender Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001 ports.
+- **Router AP Isolation**: Public or university Wi-Fi networks often isolate devices from talking to each other. Use a mobile hotspot from your phone or switch to USB mode.
 
-## Linux
+### 2. Level meter is moving, but voice apps have no sound?
+- Check device direction: MicYou desktop output must be **`CABLE Input`**, while your voice app microphone input must be **`CABLE Output`**.
+- Ensure `CABLE Output` is not muted or set to zero volume in Windows Sound Settings.
 
-### Using pre-built packages (recommended)
+### 3. Audio stutters or stops when phone screen turns off?
+- Aggressive Android battery management can suspend background network or audio tasks.
+- Open Android Settings > Apps > MicYou > Battery, and set it to **"Unrestricted"** (or allow full background activity), and lock the app card in the Recents view.
 
-Pre-built packages are available in [GitHub Releases](https://github.com/LanRhyme/MicYou/releases). Choose the appropriate package for your Linux distribution.
-
-**DEB package (Debian/Ubuntu/Mint etc.):**
-
-```bash
-sudo dpkg -i MicYou-*.deb
-# If dependencies are missing:
-sudo apt install -f
-```
-
-**RPM package (Fedora/RHEL/openSUSE etc.):**
-
-```bash
-sudo rpm -i MicYou-*.rpm
-# Or use dnf/yum:
-sudo dnf install MicYou-*.rpm
-```
-
-**AUR (Arch Linux and derivatives):**
-
-```bash
-git clone https://aur.archlinux.org/micyou-bin.git
-cd micyou-bin
-makepkg -si
-```
-
-Or use an AUR helper like paru:
-
-```bash
-paru -S micyou-bin
-```
-
-**Run the application:**
-
-From the application menu, or run from terminal:
-
-```bash
-MicYou
-```
+> [!TIP]
+> Running into other issues? Check out the [FAQ](/en/docs/faq) for more detailed troubleshooting steps and solutions.

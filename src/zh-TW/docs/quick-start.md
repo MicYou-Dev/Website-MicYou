@@ -1,137 +1,130 @@
 ---
-title: 快速開始 - MicYou 安裝設定指南
-description: MicYou 快速開始指南，詳細介紹如何在 Windows、macOS、Linux 和 Android 上安裝和設定 MicYou，將手機變成電腦麥克風。
-keywords: MicYou安裝,MicYou設定,MicYou快速開始,ADB設定,USB偵錯,Wi-Fi連線
+title: 快速開始 - MicYou 安裝與設定指南
+description: MicYou 快速上手指南。了解如何透過 Wi-Fi 區域網路、Web 網頁或 USB (ADB) 將手機麥克風串流至電腦，並在 Discord、微信、QQ、OBS 等軟體中作為麥克風使用。
+keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連線,虛擬音效卡,VB-CABLE,BlackHole,PipeWire,防火牆設定
 ---
 
 # 快速開始
 
-## 1. 下載 ADB
+MicYou 可以將你的手機作為高品質的電腦麥克風使用，支援 Wi-Fi 區域網路、Web 網頁與 USB 資料線連線。
 
-從 [Android Developers](https://developer.android.com/tools/releases/platform-tools?hl=zh_cn) 下載，或使用套件管理工具：
+## 1. 準備工作
 
-- <Copy text="winget install -e --id Google.PlatformTools" type="info" />
-- <Copy text="sudo apt install android-tools-adb" type="info" />
-- <Copy text="sudo pacman -S android-tools" type="info" />
+### 步驟一：安裝電腦端與虛擬音效卡
 
-其他平台請參考 [官方文檔](https://developer.android.com/tools/releases/platform-tools)
+要讓電腦上的軟體（如 Discord、微信、遊戲）識別到手機傳來的聲音，電腦上需要一個**虛擬麥克風驅動程式**來接收音訊：
 
-### 將 ADB 加入環境變數
+1. **下載並安裝 MicYou 電腦端**：前往 [下載頁面](/zh-TW/download) 獲取對應作業系統的安裝套件（Windows / macOS / Linux）。
+2. **安裝虛擬音效卡驅動程式**：
+   - **Windows**：前往 [VB-Audio 官網](https://vb-audio.com/Cable/) 下載免費的 **VB-CABLE Driver**。解壓縮後按右鍵選擇「以系統管理員身分執行」`VBCABLE_Setup_x64.exe`，安裝完成後建議重新啟動一次電腦。
+   - **macOS**：建議使用 Homebrew 安裝 BlackHole 虛擬音效卡驅動程式：
+     ```bash
+     brew install blackhole-2ch --cask
+     ```
+     > 安裝後若開啟 MicYou 提示安全性攔截，請在「系統設定」>「隱私權與安全性」中點擊「仍要開啟」。
+   - **Linux**：MicYou 原生適配 **PipeWire**，啟動後會自動建立音訊輸入節點，通常無需安裝第三方驅動程式。
 
-下載並解壓縮後，需要將 ADB 所在目錄加入系統環境變數 `PATH`，才能在終端中直接使用 `adb` 命令。
+### 步驟二：準備手機端
 
-**Windows：**
+根據你的使用習慣，選擇以下任意一種方式：
 
-1. 按下 `Win+R`，輸入 `sysdm.cpl` 並回車，開啟「系統內容」
-2. 切換到「進階」索引標籤，點選「環境變數」
-3. 在「系統變數」中找到 `Path` 變數，點兩下編輯
-4. 點選「新增」，輸入 ADB 解壓縮後的完整路徑（例如 `C:\platform-tools`）
-5. 點選「確定」儲存所有視窗
-6. 重新開啟終端機，輸入 `adb --version` 驗證設定是否成功
+- **App 方式（推薦）**：前往 [下載頁面](/zh-TW/download) 下載並安裝 MicYou Android 客戶端 (`.apk`)。首次開啟請授予麥克風權限。
+- **免安裝 Web 方式**：無需在手機安裝任何 App，直接使用手機內建的現代瀏覽器（Chrome、Safari、Edge 等）掃描 QR Code 即可使用。
 
-> 若使用 <Copy text="winget install -e --id Google.PlatformTools" type="info" /> 安裝，ADB 會自動加入環境變數，無需手動設定。
+## 2. 連線方式一：Wi-Fi 區域網路模式（首選推薦）
 
-**macOS / Linux：**
+無線區域網路模式無需插線，設定最快，適合日常語音聊天、線上課程與會議。
 
-若透過套件管理工具安裝，ADB 通常已自動加入 `PATH`。若手動解壓縮，可將以下命令加入 `~/.bashrc`、`~/.zshrc` 或 `~/.profile` 中：
+### 步驟一：連入同一網路與放行防火牆
 
-```bash
-export PATH=$PATH:/path/to/platform-tools
-```
+1. **同一網路**：確保手機和電腦連線到了**同一個 Wi-Fi**（同一台路由器）。
+2. **放行電腦防火牆（重要）**：
+   - **首次執行彈窗**：Windows 首次啟動 MicYou 時通常會跳出防火牆授權視窗，請**務必勾選「私人網路」與「公用網路」**並點擊「允許存取」。
+   - **手動放行規則**：若先前誤點了取消、或連線時提示逾時，請以系統管理員身分開啟 PowerShell 執行以下命令放行連接埠：
+     ```powershell
+     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     ```
+     > Linux 使用者若啟用了 `ufw` 防火牆，可執行：`sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 
-然後執行 `source ~/.zshrc`（或對應的設定檔）使其生效，最後執行 `adb --version` 驗證。
+### 步驟二：電腦端啟動監聽
 
-## 2. 啟用 USB 偵錯
+1. 開啟 MicYou 桌面端，選擇 **Wi-Fi** 模式。
+2. 介面上會顯示目前電腦的區域網路 IP（例如 `192.168.1.100`）和預設連接埠（控制埠 `6000` / 音訊埠 `6001`）。
 
-以 OneUI 8 為例：
+### 步驟三：手機端發起連線
 
-1. 進入「設定」> 「關於手機」
-2. 點選「軟體資訊」，找到「編譯編號」，連點 7 次以啟用開發者選項
-3. 返回「設定」> 「開發者選項」，啟用「USB 偵錯」
+1. 開啟手機上的 MicYou App。
+2. 輸入電腦端顯示的 IP 位址與連接埠號，點擊「連線」。
+3. 對著手機說話，觀察電腦端 MicYou 介面上的音量電平條。若有波形跳動，代表音訊傳輸已正常建立！
 
-## 3. 使用 USB 連線
+## 3. 連線方式二：Web 網頁模式（免裝客戶端）
 
-請使用品質穩定的傳輸線，並在桌面端與 Android 應用同時將連線模式切換為 `USB`。
+如果你是在朋友的電腦上臨時借用、不想在手機安裝 APK，可以使用 Web 模式：
 
-## 4. 使用 Wi‑Fi 連線
+1. 確保手機與電腦在同一個 Wi-Fi 網路下（防火牆放行規則與上方 Wi-Fi 模式相同）。
+2. 在電腦端 MicYou 介面中切換到 **Web** 模式。
+3. 電腦端介面會自動產生一個存取 QR Code 與區域網路 URL（如 `http://192.168.1.100:6000`）。
+4. 使用手機系統相機或瀏覽器掃描該 QR Code 開啟網頁。
+5. 在手機瀏覽器彈出的權限提示中點擊 **「允許使用麥克風」**，網頁即可透過 WebRTC 即時將聲音串流至電腦。
 
-請確保 Android 裝置與電腦位於同一網路，並在桌面端與 Android 應用同時切換成 `Wi‑Fi` 模式。
+## 4. 連線方式三：USB 資料線模式（極低延遲）
 
-## Android
+如果你需要玩高要求競技遊戲、或目前處於校園網路/公共 Wi-Fi 導致區域網路不穩定/開啟了 AP 隔離，推薦使用 USB 資料線模式：
 
-1. 下載並安裝 APK 到您的 Android 裝置
-2. 確保您的裝置與 PC 位於同一網路（Wi-Fi 模式），或透過 USB 連線
+### 步驟一：開啟手機 USB 偵錯
 
-## Windows
+1. 開啟手機「設定」>「關於手機」（部分機型在「系統資訊」）。
+2. 連續快速點擊「版本號碼」（或「軟體版本」）**7 次**，直到畫面提示已進入開發人員模式。
+3. 返回手機「設定」>「系統」或「其他設定」>「開發人員選項」，找到並開啟 **USB 偵錯**。
 
-1. 執行桌面端應用程式
-2. 設定連線模式以匹配 Android 應用
+### 步驟二：連線電腦並授權
 
+1. 使用 USB 資料線將手機與電腦連線。
+2. 手機畫面會跳出「允許 USB 偵錯嗎？」的授權視窗，勾選「一律允許透過這台電腦進行偵錯」並點擊確定。
 
-## macOS
+### 步驟三：啟動 USB 傳輸
 
-為了獲得更佳的使用體驗，建議透過 Homebrew 安裝以下套件：
+1. 在電腦端與手機端的 MicYou 中均切換至 **USB** 模式。
+2. 點擊連線，即可享受穩定無波動的低延遲音訊傳輸。
 
-```bash
-brew install blackhole-2ch --cask
-brew install switchaudio-osx --formulae
-```
+> [!NOTE] ADB 執行環境
+> MicYou 桌面端會自動偵測並呼叫 ADB 通道。如果系統提示未找到 ADB，可透過套件管理器一鍵安裝：
+> - Windows: <Copy text="winget install -e --id Google.PlatformTools" type="info" />
+> - macOS: <Copy text="brew install android-platform-tools" type="info" />
+> - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
+> - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
 
-> **BlackHole** 為必要軟體（虛擬音訊驅動程式）。若未安裝 Homebrew，可至 https://existential.audio/blackhole/download/ 下載安裝程式。
+## 5. 在通話 / 遊戲 / 會議軟體中設定麥克風
 
-安裝完成後請重新啟動電腦。
+音訊傳輸建立後，最後一步是在你的目標軟體中選用虛擬麥克風：
 
-從 [GitHub Releases](https://github.com/LanRhyme/MicYou/releases) 下載並安裝到「應用程式」資料夾。首次開啟可能會被 Gatekeeper 攔截：
+1. **檢查 MicYou 電腦端設定**：
+   - 將 MicYou 的 **音訊輸出裝置** 選為虛擬音效卡的輸入端：
+     - **Windows**：`CABLE Input (VB-Audio Virtual Cable)`
+     - **macOS**：`BlackHole 2ch`
+     - **Linux**：預設 PipeWire 虛擬節點
+2. **設定通訊 / 會議軟體**：
+   - 開啟你的通訊軟體（Discord、微信、QQ、騰訊會議、OBS、Steam 語音等），進入聲音/音訊設定。
+   - 將 **麥克風（輸入裝置）** 更改為：
+     - **Windows**：`CABLE Output (VB-Audio Virtual Cable)`
+     - **macOS**：`BlackHole 2ch`
+     - **Linux**：PipeWire 對應的 `MicYou` 輸入節點
+3. 現在與朋友通話或錄音測試，軟體就會直接拾取手機端傳來的清晰聲音！
 
-- 若顯示「不受信任的開發者」，請至「系統設定」> 「隱私權與安全性」允許應用程式
-- 若顯示「應用程式已損毀」，在終端執行：
+## 常見疑難排解與注意事項
 
-```bash
-sudo xattr -r -d com.apple.quarantine /Applications/MicYou.app
-```
+### 1. Wi-Fi 模式提示連線失敗或逾時？
+- **防火牆攔截**：確保已在 Windows 防火牆或 Linux ufw 中放行 TCP 6000 和 UDP 6001 連接埠。
+- **路由器 AP 隔離**：部分公共 Wi-Fi、校園網路或路由器的「訪客模式」開啟了 AP 隔離，禁止區域網路裝置互訪。可以嘗試手機開啟熱點讓電腦連線，或者改用 USB 資料線模式。
 
-執行時需輸入您的使用者帳號密碼，輸入時密碼不可見，完成後回車即可。
+### 2. 看到電平在跳動，但在聊天軟體裡沒聲音？
+- 確認音訊裝置方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
+- 檢查 Windows 系統聲音設定中 `CABLE Output` 是否被靜音或音量過小。
 
-## Linux
+### 3. 手機鎖定螢幕後聲音中斷或斷斷續續？
+- 部分 Android 系統的背景激進省電策略會在鎖定螢幕後暫停背景網路與麥克風。
+- 請進入手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理」，設定為 **「無限制」** 或 **「允許完全背景活動」**，並在多工檢視中鎖定 MicYou。
 
-### 使用預編譯套件（推薦）
-
-預編譯套件可在 [GitHub Releases](https://github.com/LanRhyme/MicYou/releases) 下載。根據您的 Linux 發行版選擇相應的套件。
-
-**DEB 套件（Debian/Ubuntu/Mint 等）：**
-
-```bash
-sudo dpkg -i MicYou-*.deb
-# 如果缺少依賴：
-sudo apt install -f
-```
-
-**RPM 套件（Fedora/RHEL/openSUSE 等）：**
-
-```bash
-sudo rpm -i MicYou-*.rpm
-# 或使用 dnf/yum：
-sudo dnf install MicYou-*.rpm
-```
-
-**AUR（Arch Linux 及衍生發行版）：**
-
-```bash
-git clone https://aur.archlinux.org/micyou-bin.git
-cd micyou-bin
-makepkg -si
-```
-
-或使用 AUR 輔助程式（如 paru）：
-
-```bash
-paru -S micyou-bin
-```
-
-**執行應用：**
-
-從應用程式選單執行，或在終端執行：
-
-```bash
-MicYou
-```
+> [!TIP]
+> 遇到其他問題？請參閱 [常見問題 (FAQ)](/zh-TW/docs/faq) 獲取更詳細的疑難排解方案。
