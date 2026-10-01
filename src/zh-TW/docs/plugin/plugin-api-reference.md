@@ -11,8 +11,18 @@ keywords: MicYou,插件API,Host API,WASM,native,C ABI,權限
 
 API 版本：`HOST_API_VERSION = 1`（見 manifest `apiVersion`）
 - 追加式演進：**新字段只能加在 `mpl_host_api_t` 的 `ctx` 之後**，禁止插入中間，舊插件按舊偏移仍能正確讀取
-- manifest `minHostVersion` 聲明插件所需的最低宿主 API 版本，major 超過宿主版本即拒絕加載
 - 插件能力（capabilities）在 manifest 中聲明，宿主在每次調用時強制檢查，越權返回 `MPL_ERR_PERMISSION`
+
+### 調用約定與並發安全約束
+
+Native 插件與宿主行程共用同一行程空間，需遵循以下調用約定：
+
+1. **結構體按值拷貝**：
+   `micyou_plugin_init(host)` 傳入的 `host` 指標僅在初始化調用期間保證有效。插件應在 `init` 階段將 `mpl_host_api_t` 結構體按值完整拷貝至插件私有靜態或全域狀態中，而非僅保留指標引用。
+
+2. **調用執行緒上下文約束**：
+   - **禁止在即時音訊執行緒中調用**：`micyou_plugin_process` 運行於極低延遲優先級的即時音訊渲染執行緒，嚴禁在此方法內調用任何 Host API（包括 I/O、配置讀取與日誌），以避免音訊串流欠載或死鎖。
+   - **執行緒分發約束**：Host API 通常要求在宿主派發的回調執行緒（如 `handle_message`、`handle_event` 或定時器回調）中執行。插件自行派生的背景工作執行緒如需調用宿主能力，建議透過通道或任務佇列交由派發執行緒代為調用。
 
 ### Native（C ABI，`mpl_host_api_t`）
 

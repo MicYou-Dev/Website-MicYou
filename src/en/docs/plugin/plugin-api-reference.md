@@ -22,7 +22,15 @@ Both runtimes expose the same Host API surface
 ## Host API (C ABI)
 
 Native plugins receive a function table (`mpl_host_api_t`) whose fields are
-appended after `ctx` only, so older plugins stay ABI-compatible
+appended after `ctx` only, so older plugins stay ABI-compatible.
+
+### Calling Conventions & Concurrency Constraints
+
+Native plugins share the host process address space and must follow these rules:
+
+1. **Pass-by-value struct copy**: The `host` pointer in `micyou_plugin_init(host)` is only valid during the initialization callback. Copy `mpl_host_api_t` by value into private plugin state instead of holding the pointer.
+2. **Audio thread restriction**: `micyou_plugin_process` runs on a hard real-time audio thread. Never invoke Host APIs (including file I/O, config lookups, or logging) inside this method.
+3. **Thread dispatching**: Call Host APIs from host-dispatched callback threads (`handle_message`, `handle_event`, or timer callbacks). Background worker threads should dispatch tasks via message channels.
 
 | Field | Signature | Capability |
 | --- | --- | --- |

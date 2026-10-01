@@ -16,7 +16,7 @@ keywords: MicYou,plugin development,WASM,native,manifest,example plugins
 
 ## Minimal WASM plugin
 
-```wat
+```wasm
 (module
   (import "micyou" "log" (func $log (param i32 i32)))
   (memory (export "memory") 1)

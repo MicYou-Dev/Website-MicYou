@@ -341,7 +341,7 @@ WASM 插件是 core wasm 模塊（無需 WASI），在 `wasmi` 純 Rust 解釋�
 
 核心骨架：
 
-```wat
+```wasm
 (module
   (import "micyou" "log" (func $log (param i32 i32)))
   (import "micyou" "emit_event" (func $emit_event (param i32 i32) (result i32)))

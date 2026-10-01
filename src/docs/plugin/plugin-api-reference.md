@@ -14,6 +14,17 @@ API 版本：`HOST_API_VERSION = 1`（见 manifest `apiVersion`）
 - manifest `minHostVersion` 声明插件所需的最低宿主 API 版本，major 超过宿主版本即拒绝加载
 - 插件能力（capabilities）在 manifest 中声明，宿主在每次调用时强制检查，越权返回 `MPL_ERR_PERMISSION`
 
+### 调用约定与并发安全约束
+
+Native 插件与宿主进程共享同一进程空间，需遵循以下调用约定：
+
+1. **结构体按值拷贝**：
+   `micyou_plugin_init(host)` 传入的 `host` 指针仅在初始化调用期间保证有效。插件应在 `init` 阶段将 `mpl_host_api_t` 结构体按值完整拷贝至插件私有静态或全局状态中，而非仅保留指针引用。
+
+2. **调用线程上下文约束**：
+   - **禁止在实时音频线程中调用**：`micyou_plugin_process` 运行于极低延迟优先级的实时音频渲染线程，严禁在此方法内调用任何 Host API（包括 I/O、配置读取与日志），以避免音频流欠载或死锁。
+   - **线程分发约束**：Host API 通常要求在宿主派发的回调线程（如 `handle_message`、`handle_event` 或定时器回调）中执行。插件自行派生的后台工作线程如需调用宿主能力，建议通过通道或任务队列交由派发线程代为调用。
+
 ### Native（C ABI，`mpl_host_api_t`）
 
 ```c
