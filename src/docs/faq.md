@@ -1,7 +1,7 @@
 ---
 title: 常见问题 - MicYou 故障排除
-description: MicYou 常见问题解答，包括设备连接问题、防火墙设置、ADB 配置和音频输出故障排除等。
-keywords: MicYou常见问题,MicYou故障排除,MicYou无法连接,防火墙设置,ADB问题,音频问题
+description: MicYou 常见问题解答，包括设备连接问题、防火墙设置、ADB 配置、音频输出故障排除及 Linux 渲染问题等。
+keywords: MicYou常见问题,MicYou故障排除,MicYou无法连接,防火墙设置,ADB问题,音频问题,PipeWire,软解渲染
 ---
 
 # 常见问题
@@ -32,34 +32,35 @@ keywords: MicYou常见问题,MicYou故障排除,MicYou无法连接,防火墙设�
    - 确保路由器已关闭 **AP 隔离** 或 **网络设备隔离** 功能（详情请参阅路由器说明书）
 
 > [!TIP]
-> 高级用户可尝试使用 Nmap 或 ping 等工具检查连接性。
+> 高级用户可尝试使用 ping 或 nmap 等工具排查手机与电脑之间的网络互通性。
 
 ### USB (ADB) 模式
 
 1. **开启开发者选项**
 
-   > 此处列出的步骤可能不适用于所有设备，**建议使用搜索引擎**查找适用于您设备的 ADB 教程。
-
-   - 在手机设置中找到"关于本机"，连续点击 7 次"系统版本号"开启开发者选项
+   - 在手机设置中找到“关于本机”，连续点击 7 次“系统版本号”开启开发者选项
    - 进入开发者选项，开启 **USB 调试**
 
 2. **确认 ADB 连接**
 
-   > 电脑端需要安装 ADB 工具（参见第 1 步：下载 ADB）。
-
-   运行以下命令，确认有且仅有一个设备已连接：
+   运行以下命令，确认有且仅有一个设备已成功授权连接：
 
    ```bash
    adb devices
    ```
 
-   如果列出了多个设备，则需要指定目标设备进行端口转发：
+   如果列出了多个设备，则需要指定目标设备序列号进行端口转发：
 
    ```bash
    adb -s <设备序列号> reverse tcp:6000 tcp:6000
    ```
 
    > 设备序列号可在 `adb devices` 的输出中找到。
+
+### Web 网页模式
+
+1. **无法打开网页**：确认手机与电脑连接同一 Wi-Fi，且电脑防火墙放行了桌面端提示的 Web 端口。
+2. **麦克风无法录制**：请确保手机浏览器支持 WebRTC 标准（推荐 Chrome、Safari、Edge 或 Firefox），并在浏览器弹窗中选择「允许访问麦克风」。
 
 ## 连接设备后无声音输出
 
@@ -78,18 +79,41 @@ keywords: MicYou常见问题,MicYou故障排除,MicYou无法连接,防火墙设�
 
 ### macOS
 
-请确保 BlackHole 驱动已正确安装！
+请确保 BlackHole 驱动已正确安装：
 
-若未安装 `switchaudio-osx`，您需要手动在 「系统设置」/「系统偏好设置」>「声音」>「输入」改为 BlackHole
+若未安装 `switchaudio-osx`，您需要手动在 「系统设置」/「系统偏好设置」>「声音」>「输入」中将麦克风切换为 BlackHole。
 
 ![输入设备](/macos-sound-zhcn.png)
+
+### Linux (PipeWire)
+
+MicYou 针对 PipeWire 实现了原生集成。若系统未识别到虚拟节点，请检查 PipeWire 服务状态：
+
+```bash
+systemctl --user status pipewire pipewire-pulse
+```
 
 ## 退出软件后设备自带麦克风无法使用
 
 ### macOS
 
-若您的 Mac 已有麦克风，当您未安装 `switchaudio-osx` 或者软件非正常退出时，麦克风设置不会恢复。
+若您的 Mac 已有麦克风，当您未安装 `switchaudio-osx` 或者软件非正常退出时，麦克风设置可能不会自动还原。
 
-您需要手动在 「系统设置」/「系统偏好设置」>「声音」>「输入」改为您的设备麦克风。
+您需要手动在 「系统设置」/「系统偏好设置」>「声音」>「输入」中改回您的设备麦克风（如「MacBook Pro 麦克风」）。
 
-> 对于内建麦克风，它们可能名为「MacBook Pro 麦克风」、「MacBook Air 麦克风」或同类名称
+## Linux 客户端出现白屏或窗口透明
+
+部分 Linux 发行版（尤其是搭载 NVIDIA 独显或特定版本的 WebKitGTK 环境）在 DMA-BUF 硬件加速渲染时可能出现白屏或透明窗口异常。
+
+可通过附加 `--software-rendering` 参数启动：
+
+```bash
+MicYou --software-rendering
+```
+
+或者设置环境变量：
+
+```bash
+export WEBKIT_DISABLE_DMABUF_RENDERER=1
+MicYou
+```

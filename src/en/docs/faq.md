@@ -1,95 +1,115 @@
 ---
 title: FAQ - MicYou Troubleshooting
-description: MicYou frequently asked questions including device connection issues, firewall settings, ADB configuration, and audio output troubleshooting.
-keywords: MicYou FAQ,MicYou troubleshooting,MicYou cannot connect,firewall settings,ADB issues,audio issues
+description: Frequently asked questions for MicYou, covering connection issues, firewall configurations, ADB debugging, audio routing, and Linux rendering solutions.
+keywords: MicYou FAQ,MicYou troubleshooting,cannot connect,firewall settings,ADB issues,audio routing,PipeWire,software rendering
 ---
 
 # FAQ
 
-## Cannot connect to device
+## Cannot Connect Device
 
 ### Wi-Fi Mode
 
-1. **Check Firewall Settings**
+1. **Check Firewall Rules**
 
-   Windows Firewall may block inbound connections. Please follow these steps to manually allow the ports:
+   Windows Firewall may block inbound traffic. You can allow the ports manually via PowerShell:
 
-   1. Press `Win+R`, type `powershell`, then hold `Ctrl+Shift` and click "OK" to run PowerShell as administrator.
-   2. Enter the following commands:
+   1. Press `Win+R`, type `powershell`, hold `Ctrl+Shift`, and hit Enter to run as Administrator.
+   2. Run the following commands:
 
       ```powershell
       New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
       New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
       ```
 
-      > MicYou uses TCP port `6000` (control) and UDP port `6001` (audio data) by default. Change the port numbers if you have configured a different port.
+      > MicYou defaults to TCP port `6000` (control channel) and UDP port `6001` (audio stream). If you modified ports in settings, replace them with your custom values.
 
-      If no error appears, the operation was successful. Try connecting again.
+2. **Check Subnet Connectivity**
 
-2. **Check if devices are on the same subnet**
-
-   - Ensure the Android phone and PC are connected to the **same** Wi-Fi router.
-   - Ensure that **AP Isolation** or **Network Device Isolation** features are disabled in router settings (refer to your router's manual).
+   - Verify that your phone and PC are connected to the **same Wi-Fi network**.
+   - Make sure your router's **AP Isolation** or **Client Isolation** feature is turned off.
 
 > [!TIP]
-> Advanced users can try using tools like Nmap or ping to check connectivity.
+> Advanced users can run ping or nmap to verify end-to-end IP reachability.
 
 ### USB (ADB) Mode
 
-1. **Enable Developer Options**
+1. **Enable Developer Options & USB Debugging**
 
-   > The steps below may vary depending on your device. **Please use a search engine** to find instructions for your specific device.
+   - Open Settings > About Phone, tap "Build number" 7 times.
+   - Return to Developer Options and toggle **USB Debugging** on.
 
-   - Find "About phone" in phone settings, tap "Build number" 7 times to enable Developer Options.
-   - Enter Developer Options and enable **USB debugging**.
+2. **Verify ADB Connection**
 
-2. **Confirm ADB connection**
-
-   > ADB tools must be installed on the computer (see Step 1: Download ADB above).
-
-   Run the following command to verify that one and only one device is connected:
+   Run:
 
    ```bash
    adb devices
    ```
 
-   If multiple devices are listed, specify the target device for port forwarding:
+   If multiple devices are connected, forward the port specifically:
 
    ```bash
-   adb -s <device_serial_number> reverse tcp:6000 tcp:6000
+   adb -s <device-serial> reverse tcp:6000 tcp:6000
    ```
 
-   > The device serial number can be found in the output of `adb devices`.
+### Web Mode
 
-## No audio output after connecting
+1. **Page Fails to Load**: Ensure your mobile device and PC are on the same Wi-Fi and that the PC firewall allows inbound connections on the generated Web port.
+2. **Microphone Access**: Ensure you are using a modern browser with WebRTC support (e.g. Chrome, Safari, Edge, Firefox) and grant microphone permission when prompted.
+
+## No Sound Output After Connecting
 
 ### Windows
 
-Please ensure that the VB-Audio driver is correctly installed and that the following devices are **not disabled**:
+Verify that VB-CABLE is installed and that the following devices are **enabled**:
 
-- **Output Device**: CABLE Input (VB-Audio Virtual Cable)
-- **Input Device**: CABLE Output (VB-Audio Virtual Cable)
+- **Output device**: CABLE Input (VB-Audio Virtual Cable)
+- **Input device**: CABLE Output (VB-Audio Virtual Cable)
 
-To check: Open Settings > Sound, and verify both devices are **Enabled**:
+Check via Windows Settings > Sound:
 
-![Input device](/input-device.png)
+![Input Device](/input-device.png)
 
-![Output device](/output-device.png)
-
-### macOS
-
-Please ensure that the BlackHole driver is properly installed!
-
-If `switchaudio-osx` is not installed, you will need to manually change the input to BlackHole in “System Settings” / “System Preferences” > ‘Sound’ > “Input”.
-
-![Input Device](/macos-sound-en.png)
-
-## Built-in microphone not working after exiting the app
+![Output Device](/output-device.png)
 
 ### macOS
 
-If your Mac has a built-in microphone, the microphone settings will not revert to normal if you haven’t installed `switchaudio-osx` or if the app exits abnormally.
+Ensure BlackHole is installed:
 
-You need to manually change the setting in “System Settings” / “System Preferences” > ‘Sound’ > “Input” to your device's microphone.
+If `switchaudio-osx` is not installed, manually switch your microphone in System Settings > Sound > Input to BlackHole.
 
-> For built-in microphones, they may be named “MacBook Pro Microphone,” “MacBook Air Microphone,” or similar names
+![macOS Input Device](/macos-sound-en.png)
+
+### Linux (PipeWire)
+
+MicYou features native PipeWire routing. If the virtual source does not appear, ensure PipeWire user services are running:
+
+```bash
+systemctl --user status pipewire pipewire-pulse
+```
+
+## Built-in Mic Not Working After Quitting
+
+### macOS
+
+If `switchaudio-osx` is not installed or the application exited abnormally, your default input device might remain set to BlackHole.
+
+Open System Settings > Sound > Input and select your built-in microphone (e.g., "MacBook Pro Microphone").
+
+## Linux Client Blank Screen or Transparent Window
+
+On certain Linux environments (especially with NVIDIA drivers or specific WebKitGTK versions), hardware DMA-BUF acceleration can cause a blank or transparent window.
+
+Launch the app with software rendering fallback:
+
+```bash
+MicYou --software-rendering
+```
+
+Alternatively, set the environment variable:
+
+```bash
+export WEBKIT_DISABLE_DMABUF_RENDERER=1
+MicYou
+```
