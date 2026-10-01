@@ -1,129 +1,69 @@
 ---
-title: MicYou 插件最佳实践与扩展性
-description: 插件架构、安全模型、版本兼容策略与 Android 扩展路线
-keywords: MicYou,插件,最佳实践,安全模型,版本兼容,Android
+title: 插件最佳实践与扩展架构 - MicYou
+description: MicYou 插件架构设计理念、移动端扩展路线、版本兼容策略、安全模型与性能预算。
+keywords: MicYou,插件,最佳实践,安全模型,版本兼容,Android,架构设计
 ---
 
-# 插件最佳实践与扩展性
+# 插件最佳实践与扩展架构
 
-## 为安卓端预留的扩展点
+本文档介绍 MicYou 插件系统的架构设计考量、移动端扩展路线、API 兼容演进原则及安全与性能规范。
 
-### 协议统一 + 实现分离
+## 1. 移动端扩展路线：协议统一与轻量实现
 
-插件系统按「协议统一 + 实现分离」设计，安卓端不照搬桌面实现：
+为了在未来将插件能力平滑拓展至 Android 移动端，MicYou 采用「**协议统一 + 实现解耦**」的设计原则，避免照搬重型动态插件化框架。
 
-- **统一**：Manifest 模型（[`plugin.json`](/docs/plugin/plugin-package-format)）、[Host API 能力描述](/docs/plugin/plugin-api-reference)、跨端消息协议（protobuf `PluginMessage`，见[插件系统总览](/docs/plugin/plugin-overview#跨端同步模型)）、总线语义（发布订阅 / RPC）两端共用
-- **分离**：插件加载实现（Native 加载器 / WASM 运行时）、宿主接线（HostApi 实现、传输适配器）按平台各自实现
+### 为什么避免重型插件化框架？
 
-### 桌面端的可复用部分
+在 Android 生态中，RePlugin、Shadow 等框架主要面向大型应用的组件热修复与页面动态化，对 MicYou 而言属于过度设计：
 
-| 模块 | 是否可复用于安卓 | 说明 |
-| --- | --- | --- |
-| `manifest.rs` | 是 | 纯 Rust，无平台依赖 |
-| `plugin.rs`（统一抽象） | 是 | 运行时无关的契约 |
-| `bus.rs`（PluginBus） | 是 | 纯 Rust 逻辑，仅替换 transport |
-| `sync.rs`（线协议编解码） | 是 | 依赖 micyou-protocol |
-| `wasm.rs`（wasmi 运行时） | 是 | wasmi 纯 Rust，无原生依赖，可直接嵌入 Android JNI |
-| `native.rs`（libloading） | 否 | Android 用其他加载方式（见下） |
-| `abi.rs` + `micyou_plugin_abi.h` | 参考 | 安卓可另定 JNI 绑定，但保持能力语义一致（详见 [API 参考](/docs/plugin/plugin-api-reference#c-abi-声明-micyou_plugin_abih)） |
+- **体积与打包开销**：传统框架体积臃肿、侵入性强，不适合轻量级音频工具。
+- **目标不匹配**：MicYou 插件的核心诉求是音频 DSP 节点、事件订阅与跨端通信，而非 Activity 页面跳转与组件插拔。
+- **安全与权限冲突**：动态加载未经验证的任意 APK 与插件系统的沙箱能力授权模型相冲突。
+- **系统升级维护成本**：重型框架极易受 Android 系统版本及 Gradle 插件升级影响。
 
-## 安卓端规划
+### 三阶段演进路线
 
-### 为什么不用重型插件化框架
+```text
+阶段一：协议对齐 ──► 阶段二：轻量运行时 ──► 阶段三：跨端全互通
+```
 
-RePlugin / Shadow / VirtualAPK 等动态插件框架面向「应用级插件化」（Activity / Service / 资源 / 热修复），对 MicYou 属于过度设计：
+1. **阶段一：协议对齐（核心）**  
+   - 移动端实现统一的 `plugin.json` 清单解析与校验。
+   - 在移动端 TCP 控制通道中接入 Protobuf `PluginMessage` 编解码。
+   - 实现轻量级的 `PluginBus`，打通移动端与桌面端的双向消息往返。
 
-- **体积**：框架与打包链开销大，MicYou 是单模块轻量应用
-- **能力不匹配**：插件需求是 [DSP 节点](/docs/plugin/plugin-development-guide#实时-dsp-插件规范)、事件、跨端消息，不是页面跳转与组件热插拔
-- **安全模型冲突**：框架追求「动态加载任意 APK」，与插件沙箱/能力授权模型不一致
-- **维护成本**：与 AGP/Kotlin 版本强绑定，升级成本高（详见 [Android 兼容构建](/docs/android-compat)）
+2. **阶段二：轻量运行时**  
+   - **WASM（优先）**：编译嵌入纯 Rust 的 `wasmi` 解释器，享有天然的内存与燃料沙箱。
+   - **受信 Native (.so)**：面向实时音频 DSP，通过 JNI 暴露统一 C ABI，仅允许加载受信任的预编译算法库。
+   - **轻量 DEX**：通过 `PathClassLoader` 隔离加载纯逻辑工具插件。
 
-推荐路径：**协议对齐 → 轻量运行时 → 跨端同步**，加载方式可选（轻量 DEX、受信 .so、WASM），不强制上重型框架
+3. **阶段三：跨端全互通**  
+   - 实现两端插件的自动发现与清单广播。
+   - 落地典型应用场景（如手机采集传感器数据 → 电脑端算法处理 → 结果实时回传）。
 
-### 分阶段路线图
+## 2. 版本兼容与解耦策略
 
-#### 阶段 1：协议对齐（核心）
+为了保证宿主与插件在长期演进中互不破坏，系统设计了多层兼容屏障：
 
-- 在安卓端实现 [`plugin.json`](/docs/plugin/plugin-package-format) 解析与校验（可与桌面共享同一份 manifest 描述，Kotlin 侧按 proto/JSON schema 对齐）
-- 引入 protobuf `PluginMessage` 到安卓的 TCP 控制通道（与桌面 `tcp_server` 对称）
-- 实现轻量 `PluginBus`（发布订阅 + RPC 关联）——语义与桌面 `bus.rs` 一致
-- 验收：安卓客户端能解析/发送 `PluginMessage`，与桌面端插件完成一次双向消息往返
+- **Host API 版本协商**：宿主支持向前兼容的 API 版本区间（如同时支持 v1 与 v2 插件），超出区间时才给出明确的不兼容提示。
+- **函数表追加式演进**：Native 的 `mpl_host_api_t` 结构体新字段**严格追加在 `ctx` 之后**，禁止在中间插入字段，旧插件按原有结构体偏移寻址完全不受影响。
+- **ABI 版本守卫**：`MPL_ABI_VERSION` 锁定结构体基础内存布局，仅在发生不兼容的破坏性修改时才升级 ABI 大版本。
+- **Protobuf 向后兼容**：底层通信采用 Proto3，旧版本客户端遇到未知的插件消息字段时会自动跳过，保证网络通信平滑兼容。
+- **冻结标准错误码**：错误码 0-12 的语义保持永久稳定，后续仅允许追加新错误码。
 
-#### 阶段 2：轻量运行时
-
-- **WASM**：优先（wasmi 可编译到 Android，纯 Rust 无原生依赖，天然沙箱）
-- **受信 .so**：面向实时 DSP 场景，走 JNI + 手写 ABI（或复用桌面 C ABI 头文件），仅加载受信来源（应用内置 / [官方商店](/docs/plugin/plugin-marketplace-policy)）
-- **轻量 DEX**：工具类插件可选，用 `PathClassLoader` 隔离加载，不做 Activity/资源插件化
-- 验收：安卓端可启用一个 WASM 工具插件与一个受信 .so DSP 插件
-
-#### 阶段 3：跨端同步
-
-- 接入与桌面一致的 `PluginMessage` 路由（本地分发 + 远端转发）
-- 两端插件互发现（通过总线广播插件清单）
-- 典型场景落地：手机传感器 → 电脑处理 → 回传
-- 验收：双向 RPC 与订阅推送端到端可用
-
-### 能力矩阵（两端对齐）
-
-| 能力 | 桌面 | 安卓 | 说明 |
-| --- | --- | --- | --- |
-| Manifest / 能力声明 | ✅ | ✅ | 同一 schema，见[包格式规范](/docs/plugin/plugin-package-format) |
-| Host API 逻辑接口 | ✅ | ✅ | 同一语义，不同绑定，见 [API 参考](/docs/plugin/plugin-api-reference) |
-| WASM 运行时 | ✅ | ✅（规划） | 同一模块产物，见[开发指南](/docs/plugin/plugin-development-guide#编写-wasm-插件) |
-| Native 运行时 | cdylib + libloading | 受信 .so + JNI（规划） | 加载方式不同，见[开发指南](/docs/plugin/plugin-development-guide#编写-native-插件) |
-| 跨端消息协议 | ✅ | ✅（阶段 1） | 同一 protobuf |
-| 插件总线（本地） | ✅ | ✅（阶段 1） | 同一语义 |
-| 插件总线（跨端） | ✅ | ✅（阶段 3） | 同一传输协议，见[总览](/docs/plugin/plugin-overview#跨端同步模型) |
-| DSP 链节点 | ✅（[`Plugins` 链节点](/docs/plugin/plugin-overview#与-dsp-音频链路的关系)） | 规划 | 安卓侧处理链在 AudioRecord 管线内 |
-| UI 按钮面板（`ui.route=buttons`） | ✅ | 规划 | 音效板等声明式面板，见[音效板示例](/docs/plugin/plugin-development-guide#音效板native-soundpad按钮面板--专属设置页--快捷键--音频播放) |
-| 专属设置页（`ui.panels`） | ✅ | 规划 | 沙箱 iframe + postMessage 桥，见[设置页指南](/docs/plugin/plugin-development-guide#编写插件专属设置页uipanels) |
-| 全局快捷键（`register_hotkey`） | ✅ | 规划 | 系统级快捷键消息，见[快捷键使用](/docs/plugin/plugin-development-guide#使用全局快捷键) |
-| `audio.play`（播放音效） | ✅ | 规划 | 安卓可映射到 MediaPlayer |
-| 前端管理界面 | ✅（Vue） | 规划 | Compose 面板，见[用户指南](/docs/plugin/plugin-user-guide#在-gui-中管理插件) |
-| `network.io` / `fs.read` | 预留 | 预留 | — |
-
-## 版本兼容与解耦策略
-
-- **Host API 版本**（`apiVersion`）：宿主支持版本区间协商（当前 `MIN_SUPPORTED_API_VERSION = 1`，`HOST_API_VERSION = 2`），声明为 v1 或 v2 的插件均可平滑加载，超出支持范围才会拒绝加载（错误码 7，详见 [API 参考错误码](/docs/plugin/plugin-api-reference#错误码)）
-- **ABI 版本**（Native）：`MPL_ABI_VERSION`（当前为 1）保护结构体基础布局；破坏性变更才会升级 ABI 版本
-- **Host 函数表追加式演进**：`mpl_host_api_t` 新字段（如 API v2 的控制面系列接口）严格追加在 `ctx` 之后，禁止插入中间——旧版 Native 插件读取已有字段的偏移保持不变，无需重新编译
-- **生命周期解耦**：插件运行时与 GUI 界面彻底解耦，无论在 GUI、CLI 还是 TUI 启动服务端，核心启动流程均会自动加载并执行已启用的插件，支持无头环境运行
-- **minHostVersion**：插件声明所需最低宿主 API 版本（semver），major 超过宿主版本即拒绝加载
-- **WASM 导入表**：新增导入不影响不引用它的旧插件；导入签名不匹配的调用在宿主侧报错而非崩溃
-- **线协议**：`MessageWrapper` 采用 proto3 未知字段兼容——旧客户端不识别 `pluginMessage` 字段时自动跳过，新字段只在双方都支持时生效
-- **错误码**：wire 错误码（0-12）冻结，新增错误只追加
-- **配置格式**：`plugin-state.json` 按 id 组织，缺失字段走默认值
-- **API 变更流程**：新增能力 = 追加字段 + 新能力名（旧插件不受影响）；破坏性变更 = 升级 `HOST_API_VERSION`，新旧插件并存（按 apiVersion 分发）
-
-## 安全模型
+## 3. 安全模型
 
 ### Native 插件
-
-- 全权进程内执行，等同本地应用代码——宿主只做「能力授权」与「版本校验」，不做代码沙箱
-- 安装来源信任：用户手动放入插件目录，或未来接入签名校验（预留，见[市场准入政策](/docs/plugin/plugin-marketplace-policy)）
-- 实时安全：`realtimeSafe` 声明是宿主信任依据，违反者造成音频质量问题由插件负责（详见[实时 DSP 规范](/docs/plugin/plugin-development-guide#实时-dsp-插件规范)）
+- **进程内执行**：Native 插件与宿主共享进程空间，宿主通过能力清单校验权限。
+- **实时安全声明**：插件通过清单中的 `realtimeSafe: true` 向宿主承诺其符合实时音频规范，违反规范导致音频卡顿由插件自行负责。
 
 ### WASM 插件
+- **内存沙箱**：运行在独立的线性内存空间内，无法越界访问宿主内存。
+- **指令燃料限制**：每次调用注入固定燃料预算（默认 100,000），防止死循环挂起宿主进程。
+- **权限逐次校验**：每次调用 Host API 均严格比对 `capabilities` 声明，未授权调用返回 `MPL_ERR_PERMISSION`。
 
-- **内存沙箱**：wasmi 解释器，插件无法越界访问宿主内存
-- **燃料计量**：每次入口调用注入固定燃料预算（默认 100 000），死循环被 trap，插件无法挂起宿主
-- **能力授权**：所有 host 函数按 manifest [capabilities 权限清单](/docs/plugin/plugin-api-reference#权限清单)逐调用校验，未授权返回 `MPL_ERR_PERMISSION`
-- **无系统访问**：不提供 WASI / 文件 / 网络导入，需系统能力请用 Native 插件
+## 4. 性能预算与实时音频建议
 
-### 消息安全
-
-- 跨端消息按插件 id 路由，未注册的 target 返回 unknown plugin
-- RPC 带超时，不会无限阻塞
-- 总线事件可广播到远端设备——插件需自行评估发布内容的敏感性
-
-### 审计与日志
-
-- 插件日志独立缓冲（每插件 500 行环形），GUI 可在[插件管理面板](/docs/plugin/plugin-user-guide#在-gui-中管理插件)查看
-- 宿主日志记录插件启停、加载失败与错误
-
-## 性能预算
-
-- DSP 插件节点：单节点单帧处理建议 < 1 ms（48 kHz / 480 样本帧，详见[开发指南](/docs/plugin/plugin-development-guide#实时-dsp-插件规范)）
-- WASM DSP：best-effort，禁止声称 realtimeSafe
-- 插件调度：音频线程通过 `Arc<Mutex<PluginInstance>>` 持有节点句柄，稳态无锁竞争（插件仅启停时变更）
-- 总线消息：控制通道容量 100，`try_send` 非阻塞发送，满则丢弃并报错
+- **DSP 节点耗时预算**：在 48 kHz / 480 样本帧配置下，每帧时长约 10ms，单个插件节点的平均处理耗时建议严格控制在 **1ms 以内**。
+- **零锁竞争设计**：音频线程在处理循环中应避免互斥锁争用，配置参数应通过原子变量（Atomic）或无锁读写槽传递。
+- **WASM 定位**：WASM 解释执行主要面向逻辑编排与辅助处理，重度实时 DSP 推荐使用 Native 编写。

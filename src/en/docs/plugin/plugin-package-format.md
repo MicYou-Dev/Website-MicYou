@@ -1,50 +1,85 @@
 ---
-title: MicYou Plugin Package Format
-description: Plugin directory layout, zip packaging, marketplace repo and the update flow
-keywords: MicYou,plugin package,zip,marketplace,update
+title: Plugin Package Format - MicYou
+description: Specifications for MicYou plugin directory structure, manifest schema, ZIP packaging, and marketplace repository layout.
+keywords: MicYou,plugin package,ZIP package,marketplace,auto update,package format
 ---
 
-# MicYou Plugin Package Format
+# Plugin Package Format
 
-## Directory layout
+This document specifies the directory layout, manifest properties, distribution packaging, and marketplace repository structure for MicYou plugins.
+
+## 1. Directory Structure
+
+Each plugin is organized as a dedicated directory containing at least `plugin.json` and its entry binary:
 
 ```text
 <plugin-id>/
-├── plugin.json      # manifest (required)
-├── <entry>          # entry artifact: .so/.dylib/.dll (native) or .wasm
-└── panel.html       # optional settings/window page (ui.panels.entry)
+├── plugin.json      # Plugin manifest descriptor (Required)
+├── <entry>          # Entry binary: .so/.dylib/.dll for Native, .wasm for WASM
+└── panel.html       # Dedicated settings panel HTML (Optional)
 ```
 
-Installed to `~/.config/micyou/plugins/<id>/` (Linux) or
-`%APPDATA%\micyou\plugins\<id>\` (Windows)
+Installed plugins reside in the standard application data path:
+- **Windows**: `%APPDATA%\micyou\plugins\<plugin-id>\`
+- **macOS / Linux**: `~/.config/micyou/plugins/<plugin-id>/`
 
-## plugin.json
+## 2. Manifest Schema (plugin.json)
 
-Required: `id` (reverse-DNS), `name`, `version` (semver), `runtime` (wasm|native), `entry`
+`plugin.json` uses standard JSON formatting. Common fields include:
 
-Common optional fields: `author`, `license`, `homepage`, `repository`,
-`capabilities`, `kind`, `dsp`, `ui`, `config`, `configSchema`, `dependencies`,
-`updateUrl`, `arches`, `nameI18n`, `descriptionI18n`
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | Reverse domain name notation (e.g. `dev.micyou.noisegate`) |
+| `name` | string | Yes | Display name |
+| `version` | string | Yes | SemVer version string (e.g. `1.2.0`) |
+| `runtime` | string | Yes | Target runtime: `wasm` or `native` |
+| `entry` | string | Yes | Relative path to entry binary within plugin directory |
+| `author` | string | No | Author or organization name |
+| `license` | string | No | SPDX license identifier (e.g. `MIT`, `Apache-2.0`) |
+| `homepage` | string | No | Project website URL |
+| `repository` | string | No | Source code repository URL |
+| `capabilities` | string[] | No | Requested permission capabilities |
+| `kind` | string | No | Category: `dsp`, `utility`, `ui`, `bridge` |
+| `dsp` | object | No | DSP node metadata (`insertAfter`, `first`, `realtimeSafe`) |
+| `ui` | object | No | UI panel configuration (`route`, `label`, `panels`) |
+| `config` | object | No | Default configuration JSON object |
+| `configSchema` | object | No | Declarative form schema for auto-generated UI |
+| `dependencies` | object[] | No | Prerequisites `[{ id, version, optional }]` |
+| `updateUrl` | string | No | Remote manifest URL for update checks |
+| `arches` | string[] | No | Native CPU architectures (e.g. `x86_64`, `aarch64`) |
 
-## zip packaging
+## 3. ZIP Packaging & Import Rules
 
-- must contain `plugin.json` (nested folders allowed, prefix stripped on install)
-- permission preview shown before extraction
-- zip-slip protection on extract
-- build with: `micyou plugin package <dir> -o plugin.zip`
+MicYou supports importing `.zip` plugin archives directly. Packaging must satisfy:
 
-## Marketplace
+- **Manifest at Root**: The extracted archive must contain `plugin.json` at its root level (or inside a single folder matching the plugin ID).
+- **Path Traversal Protection**: The unpacker strictly verifies relative paths to block Zip Slip attacks (`../` traversals).
+- **Capability Preview**: Before unpacking, MicYou parses `plugin.json` and presents requested permissions to the user for confirmation.
 
-Official repo: https://github.com/MicYou-Dev/MicYou-Plugins
+### Packaging Command
+
+Use the MicYou CLI to package a plugin project:
+
+```bash
+micyou plugin package <plugin-dir> -o plugin.zip
+```
+
+The CLI automatically excludes build artifacts (`target/`), Git metadata (`.git/`), and temporary files.
+
+## 4. Official Marketplace Repository
+
+The official MicYou Plugin Marketplace repository maintains metadata and packages:
 
 ```text
 /
-├── index.json                 # plugin catalog (auto-generated)
+├── index.json                 # Marketplace index (CI generated)
 └── plugin/<plugin-id>/
-    ├── plugin.json            # manifest (updateUrl points to this repo)
-    └── plugin.zip             # package artifact
+    ├── plugin.json            # Latest plugin manifest
+    └── plugin.zip             # Packaged binary archive
 ```
 
-Update flow: `updateUrl` points at the marketplace manifest, the app
-compares semver on "Check updates", and downloads the sibling `plugin.zip`
-to replace the install
+### Automatic Updates
+
+1. A plugin specifies its `updateUrl` in `plugin.json` pointing to its remote manifest in the marketplace.
+2. When the user clicks **Check for Updates**, the host fetches the remote manifest and performs a SemVer comparison.
+3. If an update is available, the client downloads `plugin.zip` from the same folder, replaces the installation, and hot-reloads the plugin.

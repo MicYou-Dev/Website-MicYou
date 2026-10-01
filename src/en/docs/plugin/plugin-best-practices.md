@@ -1,102 +1,69 @@
 ---
-title: MicYou Plugin Architecture & Best Practices
-description: Plugin architecture, security model, version compatibility strategies, and the Android extensibility roadmap.
-keywords: MicYou,plugins,best practices,security model,version compatibility,Android
+title: Plugin Best Practices & Architecture - MicYou
+description: Architecture design principles, mobile extension roadmap, API versioning strategy, security model, and performance budgets for MicYou plugins.
+keywords: MicYou,plugins,best practices,security model,version compatibility,Android,architecture
 ---
 
-# Plugin Architecture & Best Practices
+# Plugin Best Practices & Architecture
 
-## Extensibility Points for Android
+This document outlines the architectural principles, mobile expansion roadmap, API compatibility guarantees, security models, and performance benchmarks for the MicYou plugin system.
 
-### Unified Protocols + Separated Implementations
+## 1. Mobile Extension: Unified Protocols with Decoupled Implementations
 
-The plugin architecture follows a "Unified Protocol + Separated Implementation" design pattern between desktop and mobile:
+To extend plugin capabilities to Android smoothly in the future, MicYou adheres to the principle of **unified protocols with decoupled implementations** rather than adopting heavy dynamic APK loading frameworks.
 
-- **Unified**: Manifest schema ([`plugin.json`](/en/docs/plugin/plugin-package-format)), [Host API capability descriptions](/en/docs/plugin/plugin-api-reference), cross-device message protocol (Protobuf `PluginMessage`, see [Plugin System Overview](/en/docs/plugin/plugin-overview#cross-device-synchronization-model)), and event bus semantics (Pub/Sub and RPC) are shared across all platforms.
-- **Separated**: Plugin loaders (Native cdylib loader vs. WASM runtime) and host wiring (Host API implementations and network transport adapters) are implemented specifically per target platform.
+### Why Avoid Heavy Dynamic APK Frameworks?
 
-### Desktop Reusable Modules
+In the Android ecosystem, frameworks like RePlugin and Shadow focus on monolithic APK modularization, Activity component swapping, and app-level hot patching—which represents unnecessary overhead for MicYou:
 
-| Module | Reusable on Android | Notes |
-| --- | --- | --- |
-| `manifest.rs` | Yes | Pure Rust, zero platform dependencies |
-| `plugin.rs` (Abstract Contract) | Yes | Runtime-agnostic plugin trait |
-| `bus.rs` (PluginBus) | Yes | Pure Rust event routing |
-| `sync.rs` (Wire Codec) | Yes | Relies on `micyou-protocol` |
-| `wasm.rs` (wasmi Runtime) | Yes | Pure Rust interpreter without native dependencies, embeddable in JNI |
-| `native.rs` (libloading) | No | Android requires platform-specific loading mechanisms |
-| `abi.rs` + `micyou_plugin_abi.h` | Reference | Android can provide JNI bindings maintaining equivalent semantics (see [API Reference](/en/docs/plugin/plugin-api-reference#c-abi-declaration-micyou_plugin_abih)) |
+- **Footprint & Packaging Overhead**: Complex build chains and heavy runtime footprints clash with a lightweight utility app.
+- **Mismatched Goals**: MicYou plugins demand real-time audio DSP nodes, event pub/sub, and cross-device messaging rather than UI navigation routing.
+- **Security Misalignment**: Dynamically executing arbitrary APK code contradicts the granular capability permission model.
+- **Fragile Upstream Maintenance**: Heavy reflection-based frameworks frequently break across major Android OS and Gradle plugin upgrades.
 
-## Android Roadmap
+### Three-Stage Evolution Roadmap
 
-### Why Avoid Heavy Dynamic Plugin Frameworks
+```text
+Stage 1: Protocol Alignment ──► Stage 2: Lightweight Runtimes ──► Stage 3: End-to-End Sync
+```
 
-Heavy dynamic Android plugin frameworks (such as RePlugin, Shadow, VirtualAPK) focus on application-level virtualization (Activity/Service hijacking, dynamic resource patching), which is over-engineered for MicYou:
+1. **Stage 1: Protocol Alignment (Core Foundation)**  
+   - Implement `plugin.json` schema parsing and validation on mobile.
+   - Integrate Protobuf `PluginMessage` wire framing into the Android TCP control session.
+   - Deploy a lightweight `PluginBus` on Android to establish bidirectional messaging with desktop.
 
-- **Package Size**: Heavy runtime overhead is unsuitable for a lightweight single-module app.
-- **Capability Mismatch**: MicYou plugins require [DSP nodes](/en/docs/plugin/plugin-development-guide#real-time-dsp-plugin-specification), telemetry, and background events rather than view routing and dynamic component hot-swapping.
-- **Security Conflict**: Arbitrary APK execution conflicts with sandboxing and capability gating models.
-- **Maintenance Cost**: High maintenance burden tied to specific AGP and Kotlin compiler versions (see [Android Compatibility Build](/en/docs/android-compat)).
+2. **Stage 2: Lightweight Runtimes**  
+   - **WASM (Priority)**: Embed the pure-Rust `wasmi` interpreter for instant memory-safe execution.
+   - **Trusted Native (.so)**: For compute-intensive real-time DSP, expose C ABI via JNI to load pre-verified native libraries.
+   - **Lightweight DEX**: Isolated class loading via `PathClassLoader` for pure logic plugins.
 
-Recommended path: **Protocol Alignment → Lightweight Runtime → Cross-Device Synchronization**.
+3. **Stage 3: End-to-End Interoperability**  
+   - Automatic cross-device plugin discovery and capability broadcasting.
+   - Real-world telemetry workflows (e.g. mobile sensor capture → desktop filter processing → real-time result return).
 
-### Phased Roadmap
+## 2. Versioning & Decoupling Strategy
 
-#### Phase 1: Protocol Alignment (Core)
-- Implement [`plugin.json`](/en/docs/plugin/plugin-package-format) validation aligned with JSON schema.
-- Integrate Protobuf `PluginMessage` into the Android TCP control stream.
-- Provide lightweight `PluginBus` implementation matching desktop semantics.
+To guarantee long-term stability without breaking existing plugins, the architecture incorporates multi-tiered compatibility layers:
 
-#### Phase 2: Lightweight Runtimes
-- **WASM**: Primary choice (`wasmi` compiles cleanly on Android with built-in memory isolation).
-- **Trusted `.so`**: Targeted at low-latency DSP pipelines, loaded exclusively from verified built-in sources or [Official Marketplace](/en/docs/plugin/plugin-marketplace-policy).
-- **Lightweight DEX**: Isolated tool loaders using `PathClassLoader`.
+- **Host API Range Negotiation**: The host supports a compatible range of API versions (e.g. loading both v1 and v2 plugins simultaneously), rejecting only out-of-range versions with clear diagnostics.
+- **Append-Only C ABI Function Table**: New fields in `mpl_host_api_t` are **strictly appended after `ctx`**. Existing function pointer offsets remain unchanged, ensuring backward binary compatibility for existing native plugins without recompilation.
+- **ABI Version Guard**: `MPL_ABI_VERSION` locks struct memory layouts, incrementing only on breaking structural changes.
+- **Proto3 Wire Forward Compatibility**: Network messaging uses Proto3 unknown-field skipping, allowing older clients to coexist safely with newer message schemas.
+- **Frozen Error Code Space**: Error codes 0 through 12 have immutable semantics; future additions are append-only.
 
-#### Phase 3: Cross-Device Sync
-- Full `PluginMessage` local dispatch and remote forwarding.
-- Inter-device plugin discovery.
-- Real-time sensor forwarding and remote audio DSP manipulation.
-
-## Capability Matrix
-
-| Capability | Desktop | Android | Description |
-| --- | --- | --- | --- |
-| Manifest & Capabilities | ✅ | ✅ | Same schema, see [Package Format](/en/docs/plugin/plugin-package-format) |
-| Host API Semantics | ✅ | ✅ | Same semantics, see [API Reference](/en/docs/plugin/plugin-api-reference) |
-| WASM Runtime | ✅ | Planned | Identical `.wasm` module, see [Development Guide](/en/docs/plugin/plugin-development-guide#writing-wasm-plugins) |
-| Native Runtime | cdylib + libloading | Trusted `.so` + JNI (Planned) | Platform-specific loader, see [Development Guide](/en/docs/plugin/plugin-development-guide#writing-native-plugins) |
-| Wire Protocol | ✅ | ✅ (Phase 1) | Shared Protobuf format |
-| Local Plugin Bus | ✅ | ✅ (Phase 1) | Same event bus model |
-| Remote Plugin Bus | ✅ | ✅ (Phase 3) | Same network transport, see [Overview](/en/docs/plugin/plugin-overview#cross-device-synchronization-model) |
-| DSP Chain Node | ✅ ([`Plugins` node](/en/docs/plugin/plugin-overview#relationship-with-the-dsp-audio-pipeline)) | Planned | Pipelined inside AudioRecord stream |
-| UI Buttons Panel | ✅ (`ui.route=buttons`) | Planned | Soundpad and action grids, see [Soundpad Example](/en/docs/plugin/plugin-development-guide#soundpad-native-soundpad) |
-| Settings Panels | ✅ (`ui.panels`) | Planned | Sandboxed iframe + postMessage, see [Panels Guide](/en/docs/plugin/plugin-development-guide#dedicated-plugin-settings-panels-uipanels) |
-| Global Hotkeys | ✅ (`register_hotkey`) | Planned | OS-level hotkey routing, see [Hotkeys](/en/docs/plugin/plugin-development-guide#global-hotkeys) |
-| Audio Playback | ✅ (`audio.play`) | Planned | Mapped to MediaPlayer |
-| Management UI | ✅ (Vue) | Planned | Jetpack Compose panel, see [User Guide](/en/docs/plugin/plugin-user-guide#managing-plugins-in-the-gui) |
-
-## Version Compatibility & Decoupling Strategy
-
-- **Host API Versioning** (`apiVersion`): The host supports version range negotiation (currently `MIN_SUPPORTED_API_VERSION = 1`, `HOST_API_VERSION = 2`). Plugins declaring v1 or v2 load smoothly; unsupported versions return error code 7 (see [API Reference Error Codes](/en/docs/plugin/plugin-api-reference#error-codes)).
-- **ABI Stability** (Native): `MPL_ABI_VERSION` protects the struct layout. Breaking modifications increment the ABI version.
-- **Append-Only Function Tables**: New fields in `mpl_host_api_t` are strictly appended after `ctx`. Existing field memory offsets remain immutable, ensuring backward compatibility without recompilation.
-- **Lifecycle Decoupling**: The plugin runtime is decoupled from the frontend GUI. Servers launched via GUI, CLI, or interactive TUI automatically load and run enabled plugins in headless mode.
-- **minHostVersion**: Plugins declare the minimum required host API version (`semver`). Major version mismatches are rejected safely.
-- **WASM Import Tables**: New host imports do not break existing plugins that omit them. Signature mismatches raise trapped errors rather than host crashes.
-
-## Security Model
+## 3. Security Model
 
 ### Native Plugins
-- Executed in-process with full memory access. The host enforces capability verification and version checks.
-- Plugins must be installed from trusted sources (all [marketplace plugins](/en/docs/plugin/plugin-marketplace-policy) are audited).
-- Real-time safety is declared via `realtimeSafe`; violators causing audio dropouts are sandboxed or disabled (see [Real-time DSP Specs](/en/docs/plugin/plugin-development-guide#real-time-dsp-plugin-specification)).
+- **In-Process Execution**: Native plugins share process memory with the host; access is governed by capability declarations and code verification.
+- **Real-Time Safety Contract**: The plugin affirms real-time safety via `realtimeSafe: true`. Violations causing audio stutter remain the responsibility of the plugin author.
 
 ### WASM Plugins
-- **Memory Sandbox**: Interpreted by `wasmi`, preventing arbitrary memory access.
-- **Fuel Metering**: Each call is allocated a fixed fuel budget (default 100,000) to trap infinite loops.
-- **Capability Gating**: Host functions enforce declared manifest capabilities on every invocation (`MPL_ERR_PERMISSION`, see [Capabilities List](/en/docs/plugin/plugin-api-reference#capabilities-permission-list)).
-- **Zero OS Access**: No unmediated file, network, or process access.
+- **Linear Memory Sandbox**: Runs in isolated memory pages with no access to host heap or pointers.
+- **Instruction Fuel Budget**: Each entry invocation receives a fixed fuel allocation (default: 100,000) to prevent infinite loops from hanging the host process.
+- **Per-Call Capability Check**: Host API invocations are validated against the manifest `capabilities` array, rejecting unauthorized calls with `MPL_ERR_PERMISSION`.
 
-### Telemetry & Audit
-- Independent ring buffer logs (500 lines per plugin) viewable in the [GUI Plugin Manager](/en/docs/plugin/plugin-user-guide#managing-plugins-in-the-gui).
-- Host logs record plugin lifecycle, errors, and load failures.
+## 4. Performance Budget & DSP Guidelines
+
+- **DSP Frame Budget**: At 48 kHz / 480 samples per frame (~10ms buffer window), individual plugin processing time should stay strictly **under 1ms**.
+- **Zero Lock Contention**: The audio thread processing loop must avoid mutex locks; configuration updates should propagate via atomic variables or lockless double-buffers.
+- **Runtime Choice**: Use WASM for workflows, UI bridges, and general logic; choose Native for compute-heavy real-time DSP.

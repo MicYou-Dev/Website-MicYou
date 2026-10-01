@@ -1,99 +1,101 @@
 ---
-title: MicYou 插件系统总览
-description: 插件系统目标、架构设计、双运行时、DSP 音频链路与跨端同步模型
+title: 插件系统总览 - MicYou
+description: MicYou 插件系统架构设计：Native 与 WASM 双运行时、DSP 音频处理链路接入、跨端消息总线与插件分类。
 keywords: MicYou,插件系统,WASM,Native,架构,DSP,跨端同步
 ---
 
 # 插件系统总览
 
-## 目标
+MicYou 提供了轻量且强大的插件系统，允许开发者扩展音频处理能力（DSP 节点）、注册专属设置面板、绑定全局快捷键，以及在电脑与手机之间同步数据。
 
-- 双运行时：**Native**（cdylib）与 **WASM** 插件，统一抽象、统一清单、统一协议
-- 插件可插入 DSP 处理链、注册 UI 面板、订阅事件、跨端收发消息
-- 桌面端（Tauri）与未来安卓端共用同一套 Manifest / Host API 能力描述 / 跨端消息协议，仅加载实现不同
-- 最小侵入接入现有 `tauri-app` 架构，三个前端（GUI / CLI / TUI）共用同一服务器核心
+## 核心设计目标
 
-## 架构图
+- **双运行时架构**：支持高性能 **Native**（C ABI 动态库）与安全隔离的 **WebAssembly (WASM)** 插件，两套运行时采用统一的清单描述、权限模型与通信协议。
+- **音频链深度接入**：DSP 插件可无缝插入实时音频处理管线，进行降噪、变声、均衡、音效增强等处理。
+- **端到端协议对齐**：桌面端（Tauri）与移动端共享同一套 Manifest 格式、Host API 语义及 Protobuf 跨端消息总线。
+- **无头与跨端解耦**：插件引擎独立于 UI 界面运行，在 GUI 桌面端、无头 CLI 及终端 TUI 模式下均可稳定工作。
+
+## 系统架构
 
 ```mermaid
 flowchart LR
-  subgraph Host["宿主（桌面端 / 未来安卓端）"]
-    PM["PluginManager"] -->|加载| N["Native 运行时<br/>libloading + C ABI"]
-    PM -->|加载| W["WASM 运行时<br/>wasmi 沙箱"]
-    BUS["PluginBus<br/>发布订阅 + RPC"] --> N
+  subgraph Host["宿主环境（桌面端 / 移动端）"]
+    PM["PluginManager 插件管理器"] -->|动态加载| N["Native 运行时<br/>libloading + C ABI"]
+    PM -->|沙箱加载| W["WASM 运行时<br/>wasmi 沙箱"]
+    BUS["PluginBus 消息总线<br/>发布订阅 + RPC"] --> N
     BUS --> W
-    DSP["PluginDspRegistry"] --> N
+    DSP["PluginDspRegistry DSP 注册表"] --> N
     DSP --> W
   end
 
-  DSP -->|"Plugins 链节点"| CHAIN["DspProcessor 处理链"]
-  CHAIN --> OUT["cpal 输出 / 虚拟麦克风"]
+  DSP -->|"Plugins 链节点"| CHAIN["DspProcessor 实时音频处理链"]
+  CHAIN --> OUT["音频输出 / 虚拟麦克风"]
 
-  BUS <-->|PluginMessage<br/>protobuf| TCP["TCP 控制通道"]
-  TCP <-->|同一协议| PHONE["安卓端插件系统<br/>协议对齐 / 实现分离"]
+  BUS <-->|PluginMessage<br/>Protobuf| TCP["TCP 控制通道"]
+  TCP <-->|同一通信协议| PHONE["手机端插件系统"]
 
-  GUI["Vue 前端"] -->|invoke| CMDS["plugins 命令"]
+  GUI["前端界面"] -->|指令交互| CMDS["插件管理接口"]
   CMDS --> PM
   CMDS --> DSP
   CMDS --> BUS
 ```
 
-## 双运行时说明
+## 双运行时对比
 
-| 维度 | Native（cdylib） | WASM |
+| 特性 | Native 插件（cdylib） | WebAssembly 插件（WASM） |
 | --- | --- | --- |
-| 载体 | `.so` / `.dylib` / `.dll` | `.wasm` 模块 |
-| 加载方式 | `libloading` + 版本化 C ABI | `wasmi` 纯 Rust 解释器 |
-| 性能 | 最高，可直连系统 API | 解释执行，适合逻辑类 |
-| 系统能力 | 全部（驱动、ONNX、音频设备） | 无（内存沙箱 + 宿主授权） |
-| 实时安全 | 由插件保证，宿主按 `realtimeSafe` 声明信任 | 默认 best-effort，禁止声明 realtimeSafe |
-| 典型用途 | 实时 DSP、虚拟设备、深度集成 | 逻辑扩展、UI 面板、自动化、轻量处理 |
-| 跨平台 | 每平台独立构建产物 | 单产物全平台（含未来安卓） |
+| **文件产物** | `.so` / `.dylib` / `.dll` | `.wasm` 字节码模块 |
+| **加载机制** | `libloading` + 版本化 C ABI | `wasmi` 解释器（内存与指令沙箱） |
+| **运行性能** | 原生最高性能，支持硬件加速与系统调用 | 解释执行，安全受控，适合常规逻辑与辅助处理 |
+| **系统能力** | 完整系统权限（底层驱动、ONNX 模型、硬件访问） | 受限沙箱环境，仅能通过宿主授权的 Host API 操作 |
+| **实时音频安全** | 由插件代码保证，需在清单声明 `realtimeSafe: true` | 默认尽力而为（Best-effort），禁止声明 `realtimeSafe` |
+| **典型应用场景** | 实时音频 DSP、高算力算法、深度硬件整合 | 逻辑扩展、设置面板、自动化任务、音效板、轻量过滤 |
+| **跨平台支持** | 需针对各操作系统分别编译产物 | 单一 `.wasm` 文件即可跨全平台通用 |
 
-## 与 DSP 音频链路的关系
+## DSP 音频链路接入机制
 
-- 服务端音频管线运行在专用音频线程（`crates/micyou-core/src/server/audio_pipeline.rs`），PCM 解码后经由 `micyou_audio::DspProcessor::process` 进行链式处理
-- 处理链由 `settings.json` 的 `processing_chain` 驱动（默认包含 AEC、降噪、去混响、EQ、放大、AGC、VAD）
-- 插件系统通过 `DspProcessor::set_external_hook` 接入音频链，由合成节点 **`Plugins`** 负责调度已启用的 DSP 插件
-- 若存在已启用的 DSP 插件，默认在 AEC 节点之后执行（用户可在 GUI 设置中自由调整顺序）
-- 插件内部节点执行顺序由 `PluginDspRegistry` 管理（支持 `first` 标记优先，其余按插件 ID 确定性排序）
-- 单个插件处理异常时仅记录日志并自动旁路（Bypass），不阻断主音频流水线
+- **音频处理线程**：服务端的 PCM 音频流在独立的实时音频线程中运行，经由 `DspProcessor::process` 链式处理。
+- **处理节点编排**：默认处理链路包含回声消除 (AEC)、降噪、去混响、均衡器 (EQ)、增益放大、自动增益 (AGC) 与语音检测 (VAD)。
+- **插件节点调度**：已启用的 DSP 插件由合成节点 **`Plugins`** 统一调度，默认置于 AEC 节点之后执行（用户可在桌面设置中调整先后顺序）。
+- **执行顺序保障**：插件节点的执行顺序由 `PluginDspRegistry` 确定性管理（优先执行声明了 `first` 的节点，其余按插件 ID 排序）。
+- **异常安全隔离**：单个插件若在处理音频时抛出异常或超时，宿主会自动将其旁路（Bypass），确保主音频流不中断、不崩溃。
 
-## 跨端同步模型
+## 跨端通信模型
+
+电脑与手机建立连接后，两端的插件可以通过统一的消息总线相互通信：
 
 ```mermaid
 sequenceDiagram
-  participant P1 as 手机插件 A
+  participant P1 as 手机端插件 A
   participant PB as 手机 PluginBus
-  participant W as TCP 控制通道
-  participant DB as 桌面 PluginBus
-  participant P2 as 桌面插件 B
+  participant TCP as TCP 控制通道
+  participant DB as 电脑 PluginBus
+  participant P2 as 电脑端插件 B
 
-  P1->>PB: 采集传感器数据
-  PB->>W: PluginMessage(target=B, topic=sensor)
-  W->>DB: 帧解码分发
+  P1->>PB: 发送传感器数据
+  PB->>TCP: PluginMessage(target=B, topic=sensor)
+  TCP->>DB: 解码并分发
   DB->>P2: handle_message(source=A)
 
-  P2->>DB: request(B→A, RPC)
-  DB->>W: PluginMessage(correlationId=N)
-  W->>PB: 请求到达
+  P2->>DB: 发起 RPC 请求 (B → A)
+  DB->>TCP: PluginMessage(correlationId=N)
+  TCP->>PB: 请求送达
   PB->>P1: handle_message
-  P1->>PB: 回复
-  PB->>W: PluginMessage(isResponse, correlationId=N)
-  W->>DB: complete_request(N)
-  DB-->>P2: RPC 返回
+  P1->>PB: 返回响应
+  PB->>TCP: PluginMessage(isResponse, correlationId=N)
+  TCP->>DB: 完成请求 complete_request(N)
+  DB-->>P2: RPC 结果返回
 ```
 
-- **消息格式**：protobuf `PluginMessage`（`proto/network.proto`），挂载在 `MessageWrapper` 字段 7
-- **传输**：桌面端通过 TCP 控制通道（`tcp_server`）与手机控制会话
-- **语义**：发布订阅（topic）+ 请求响应（correlationId）+ 广播（空 target）
-- **安卓端**：复用同一协议与总线语义，仅替换传输实现与插件加载实现
+- **消息载体**：Protobuf 定义的 `PluginMessage`，挂载于底层控制通道。
+- **通信模式**：支持主题发布订阅（Publish/Subscribe）、请求响应（RPC）及全网广播。
+- **协议共用**：手机端与电脑端遵循相同的总线协议与消息结构。
 
 ## 插件分类
 
-| 分类 | 说明 | 推荐运行时 |
+| 分类 | 核心功能 | 推荐运行时 |
 | --- | --- | --- |
-| DSP / Realtime Processor | 实时音频处理节点 | Native（WASM 受限，best-effort） |
-| Utility / Service | 后台逻辑、自动化、网络、文件 | WASM / Native |
-| UI / Panel | 前端配置面板或可视化组件 | WASM（+ Vue 注册） |
-| Bridge / Sync | 跨端状态同步 | Native / WASM |
+| **DSP / 实时音频处理** | 插入音频流水线，实时修改音频样本 | Native（WASM 仅限轻量处理） |
+| **Utility / 辅助工具** | 后台自动化、网络请求、文件记录、系统通知 | WASM / Native |
+| **UI / 面板组件** | 注册专属设置页或交互式控制界面 | WASM（+ iframe 桥接） |
+| **Bridge / 跨端桥接** | 手机传感器数据采集、设备状态双向同步 | WASM / Native |

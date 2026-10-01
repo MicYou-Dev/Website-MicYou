@@ -40,37 +40,37 @@ export const contributors = {
 	maintainer: "维护者",
 	contributions: "次贡献",
 	developedWith: "MicYou 用 ❤ 发电",
-	thanksContributors: "感谢以下贡献者，TA们让 MicYou 变得更好",
+	thanksContributors: "感谢所有贡献者，让 MicYou 变得更好",
 	sponsorTitle: "赞助与支持",
 	sponsorDesc:
-		"如果您喜欢 MicYou，欢迎前往爱发电赞助作者，您的支持是项目持续迭代与完善的最大动力！",
-	sponsorBtn: "前往爱发电赞助",
+		"如果您觉得 MicYou 对您有帮助，欢迎前往爱发电支持开发者，感谢每一份认可与陪伴！",
+	sponsorBtn: "前往爱发电支持",
 };
 
 // 下载组件翻译
 export const download = {
-	title: "下载应用",
+	title: "下载 MicYou",
 	viewReleaseNotes: "查看更新日志",
-	windowsDesc: "Windows 10/11 64位",
+	windowsDesc: "Windows 10 / 11 (64 位)",
 	macOSDesc: "macOS 11.0 及以上 (Apple Silicon)",
 	linuxDesc: "主流 Linux 发行版 (x86_64)",
 	androidDesc: "Android 7.0 及以上（提供 5.0+ 兼容版）",
 	// 文件名
-	installer: "安装程序 (.exe)",
+	installer: "安装包 (.exe)",
 	appImage: "AppImage",
 	deb: "DEB",
 	rpm: "RPM",
-	arch: "Arch",
+	arch: "Arch Linux",
 	dmgArm: "DMG (Apple Silicon)",
-	apk: "APK",
+	apk: "APK 安装包",
 	copied: "已复制",
 	stable: "稳定版",
-	nightly: "快照版",
-	nightlyTip: "快照版包含最新功能，可能不稳定",
+	nightly: "预览版 (Nightly)",
+	nightlyTip: "包含最新开发特性，可能不够稳定",
 	mirror: "Mirror 酱高速下载",
-	mirrorHernet: "河南省教育科研网镜像",
+	mirrorHernet: "河南教育科研网镜像",
 	mirrorCqu: "重庆大学镜像",
-	mirrorWarning: "请勿使用多线程下载器，否则 IP 可能遭到封禁",
+	mirrorWarning: "请勿使用多线程下载器，避免 IP 被限速或封禁",
 };
 
 // Changelog 组件翻译
@@ -88,14 +88,13 @@ export const umami = {
 
 // 致谢组件翻译
 export const thankYou = {
-	title: "特别感谢",
+	title: "特别致谢",
 	hernetName: "河南省教育科研网开源软件镜像站",
-	hernetDesc:
-		"特别感谢 河南省教育科研网开源软件镜像站 为本项目提供镜像下载服务",
+	hernetDesc: "感谢 河南省教育科研网开源软件镜像站 为本项目提供镜像下载支持",
 	cquName: "重庆大学开源软件镜像站",
-	cquDesc: "特别感谢 重庆大学开源软件镜像站 过往的稳定支持",
+	cquDesc: "感谢 重庆大学开源软件镜像站 提供的长期稳定支持",
 	mirrorName: "Mirror 酱",
-	mirrorDesc: "特别感谢 Mirror 酱 为本项目提供高速镜像下载服务",
+	mirrorDesc: "感谢 Mirror 酱 为本项目提供高速镜像下载加速",
 };
 
 // 页脚翻译

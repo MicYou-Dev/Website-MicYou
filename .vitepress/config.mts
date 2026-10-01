@@ -15,9 +15,9 @@ import {
 const SITE_URL = "https://micyou.top";
 const SITE_NAME = "MicYou";
 const DEFAULT_DESCRIPTION =
-	"将 Android 设备转变为 PC 的高质量麦克风 - 高质量、低延迟、跨平台的音频传输解决方案";
+	"把手机变成电脑麦克风。支持 Wi-Fi、USB 与 Web 网页连接，低延迟音频传输，内置 AI 降噪与回声消除。";
 const DEFAULT_KEYWORDS =
-	"MicYou,Android麦克风,手机麦克风,电脑麦克风,Wi-Fi麦克风,USB麦克风,音频传输,跨平台音频";
+	"MicYou,手机麦克风,电脑麦克风,Android麦克风,无线麦克风,USB麦克风,Wi-Fi麦克风,Web麦克风,音频传输,降噪,低延迟";
 
 // JSON-LD 结构化数据
 const jsonLdWebSite = {
@@ -59,7 +59,7 @@ const jsonLdSoftwareApp = {
 export default defineConfig({
 	srcDir: "./src",
 	title: "MicYou",
-	description: "将 Android 设备转变为 PC 的高质量麦克风",
+	description: "把手机变成电脑麦克风",
 	cleanUrls: true,
 	sitemap: {
 		hostname: SITE_URL,
@@ -340,7 +340,7 @@ export default defineConfig({
 			lang: "zh-CN",
 			title: "MicYou",
 			description:
-				"将 Android 设备转变为 PC 的高质量麦克风 - 高质量、低延迟、跨平台的音频传输解决方案",
+				"把手机变成电脑麦克风。支持 Wi-Fi、USB 与 Web 网页连接，低延迟音频传输，内置 AI 降噪与回声消除。",
 			themeConfig: {
 				nav: navTranslations["zh-CN"],
 				sidebar: { [getSidebarPath("zh-CN")]: docsSidebar("zh-CN") },
@@ -352,7 +352,7 @@ export default defineConfig({
 			lang: "en",
 			title: "MicYou",
 			description:
-				"Transform your Android device into a high-quality microphone for PC - High quality, low latency, cross-platform audio transmission solution",
+				"Turn your phone into a PC microphone. Supports Wi-Fi, USB, and Web streaming with low latency, AI noise reduction, and echo cancellation.",
 			themeConfig: {
 				nav: navTranslations.en,
 				sidebar: { [getSidebarPath("en")]: docsSidebar("en") },
@@ -364,7 +364,7 @@ export default defineConfig({
 			lang: "zh-TW",
 			title: "MicYou",
 			description:
-				"將 Android 裝置轉變為 PC 的高品質麥克風 - 高品質、低延遲、跨平台的音訊傳輸解決方案",
+				"把手機變成電腦麥克風。支援 Wi-Fi、USB 與 Web 網頁連線，低延遲音訊傳輸，內建 AI 降噪與回聲消除。",
 			themeConfig: {
 				nav: navTranslations["zh-TW"],
 				sidebar: { [getSidebarPath("zh-TW")]: docsSidebar("zh-TW") },

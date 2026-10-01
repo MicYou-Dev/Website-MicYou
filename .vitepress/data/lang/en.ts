@@ -39,39 +39,40 @@ export const contributors = {
 	author: "Author",
 	maintainer: "Maintainer",
 	contributions: "contributions",
-	developedWith: "MicYou made by ❤",
-	thanksContributors: "Thanks to our contributors, who make MicYou better",
+	developedWith: "MicYou made with ❤",
+	thanksContributors: "Thanks to all contributors who help make MicYou better",
 	sponsorTitle: "Sponsor & Support",
 	sponsorDesc:
-		"If you find MicYou helpful, consider sponsoring the author on Afdian to support continued development!",
-	sponsorBtn: "Sponsor on Afdian",
+		"If you enjoy using MicYou, consider supporting the developer on Afdian to help fund ongoing maintenance and improvements!",
+	sponsorBtn: "Support on Afdian",
 };
 
 // Download component translations
 export const download = {
-	title: "Download",
-	viewReleaseNotes: "View release notes",
-	windowsDesc: "Windows 10/11 64-bit",
-	macOSDesc: "macOS 11.0 and later (Apple Silicon)",
+	title: "Download MicYou",
+	viewReleaseNotes: "Release Notes",
+	windowsDesc: "Windows 10 / 11 (64-bit)",
+	macOSDesc: "macOS 11.0 or later (Apple Silicon)",
 	linuxDesc: "Major Linux distributions (x86_64)",
-	androidDesc: "Android 7.0 and later (5.0+ compat build available)",
+	androidDesc: "Android 7.0 or later (5.0+ compat build available)",
 	// File names
 	installer: "Installer (.exe)",
 	appImage: "AppImage",
 	deb: "DEB",
 	rpm: "RPM",
-	arch: "Arch",
+	arch: "Arch Linux",
 	dmgArm: "DMG (Apple Silicon)",
-	apk: "APK",
+	apk: "APK Package",
 	copied: "Copied",
 	stable: "Stable",
-	nightly: "Nightly",
-	nightlyTip: "Nightly includes latest features, may be unstable",
+	nightly: "Nightly Build",
+	nightlyTip:
+		"Nightly builds include experimental features and may be unstable",
 	mirror: "MirrorChyan High-Speed Download",
 	mirrorHernet: "HeRNET Mirror Download",
 	mirrorCqu: "CQU Mirror Download",
 	mirrorWarning:
-		"Do not use multi-threaded download tools, or your IP may be banned",
+		"Please avoid multi-threaded download managers to prevent IP rate-limiting",
 };
 
 // Changelog component translations
@@ -92,13 +93,13 @@ export const thankYou = {
 	title: "Special Thanks",
 	hernetName: "HeRNET Open Source Software Mirror",
 	hernetDesc:
-		"Special thanks to HeRNET Open Source Software Mirror for providing mirror download services",
+		"Special thanks to HeRNET Open Source Software Mirror for providing fast mirror hosting",
 	cquName: "CQU Open Source Software Mirror",
 	cquDesc:
-		"Special thanks to CQU Open Source Software Mirror for your consistent support in the past",
+		"Special thanks to CQU Open Source Software Mirror for long-term reliable hosting",
 	mirrorName: "MirrorChyan",
 	mirrorDesc:
-		"Special thanks to MirrorChyan for providing high-speed mirror download services",
+		"Special thanks to MirrorChyan for providing high-speed mirror acceleration",
 };
 
 // Footer translations

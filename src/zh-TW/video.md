@@ -1,7 +1,7 @@
 ---
 aside: false
-title: 影片教學 - MicYou 使用教學
-description: MicYou 影片教學，包含專案簡介、更新介紹和使用教學，幫助您快速上手將手機變成電腦麥克風。
+title: 影片教學 - MicYou
+description: 透過影片快速了解 MicYou 的功能特色、版本更新與實際設定使用流程。
 keywords: MicYou教學,MicYou影片,MicYou使用教學,手機麥克風教學,Android麥克風教學
 ---
 

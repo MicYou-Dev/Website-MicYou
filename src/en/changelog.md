@@ -1,9 +1,8 @@
 ---
-title: Changelog - MicYou Version History
-description: MicYou changelog with all version updates, new features, improvements and bug fixes.
+title: Changelog - MicYou
+description: See release notes, new features, performance improvements, and bug fixes across all MicYou versions.
 keywords: MicYou changelog,MicYou updates,MicYou new features,MicYou version history
 aside: false
 ---
-
 
 <ChangelogViewer />

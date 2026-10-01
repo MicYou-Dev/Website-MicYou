@@ -1,30 +1,24 @@
 ---
-title: MicYou 插件 API 參考
-description: 完整 Host API 參考：C ABI、WASM import、權限、消息協議與錯誤碼
-keywords: MicYou,插件API,Host API,WASM,native,C ABI,權限
+title: 插件 API 參考 - MicYou
+description: MicYou 插件系統完整 API 手冊：C ABI 結構體、WASM 匯入匯出、權限清單、訊息協定與錯誤碼。
+keywords: MicYou,插件API,Host API,WASM,Native,C ABI,權限
 ---
 
+# 插件 API 參考
 
-插件系統的完整接口定義：Host API、Plugin API、消息協議 / 事件定義、錯誤碼與權限清單
+本文件彙整了 MicYou 插件系統提供的所有介面定義，包括 Host API、Plugin API、訊息通訊協定、權限清單與標準錯誤碼。
 
-## Host API（宿主向插件提供的服務）
+## 1. Host API（宿主提供的服務）
 
-API 版本：`HOST_API_VERSION = 1`（見 manifest `apiVersion`）
-- 追加式演進：**新字段只能加在 `mpl_host_api_t` 的 `ctx` 之後**，禁止插入中間，舊插件按舊偏移仍能正確讀取
-- 插件能力（capabilities）在 manifest 中聲明，宿主在每次調用時強制檢查，越權返回 `MPL_ERR_PERMISSION`
+宿主透過函式表或 WASM 匯入向插件暴露底層能力。目前 Host API 版本為 `HOST_API_VERSION = 1`。
 
-### 調用約定與並發安全約束
+### 呼叫約定與並行安全
 
-Native 插件與宿主行程共用同一行程空間，需遵循以下調用約定：
+- **結構體依值複製**：`micyou_plugin_init(host)` 傳入的 `host` 指標僅在初始化期間有效。插件應在 `init` 階段將 `mpl_host_api_t` 結構體依值完整保存到插件私有狀態中。
+- **嚴禁在音訊執行緒中呼叫**：`micyou_plugin_process` 運作在極低延遲優先級的即時音訊渲染執行緒，嚴禁在此方法內呼叫任何 Host API（包括 I/O、日誌、設定讀取或加鎖操作）。
+- **追加式演進**：`mpl_host_api_t` 的新欄位一律追加在 `ctx` 之後，舊插件依既有位移依然能正確定址呼叫。
 
-1. **結構體按值拷貝**：
-   `micyou_plugin_init(host)` 傳入的 `host` 指標僅在初始化調用期間保證有效。插件應在 `init` 階段將 `mpl_host_api_t` 結構體按值完整拷貝至插件私有靜態或全域狀態中，而非僅保留指標引用。
-
-2. **調用執行緒上下文約束**：
-   - **禁止在即時音訊執行緒中調用**：`micyou_plugin_process` 運行於極低延遲優先級的即時音訊渲染執行緒，嚴禁在此方法內調用任何 Host API（包括 I/O、配置讀取與日誌），以避免音訊串流欠載或死鎖。
-   - **執行緒分發約束**：Host API 通常要求在宿主派發的回調執行緒（如 `handle_message`、`handle_event` 或定時器回調）中執行。插件自行派生的背景工作執行緒如需調用宿主能力，建議透過通道或任務佇列交由派發執行緒代為調用。
-
-### Native（C ABI，`mpl_host_api_t`）
+### Native C ABI（mpl_host_api_t）
 
 ```c
 typedef struct mpl_host_api {
@@ -36,7 +30,7 @@ typedef struct mpl_host_api {
     mpl_result_t (*audio_state)(void *ctx, char *out, uint32_t *out_size);
     mpl_result_t (*connected_devices)(void *ctx, char *out, uint32_t *out_size);
     void *ctx;
-    /* 以下字段一律追加在 ctx 之後（追加式演進，見上） */
+    /* 擴充欄位一律追加在 ctx 之後 */
     mpl_result_t (*play_sound)(void *ctx, const char *path);
     mpl_result_t (*plugin_dir)(void *ctx, char *out, uint32_t *out_size);
     mpl_result_t (*register_hotkey)(void *ctx, const char *shortcut, uint64_t *out_id);
@@ -58,223 +52,110 @@ typedef struct mpl_host_api {
 } mpl_host_api_t;
 ```
 
-### WASM（導入模塊 `micyou`）
+### WASM 匯入函式表（模組名稱 micyou）
 
-| 導入 | 簽名 | 說明 |
+| 匯入函式 | 簽名 | 說明 | 所需權限 |
+| --- | --- | --- | --- |
+| `log` | `(level: i32, msg_ptr: i32) -> ()` | 記錄日誌（0=Error, 1=Warn, 2=Info, 3=Debug） | 無 |
+| `get_config` | `(key_ptr: i32) -> i32` | 取得設定 JSON 字串指標 | `config.read` |
+| `set_config` | `(key_ptr: i32, val_ptr: i32) -> i32` | 儲存設定項目 | `config.write` |
+| `emit_event` | `(topic_ptr: i32, payload_ptr: i32) -> i32` | 廣播事件 | `event.emit` |
+| `send_message` | `(target_ptr: i32, payload_ptr: i32, len: i32) -> i32` | 發送跨端或插件訊息 | `message.send` |
+| `audio_state` | `() -> i32` | 取得音訊流即時狀態快照 | `audio.state` |
+| `connected_devices`| `() -> i32` | 取得目前已連線裝置清單 | `device.list` |
+| `play_sound` | `(path_ptr: i32) -> i32` | 非同步混音播放 WAV 檔案 | `audio.play` |
+| `plugin_dir` | `() -> i32` | 取得插件私有安裝目錄路徑 | 無 |
+| `register_hotkey` | `(shortcut_ptr: i32) -> i64` | 註冊全域快捷鍵 | 無 |
+| `fs_read` | `(path_ptr: i32) -> i32` | 讀取插件目錄內檔案（沙箱） | `fs.read` |
+| `fs_write` | `(path_ptr: i32, content_ptr: i32) -> ()` | 寫入插件目錄內檔案（沙箱） | `fs.write` |
+| `set_timeout` | `(ms: i64, payload_ptr: i32) -> i64` | 單次計時器 | 無 |
+| `clear_timeout` | `(id: i64) -> ()` | 取消單次計時器 | 無 |
+| `set_interval` | `(ms: i64, payload_ptr: i32) -> i64` | 循環計時器 | 無 |
+| `clear_interval` | `(id: i64) -> ()` | 停止循環計時器 | 無 |
+| `http_request` | `(method, url, headers, body) -> i64` | 非同步 HTTP 請求 | `network.io` |
+| `open_url` | `(url_ptr: i32) -> ()` | 系統瀏覽器開啟 URL | `open.url` |
+| `notify` | `(title_ptr: i32, body_ptr: i32) -> ()` | 發送系統通知 | 無 |
+| `locale` | `() -> i32` | 查詢目前客戶端 UI 語言 | 無 |
+| `host_info` | `() -> i32` | 查詢宿主版本資訊 | 無 |
+| `clipboard_read` | `() -> i32` | 讀取系統剪貼簿文字 | `clipboard.read` |
+| `clipboard_write` | `(text_ptr: i32) -> ()` | 寫入系統剪貼簿文字 | `clipboard.write` |
+
+## 2. Plugin API（插件實作的介面）
+
+### Native C 導出符號
+
+| 符號 | 必填 | 說明 |
 | --- | --- | --- |
-| `log` | `(level: i32, msg_ptr: i32) -> ()` | level：0=Error 1=Warn 2=Info 3=Debug 4=Trace |
-| `get_config` | `(key_ptr: i32) -> i32` | 返回宿主分配的 JSON 指針（0 = 無該鍵） |
-| `set_config` | `(key_ptr: i32, value_json_ptr: i32) -> i32` | 返回結果碼 |
-| `emit_event` | `(topic_ptr: i32, payload_json_ptr: i32) -> i32` | 返回結果碼 |
-| `send_message` | `(target_json_ptr: i32, payload_ptr: i32, len: i32) -> i32` | 返回結果碼 |
-| `audio_state` | `() -> i32` | 返回宿主分配的 JSON 指針 |
-| `connected_devices` | `() -> i32` | 返回宿主分配的 JSON 數組指針 |
-| `play_sound` | `(path_ptr: i32) -> i32` | 排隊播放 WAV（需 audio.play），返回結果碼 |
-| `plugin_dir` | `() -> i32` | 返回插件安裝目錄絕對路徑字符串 |
-| `register_hotkey` | `(shortcut_ptr: i32) -> i64` | 註冊全局快捷鍵（僅 X11 會話），返回句柄 id（0 = 失敗） |
-| `open_window` | `(panel_ptr: i32) -> i32` | 打開插件自己的面板窗口 |
-| `fs_read` | `(path_ptr: i32) -> i32` | 讀取插件目錄內文本文件（需 fs.read），返回字符串指針 |
-| `fs_write` | `(path_ptr: i32, content_ptr: i32) -> ()` | 寫文件（需 fs.write） |
-| `set_timeout` | `(ms: i64, payload_ptr: i32) -> i64` | 一次性定時器，返回 id |
-| `clear_timeout` | `(id: i64) -> ()` | 取消定時器 |
-| `http_request` | `(method_ptr, url_ptr, headers_ptr, body_ptr) -> i64` | 異步 HTTP（需 network.io），返回請求 id |
-| `set_interval` | `(ms: i64, payload_ptr: i32) -> i64` | 循環定時器，返回 id |
-| `clear_interval` | `(id: i64) -> ()` | 停止循環定時器 |
-| `open_url` | `(url_ptr: i32) -> ()` | 默認瀏覽器打開（需 open.url） |
-| `notify` | `(title_ptr: i32, body_ptr: i32) -> ()` | 系統通知 |
-| `locale` | `() -> i32` | 宿主 UI 語言（如 zh-CN / en），字符串指針 |
-| `host_info` | `() -> i32` | 宿主身份 JSON 字符串指針 |
-| `clipboard_read` | `() -> i32` | 讀剪貼板（需 clipboard.read） |
-| `clipboard_write` | `(text_ptr: i32) -> ()` | 寫剪貼板（需 clipboard.write） |
+| `micyou_plugin_info` | 是 | 回傳插件基本資訊結構體指標 |
+| `micyou_plugin_init` | 是 | 初始化插件，保存 Host API 並讀取設定 |
+| `micyou_plugin_deinit`| 是 | 插件卸載前釋放資源 |
+| `micyou_plugin_process` | 否 | 即時音訊 DSP 原地處理 |
+| `micyou_plugin_handle_event` | 否 | 宿主系統事件監聽回呼 |
+| `micyou_plugin_handle_message` | 否 | 跨端及插件間訊息監聽回呼 |
 
-### 緩衝區契約（out / out_size）
+### WASM 導出函式
 
-- `out` / `out_size` 描述插件提供的緩衝區（UTF-8）
-- 成功：寫入 NUL 結尾字符串，`*out_size` = 字節數（不含 NUL），返回 `MPL_OK`
-- 緩衝區太小：`*out_size` = 所需大小，返回 `MPL_ERR_BUFFER_TOO_SMALL`
-- `audio_state` 返回 JSON 快照：
+| 導出名稱 | 必填 | 簽名 | 說明 |
+| --- | --- | --- | --- |
+| `memory` | 是 | memory | 導出線性記憶體供宿主互動 |
+| `alloc` | 是 | `(size: i32) -> i32` | 在 WASM 堆積上配置指定大小緩衝區 |
+| `dealloc` | 是 | `(ptr: i32, size: i32) -> ()` | 釋放緩衝區 |
+| `init` | 否 | `() -> i32` | 初始化，回傳 0 代表成功 |
+| `process` | 否 | `(ptr: i32, samples: i32, channels: i32, queued_ms: f64) -> i32` | 音訊處理 |
+| `handle_event` | 否 | `(json_ptr: i32) -> i32` | 事件回呼 |
+| `handle_message`| 否 | `(payload_ptr: i32, len: i32) -> i32` | 跨端訊息回呼 |
+| `deinit` | 否 | `() -> ()` | 清理回呼 |
 
-```json
-{ "streaming": true, "sampleRate": 48000, "channels": 1, "inputLevel": 0.42, "processedLevel": 0.38, "queuedMs": 12.5, "muted": false }
-```
+## 3. 跨端通訊協定（PluginMessage）
 
-- `connected_devices` 返回 JSON 數組：
-
-```json
-[ { "mode": "wifi", "label": "MicYou Mobile", "audioActive": true } ]
-```
-
-- `host_info` 返回：
-
-```json
-{ "name": "micyou", "version": "2.0.0", "apiVersion": 1 }
-```
-
-### play_sound（音頻播放）
-
-- 參數為 WAV 文件路徑，相對路徑解析到插件自己的安裝目錄（插件可自帶或動態生成音效文件）
-- 音效**混入虛擬麥克風輸出流**（SoundMixer），對方與用戶都能聽到，等同於真實麥克風輸入
-- 排隊即返回，混音在輸出設備線程完成，**非實時安全**，禁止在 process 中調用
-- 常見用法：ui 按鈕面板（`ui.route=buttons`）點擊 → `handle_message` 收到 `ui:play` → 查配置 → `play_sound`
-
-### register_hotkey（全局快捷鍵）
-
-- 參數為快捷鍵字符串（如 `ctrl+shift+p`），返回句柄 id
-- 按下時宿主經總線投遞消息給插件：topic `hotkey:<id>`，payload `{"shortcut":"..."}`
-- 插件在 `handle_message` 中處理；進程退出自動註銷
-- 快捷鍵格式由 global-hotkey 解析：修飾鍵 ctrl/alt/shift/super/cmd + 鍵名（字母、數字、f1-f12 等）
-- **平臺限制**：僅 X11 會話可用；Wayland 會話註冊返回明確錯誤（合成器不轉發 X11 全局抓取），請改用面板按鈕
-
-### fs_read / fs_write（文件訪問）
-
-- 讀寫插件**自身安裝目錄內**的 UTF-8 文本文件（需 `fs.read` / `fs.write`）
-- 路徑沙箱：絕對路徑與 `..` 穿越一律拒絕（`sandbox_path`），插件無法觸及目錄外文件
-- `fs_write` 自動創建父目錄
-- 常見用途：緩存、狀態文件、生成資源（音效、腳本）、插件數據持久化
-
-### set_timeout / clear_timeout（一次性定時器）
-
-- `set_timeout(ms, payload)` 返回定時器 id，到期後宿主經總線投遞：
-  topic `timer:expired`，payload `{"timer":<id>,"payload":"<payload>"}`
-- 異步事件模型：定時器線程投遞消息，不阻塞插件調用線程
-- `clear_timeout(id)` 取消尚未到期的定時器
-
-### set_interval / clear_interval（循環定時器）
-
-- `set_interval(ms, payload)` 返回循環定時器 id，每隔 `ms` 毫秒投遞：
-  topic `interval:tick`，payload `{"interval":<id>,"payload":"<payload>"}`
-- `clear_interval(id)` 停止；插件卸載時宿主自動停止其全部定時器
-
-### http_request（異步 HTTP）
-
-- `http_request(method, url, headersJson, body)` 返回請求 id（需 `network.io`）
-- 請求在宿主線程執行（10 秒超時），響應經總線異步投遞：
-  topic `http:response`，payload `{"request":<id>,"ok":true,"status":200,"body":"...","error":null}`
-- 失敗時 `ok=false` 且 `error` 含原因
-- 插件不得在實時音頻線程（process）中發起請求
-
-### open_url / notify（外部動作）
-
-- `open_url(url)`：系統默認瀏覽器打開（需 `open.url`）
-- `notify(title, body)`：系統通知（無能力要求）
-
-### locale / host_info（環境查詢）
-
-- `locale()`：宿主當前 UI 語言（如 `zh-CN`、`en`），插件面板據此切換自身文案
-- `host_info()`：宿主身份與 API 版本，用於運行時兼容判斷
-
-### clipboard_read / clipboard_write（剪貼板）
-
-- 讀/寫系統剪貼板文本（需 `clipboard.read` / `clipboard.write`）
-- 常見用途：自動化複製粘貼、把插件生成內容送剪貼板
-
-### 事件投遞（宿主 → 插件）
-
-- 設備連接/斷開時宿主向所有已加載插件派發 `PluginEvent::DeviceConnected`（含 mode/label）與 `DeviceDisconnected`
-- 插件在 `handle_event` 中處理（native 為 `micyou_plugin_handle_event`，wasm 為 `handle_event` 導出）
-
-## Plugin API（插件向宿主實現的接口）
-
-### Native（C ABI 符號）
-
-| 符號 | 必需 | 說明 |
-| --- | --- | --- |
-| `micyou_plugin_info` | 是 | 返回靜態 `mpl_plugin_info_t`，含 ABI / API 版本與 id |
-| `micyou_plugin_init(host)` | 是 | 保存 host 表，讀取配置，返回結果碼 |
-| `micyou_plugin_deinit` | 是 | 清理（宿主卸載庫前調用一次） |
-| `micyou_plugin_process(data, samples, channels, queued_ms, bypass)` | 否 | 實時 DSP |
-| `micyou_plugin_handle_event(type, json)` | 否 | 事件通知 |
-| `micyou_plugin_handle_message(source, topic, payload, len)` | 否 | 跨端消息 |
-
-### WASM（導出）
-
-| 導出 | 必需 | 說明 |
-| --- | --- | --- |
-| `memory` | 是 | 線性內存 |
-| `alloc` / `dealloc` | 是 | 內存分配（宿主寫字符串 / 音頻數據用） |
-| `api_version` | 否 | 返回 Host API 版本（1） |
-| `init` | 否 | 初始化，0 = 成功 |
-| `process` | 否 | DSP，0 = ok 1 = bypass |
-| `handle_event` | 否 | 事件（JSON 指針） |
-| `handle_message` | 否 | 跨端消息（指針, 長度） |
-| `deinit` | 否 | 反初始化 |
-
-### 事件類型（`PluginEvent`）
-
-| 事件 | 負載 |
-| --- | --- |
-| `device_connected` | `{ mode, label }` |
-| `device_disconnected` | — |
-| `mute_changed` | `{ muted }` |
-| `dsp_settings_changed` | — |
-| `state_changed` | `{ enabled }` |
-
-## 消息協議
-
-線協議為 protobuf（`crates/micyou-protocol/proto/network.proto`），掛載在控制通道 `MessageWrapper` 字段 7：
+跨端訊息使用 Protobuf 格式封裝傳輸：
 
 ```proto
 message PluginMessage {
-    string source = 1;       // 發送方插件 id
-    string target = 2;       // 接收方插件 id，"" = 廣播
-    string topic = 3;        // 主題
-    bytes payload = 4;       // 插件自定義負載
-    uint64 correlationId = 5;
-    bool isResponse = 6;
-    int32 errorCode = 7;     // 0 = ok
-    string errorMessage = 8;
+    string source = 1;       // 發送方插件 ID
+    string target = 2;       // 接收方插件 ID（空字串代表廣播）
+    string topic = 3;        // 訊息主題
+    bytes payload = 4;       // 自訂負載二進位資料
+    uint64 correlationId = 5;// RPC 請求配對 ID（非 0 代表 RPC）
+    bool isResponse = 6;     // 是否為回應幀
+    int32 errorCode = 7;     // 狀態碼（0 代表正常）
+    string errorMessage = 8; // 錯誤訊息描述
 }
 ```
 
-語義：
+## 4. 標準錯誤碼
 
-- **發佈訂閱**：`target` 為空，按 `topic` 分發（本地訂閱者 + 遠端廣播）
-- **請求響應**：`correlationId` 非 0 配對請求與響應；`isResponse` 標記響應
-- **錯誤響應**：`errorCode` 非 0 + `errorMessage`
-
-## 錯誤碼
-
-`PluginError` 與 wire 錯誤碼的穩定映射（改變即破壞兼容）：
-
-| 碼 | 含義 |
-| --- | --- |
-| 0 | ok |
-| 1 | not found（入口產物缺失） |
-| 2 | invalid manifest |
-| 3 | validation failed（清單語義校驗） |
-| 4 | unknown plugin |
-| 5 | not loaded |
-| 6 | load failed |
-| 7 | api version mismatch |
-| 8 | permission denied（能力未授予） |
-| 9 | already exists |
-| 10 | runtime error（含 WASM trap / 燃料耗盡） |
-| 11 | message delivery failed（無設備 / 超時） |
-| 12 | io error |
-
-Native 的 `mpl_result_t` 數值與此保持一致（0-5 子集）
-
-## 權限清單
-
-| 能力 | 授予的 API | 風險 |
+| 錯誤碼 | 列舉名 | 說明 |
 | --- | --- | --- |
-| `dsp.node` | 處理鏈節點註冊 | 實時音頻數據訪問 |
-| `config.read` | get_config | 插件自身配置 |
-| `config.write` | set_config | 插件自身配置 |
-| `event.emit` | emit_event | 總線事件（含遠端廣播） |
-| `message.send` | send_message | 跨端消息 |
-| `audio.state` | audio_state | 音頻流狀態快照 |
-| `audio.play` | play_sound | 播放 WAV 音效（異步，非實時） |
-| `device.list` | connected_devices | 已連接設備信息 |
-| `network.io` | http_request | 出站 HTTP（異步，10s 超時） |
-| `open.url` | open_url | 默認瀏覽器打開鏈接 |
-| `clipboard.read` | clipboard_read | 讀取剪貼板文本 |
-| `clipboard.write` | clipboard_write | 寫入剪貼板文本 |
-| `fs.read` | fs_read | 插件目錄內文件讀取（沙箱） |
-| `fs.write` | fs_write | 插件目錄內文件寫入（沙箱，自動建父目錄） |
-| `register_hotkey` | 無需能力 | 全局快捷鍵（僅 X11，觸發僅通知註冊的插件） |
-| 無 | set_timeout/clear_timeout/set_interval/clear_interval | 定時器（不訪問資源） |
-| 無 | notify/locale/host_info/plugin_dir/open_window | 通知與環境查詢 |
+| `0` | `OK` | 成功 |
+| `1` | `NOT_FOUND` | 找不到目標資源或產物 |
+| `2` | `INVALID_MANIFEST` | 清單 JSON 格式解析失敗 |
+| `3` | `VALIDATION_FAILED`| 清單語意或欄位校驗不通過 |
+| `4` | `UNKNOWN_PLUGIN` | 未知的插件 ID |
+| `5` | `NOT_LOADED` | 插件未載入 |
+| `6` | `LOAD_FAILED` | 二進位檔案載入失敗 |
+| `7` | `API_VERSION_MISMATCH` | API 版本不相容 |
+| `8` | `PERMISSION_DENIED` | 未在清單中宣告所需能力權限 |
+| `9` | `ALREADY_EXISTS` | 插件已存在 |
+| `10` | `RUNTIME_ERROR` | 執行異常（包含 WASM Trap 與燃料耗盡） |
+| `11` | `MESSAGE_DELIVERY_FAILED` | 跨端訊息投遞失敗或逾時 |
+| `12` | `IO_ERROR` | 檔案讀寫或底層 I/O 錯誤 |
 
-- 未知能力聲明會被清單校驗拒絕
-- 未聲明能力的 API 調用被 host 回調層拒絕（`MPL_ERR_PERMISSION` / 錯誤碼 8）
+## 5. 權限能力清單（Capabilities）
+
+| 能力名稱 | 授予的操作 | 安全等級 |
+| --- | --- | --- |
+| `dsp.node` | 註冊音訊處理節點並讀取即時音訊資料 | 敏感（即時音訊流存取） |
+| `config.read` | 讀取插件持久化設定 | 普通 |
+| `config.write` | 儲存插件持久化設定 | 普通 |
+| `event.emit` | 向匯流排廣播事件 | 普通 |
+| `message.send` | 發送跨端與插件間通訊資料 | 普通 |
+| `audio.state` | 取得取樣率、音量電平與流狀態 | 普通 |
+| `audio.play` | 播放音訊並混音至虛擬麥克風 | 普通 |
+| `device.list` | 取得已連線的手機與桌面裝置資訊 | 普通 |
+| `network.io` | 發起非同步出站 HTTP 請求 | 敏感（網路存取） |
+| `open.url` | 呼叫系統預設瀏覽器開啟網頁 | 普通 |
+| `clipboard.read` | 讀取系統剪貼簿文字 | 敏感（剪貼簿存取） |
+| `clipboard.write`| 寫入文字至系統剪貼簿 | 普通 |
+| `fs.read` | 讀取插件私有目錄內的檔案 | 受限沙箱 |
+| `fs.write` | 寫入檔案至插件私有目錄 | 受限沙箱 |

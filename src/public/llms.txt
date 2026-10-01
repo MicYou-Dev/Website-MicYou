@@ -1,70 +1,70 @@
 # MicYou
 
-> MicYou 将 Android 设备转变为 PC 的高质量麦克风，支持 Wi-Fi、USB 与 Web 网页模式，提供专业音频处理与插件扩展功能。
+> 把手机变成电脑麦克风。支持 Wi-Fi、USB 与 Web 网页连接，低延迟音频传输，内置 AI 降噪与回声消除。
 
 ## What is MicYou?
 
-MicYou 是一款跨平台音频传输应用，可以将 Android 手机变成电脑的高质量麦克风。
+MicYou 是一款跨平台的音频串流工具，支持将手机变成电脑的高音质低延迟麦克风。
 
-核心功能：
-- 多种连接模式：Wi-Fi、USB (ADB)、Web 网页模式（扫码直连免客户端）
-- 专业音频处理：PureVox AI 降噪、AEC7 回声消除、去混响、均衡器、自动增益 (AGC)、语音活动检测 (VAD)
-- 虚拟麦克风支持：原生适配 Windows (VB-CABLE)、Linux (PipeWire)、macOS (BlackHole)
-- 跨平台与多样态：Windows、Linux、macOS，支持 GUI 图形界面、CLI 命令行与 TUI 终端仪表盘
-- 双运行时插件生态：Web 与 Native 双运行时扩展及插件市场
+核心特性：
+- 多种连接方式：Wi-Fi 局域网、USB (ADB) 数据线直连与 Web 网页免安装扫码连接
+- 专业音频处理：内置 PureVox AI 降噪、AEC 回声消除、去混响、均衡器与自动增益 (AGC)
+- 虚拟麦克风支持：原生适配 Windows (VB-CABLE)、macOS (BlackHole) 与 Linux (PipeWire)
+- 全平台支持：覆盖 Windows、macOS 与 Linux，支持精美 GUI、轻量 CLI 与终端 TUI
+- 插件生态：支持 Native 与 WebAssembly 插件扩展及插件市场
 
 ## Documentation
 
 ### 简体中文
 
-- [MicYou - 将手机变成电脑麦克风](https://micyou.top/): MicYou 是一款高质量、低延迟、跨平台的音频传输解决方案，支持 Wi-Fi、USB 与 Web 网页连接，可将 Android 手机变成电脑的高性能麦克风。
-- [更新日志 - MicYou 版本历史](https://micyou.top/changelog): MicYou 更新日志，查看所有版本的新功能、改进和修复内容。
-- [Android 低版本兼容构建指南 - MicYou](https://micyou.top/docs/android-compat): MicYou Android 客户端针对 Android 5.0+ (API 21+) 及老旧 32 位设备的兼容构建指南与架构机制说明。
-- [常见问题 - MicYou 故障排除指南](https://micyou.top/docs/faq): MicYou 常见问题解答与故障排查指南。涵盖 Wi-Fi / USB / Web 连接、音频路由设置、声音小/杂音/回声排查、后台保活与各系统专属问题。
-- [MicYou 插件 API 参考](https://micyou.top/docs/plugin/plugin-api-reference): 完整 Host API 参考：C ABI、WASM import、权限、消息协议与错误码
-- [MicYou 插件最佳实践与扩展性](https://micyou.top/docs/plugin/plugin-best-practices): 插件架构、安全模型、版本兼容策略与 Android 扩展路线
-- [MicYou 插件开发指南](https://micyou.top/docs/plugin/plugin-development-guide): 插件系统开发快速入门：双运行时、manifest、示例插件与开发工具
-- [MicYou 插件市场开发者规范与准入政策](https://micyou.top/docs/plugin/plugin-marketplace-policy): 发布到 MicYou 官方插件市场的准入要求、许可政策、GPL 例外条款与安全审核流程
-- [MicYou 插件系统总览](https://micyou.top/docs/plugin/plugin-overview): 插件系统目标、架构设计、双运行时、DSP 音频链路与跨端同步模型
-- [MicYou 插件包格式规范](https://micyou.top/docs/plugin/plugin-package-format): 插件目录结构、zip 打包、市场仓库与更新机制
-- [MicYou 插件用户指南](https://micyou.top/docs/plugin/plugin-user-guide): 面向 MicYou 用户的插件使用说明：安装、卸载、GUI 管理、配置与跨端同步
-- [快速开始 - MicYou 安装与配置指南](https://micyou.top/docs/quick-start): MicYou 快速上手指南。了解如何通过 Wi-Fi 局域网、Web 网页或 USB (ADB) 将手机麦克风串流至电脑，并在 Discord、微信、QQ、OBS 等软件中作为麦克风使用。
-- [下载 MicYou - Windows、macOS、Linux、Android](https://micyou.top/download): 下载 MicYou 客户端，支持 Windows、macOS、Linux 桌面端和 Android 移动端，将手机变成电脑麦克风。
-- [视频教程 - MicYou 使用教程](https://micyou.top/video): MicYou 视频教程，包含项目简介、更新介绍和使用教程，帮助您快速上手将手机变成电脑麦克风。
+- [MicYou - 把手机变成电脑麦克风](https://micyou.top/): MicYou 支持通过 Wi-Fi、USB 与 Web 网页连接，将手机麦克风低延迟串流至电脑，内置 AI 降噪与回声消除，无缝适配各类语音与会议软件。
+- [更新日志 - MicYou](https://micyou.top/changelog): 查看 MicYou 各版本的功能更新、体验改进与问题修复记录。
+- [Android 旧设备兼容构建 - MicYou](https://micyou.top/docs/android-compat): 为 Android 5.0+ (API 21+) 及老旧 32 位设备编译兼容版 MicYou 客户端，让闲置手机变身电脑麦克风。
+- [常见问题 - MicYou](https://micyou.top/docs/faq): MicYou 常见问题解答与故障排查指南。涵盖 Wi-Fi / USB / Web 连接、音频路由设置、杂音与回声消除、后台保活及各操作系统专属问题。
+- [插件 API 参考 - MicYou](https://micyou.top/docs/plugin/plugin-api-reference): MicYou 插件系统完整 API 手册：C ABI 结构体、WASM 导入导出、权限清单、消息协议与错误码。
+- [插件最佳实践与扩展架构 - MicYou](https://micyou.top/docs/plugin/plugin-best-practices): MicYou 插件架构设计理念、移动端扩展路线、版本兼容策略、安全模型与性能预算。
+- [插件开发指南 - MicYou](https://micyou.top/docs/plugin/plugin-development-guide): 完整的 MicYou 插件开发教程：快速起步、Manifest 规范、Native 与 WASM 插件编写、Host API 及跨端通信。
+- [插件市场规范与准入政策 - MicYou](https://micyou.top/docs/plugin/plugin-marketplace-policy): 发布到 MicYou 官方插件市场的准入标准、GPLv3 插件例外条款、安全性要求与提交审核流程。
+- [插件系统总览 - MicYou](https://micyou.top/docs/plugin/plugin-overview): MicYou 插件系统架构设计：Native 与 WASM 双运行时、DSP 音频处理链路接入、跨端消息总线与插件分类。
+- [插件包格式规范 - MicYou](https://micyou.top/docs/plugin/plugin-package-format): MicYou 插件目录结构、plugin.json 清单定义、ZIP 打包分发与市场索引规范。
+- [插件使用指南 - MicYou](https://micyou.top/docs/plugin/plugin-user-guide): MicYou 插件安装、管理、配置修改、音效板与手机跨端同步使用说明。
+- [快速开始 - MicYou](https://micyou.top/docs/quick-start): 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将手机麦克风低延迟串流到电脑，并在 Discord、微信、QQ、OBS 等软件中作为麦克风使用。
+- [下载 MicYou - Windows、macOS、Linux、Android](https://micyou.top/download): 获取 MicYou 最新版本客户端，支持 Windows、macOS、Linux 与 Android，快速将手机麦克风串流至电脑。
+- [视频教程 - MicYou](https://micyou.top/video): 通过视频快速了解 MicYou 的功能特性、版本更新与实际配置使用流程。
 
 ### English
 
-- [MicYou - Turn Your Phone into a PC Microphone](https://micyou.top/en/): MicYou is a high-quality, low-latency, cross-platform audio transmission solution supporting Wi-Fi, USB, and Web modes to turn your Android phone into a high-performance PC microphone.
-- [Changelog - MicYou Version History](https://micyou.top/en/changelog): MicYou changelog with all version updates, new features, improvements and bug fixes.
-- [Android Legacy Compatibility Build Guide - MicYou](https://micyou.top/en/docs/android-compat): Build guide and fallback architecture for compiling MicYou Android client targeting Android 5.0+ (API 21+) and 32-bit legacy devices.
-- [FAQ - MicYou Troubleshooting Guide](https://micyou.top/en/docs/faq): Frequently asked questions and troubleshooting guide for MicYou. Covers Wi-Fi, USB, and Web connection issues, audio routing, background keep-alive, latency optimization, and OS-specific fixes.
-- [MicYou Plugin API Reference](https://micyou.top/en/docs/plugin/plugin-api-reference): Complete Host API reference: C ABI, WASM imports, permissions, message protocol and error codes
-- [MicYou Plugin Architecture & Best Practices](https://micyou.top/en/docs/plugin/plugin-best-practices): Plugin architecture, security model, version compatibility strategies, and the Android extensibility roadmap.
-- [MicYou Plugin Development Guide](https://micyou.top/en/docs/plugin/plugin-development-guide): Quick start for the plugin system: dual runtime, manifest, example plugins and dev tools
-- [MicYou Plugin Marketplace Policy & Guidelines](https://micyou.top/en/docs/plugin/plugin-marketplace-policy): Distribution requirements, licensing terms, GPL plugin exception, and security review process for the MicYou Plugin Marketplace.
-- [MicYou Plugin System Overview](https://micyou.top/en/docs/plugin/plugin-overview): Architecture, dual runtimes, DSP pipeline integration, and cross-platform synchronization model for MicYou plugins.
-- [MicYou Plugin Package Format](https://micyou.top/en/docs/plugin/plugin-package-format): Plugin directory layout, zip packaging, marketplace repo and the update flow
-- [MicYou Plugin User Guide](https://micyou.top/en/docs/plugin/plugin-user-guide): User guide for installing, managing, configuring, and syncing MicYou plugins across devices.
-- [Quick Start - MicYou Setup Guide](https://micyou.top/en/docs/quick-start): MicYou quick start guide. Learn how to stream your phone microphone to your PC over Wi-Fi, Web browser, or USB (ADB), and use it as an audio input in Discord, OBS, Zoom, and games.
-- [Download MicYou - Windows, macOS, Linux, Android](https://micyou.top/en/download): Download MicYou client for Windows, macOS, Linux desktop and Android mobile to turn your phone into a PC microphone.
-- [Video Tutorials - MicYou Guide](https://micyou.top/en/video): MicYou video tutorials including project introduction, whats new, and usage guides to help you get started turning your phone into a PC microphone.
+- [MicYou - Turn Your Phone into a PC Microphone](https://micyou.top/en/): Stream your phone microphone to your computer over Wi-Fi, USB, or Web with low latency. Built-in AI noise cancellation, echo cancellation, and virtual audio routing.
+- [Changelog - MicYou](https://micyou.top/en/changelog): See release notes, new features, performance improvements, and bug fixes across all MicYou versions.
+- [Android Legacy Device Compatibility Build - MicYou](https://micyou.top/en/docs/android-compat): Compile a custom compatibility build of the MicYou Android client for Android 5.0+ (API 21+) and 32-bit legacy devices to repurpose old phones as PC microphones.
+- [FAQ - MicYou](https://micyou.top/en/docs/faq): Frequently asked questions and troubleshooting guide for MicYou. Covers Wi-Fi, USB, and Web connection issues, audio routing, background keep-alive, latency optimization, and OS-specific fixes.
+- [Plugin API Reference - MicYou](https://micyou.top/en/docs/plugin/plugin-api-reference): Complete Host API specification for MicYou plugins: C ABI structures, WASM imports/exports, permission capabilities, wire protocol, and error codes.
+- [Plugin Best Practices & Architecture - MicYou](https://micyou.top/en/docs/plugin/plugin-best-practices): Architecture design principles, mobile extension roadmap, API versioning strategy, security model, and performance budgets for MicYou plugins.
+- [Plugin Development Guide - MicYou](https://micyou.top/en/docs/plugin/plugin-development-guide): Complete developer tutorial for MicYou plugins: CLI tools, Manifest format, writing Native and WASM plugins, Host APIs, and cross-device communication.
+- [Plugin Marketplace Policy - MicYou](https://micyou.top/en/docs/plugin/plugin-marketplace-policy): Developer policies for the MicYou Plugin Marketplace: licensing terms, GPLv3 plugin exception, security requirements, and submission workflow.
+- [Plugin System Overview - MicYou](https://micyou.top/en/docs/plugin/plugin-overview): Architecture, dual runtimes, DSP pipeline integration, and cross-platform synchronization model for MicYou plugins.
+- [Plugin Package Format - MicYou](https://micyou.top/en/docs/plugin/plugin-package-format): Specifications for MicYou plugin directory structure, manifest schema, ZIP packaging, and marketplace repository layout.
+- [Plugin User Guide - MicYou](https://micyou.top/en/docs/plugin/plugin-user-guide): How to install, configure, and manage MicYou plugins, use soundboard hotkeys, and sync data across devices.
+- [Quick Start - MicYou](https://micyou.top/en/docs/quick-start): Get started with MicYou. Stream your mobile microphone to your computer over Wi-Fi, USB, or Web with low latency, and use it in Discord, OBS, Zoom, and games.
+- [Download MicYou - Windows, macOS, Linux, Android](https://micyou.top/en/download): Download the latest MicYou releases for Windows, macOS, Linux, and Android to turn your phone into a high-quality PC microphone.
+- [Video Tutorials - MicYou](https://micyou.top/en/video): Watch video walkthroughs covering MicYou features, new updates, and step-by-step setup guides.
 
 ### 繁體中文
 
-- [MicYou - 將手機變成電腦麥克風](https://micyou.top/zh-TW/): MicYou 是一款高品質、低延遲、跨平台的音訊傳輸解決方案，支援 Wi-Fi、USB 與 Web 網頁連線，可將 Android 手機變成電腦的高效能麥克風。
-- [更新日誌 - MicYou 版本歷史](https://micyou.top/zh-TW/changelog): MicYou 更新日誌，查看所有版本的新功能、改進和修復內容。
-- [Android 低版本相容構建指南 - MicYou](https://micyou.top/zh-TW/docs/android-compat): MicYou Android 客戶端針對 Android 5.0+ (API 21+) 及老舊 32 位元裝置的相容構建指南與架構機制說明。
-- [常見問題 - MicYou 疑難排解指南](https://micyou.top/zh-TW/docs/faq): MicYou 常見問題解答與疑難排解指南。涵蓋 Wi-Fi / USB / Web 連線、音訊路由設定、音量過小/雜音/回音排查、背景保活與各系統專屬問題。
-- [MicYou 插件 API 參考](https://micyou.top/zh-TW/docs/plugin/plugin-api-reference): 完整 Host API 參考：C ABI、WASM import、權限、消息協議與錯誤碼
-- [MicYou 插件最佳實踐與擴展性](https://micyou.top/zh-TW/docs/plugin/plugin-best-practices): 插件架構、安全模型、版本兼容策略與 Android 擴展路線
-- [MicYou 插件開發指南](https://micyou.top/zh-TW/docs/plugin/plugin-development-guide): 插件系統開發快速入門：雙運行時、manifest、示例插件與開發工具
-- [MicYou 插件市集開發者規範與准入政策](https://micyou.top/zh-TW/docs/plugin/plugin-marketplace-policy): 發布至 MicYou 官方插件市集的准入要求、授權政策、GPL 例外條款與安全審核流程
-- [MicYou 插件系統總覽](https://micyou.top/zh-TW/docs/plugin/plugin-overview): 插件系統目標、架構設計、雙執行階段、DSP 音訊鏈路與跨端同步模型
-- [MicYou 插件包格式規範](https://micyou.top/zh-TW/docs/plugin/plugin-package-format): 插件目錄結構、zip 打包、市場倉庫與更新機制
-- [MicYou 插件使用者指南](https://micyou.top/zh-TW/docs/plugin/plugin-user-guide): 面向 MicYou 使用者的插件使用說明：安裝、解除安裝、GUI 管理、設定與跨端同步
-- [快速開始 - MicYou 安裝與設定指南](https://micyou.top/zh-TW/docs/quick-start): MicYou 快速上手指南。了解如何透過 Wi-Fi 區域網路、Web 網頁或 USB (ADB) 將手機麥克風串流至電腦，並在 Discord、微信、QQ、OBS 等軟體中作為麥克風使用。
-- [下載 MicYou - Windows、macOS、Linux、Android](https://micyou.top/zh-TW/download): 下載 MicYou 用戶端，支援 Windows、macOS、Linux 桌面端和 Android 行動端，將手機變成電腦麥克風。
-- [影片教學 - MicYou 使用教學](https://micyou.top/zh-TW/video): MicYou 影片教學，包含專案簡介、更新介紹和使用教學，幫助您快速上手將手機變成電腦麥克風。
+- [MicYou - 把手機變成電腦麥克風](https://micyou.top/zh-TW/): MicYou 支援透過 Wi-Fi、USB 與 Web 網頁連線，將手機麥克風低延遲串流至電腦，內建 AI 降噪與回聲消除，無縫適配各類語音與會議軟體。
+- [更新日誌 - MicYou](https://micyou.top/zh-TW/changelog): 查看 MicYou 各版本的功能更新、體驗改進與問題修復記錄。
+- [Android 舊裝置相容構建 - MicYou](https://micyou.top/zh-TW/docs/android-compat): 為 Android 5.0+ (API 21+) 及老舊 32 位元裝置編譯相容版 MicYou 客戶端，讓閒置手機變身電腦麥克風。
+- [常見問題 - MicYou](https://micyou.top/zh-TW/docs/faq): MicYou 常見問題解答與疑難排解指南。涵蓋 Wi-Fi / USB / Web 連線、音訊路由設定、雜音與回聲消除、背景保活及各作業系統專屬問題。
+- [插件 API 參考 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-api-reference): MicYou 插件系統完整 API 手冊：C ABI 結構體、WASM 匯入匯出、權限清單、訊息協定與錯誤碼。
+- [插件最佳實踐與擴充架構 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-best-practices): MicYou 插件架構設計理念、行動端擴充路線、版本相容策略、安全模型與效能預算。
+- [插件開發指南 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-development-guide): 完整的 MicYou 插件開發教學：快速起步、Manifest 規範、Native 與 WASM 插件撰寫、Host API 及跨端通訊。
+- [插件市集規範與准入政策 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-marketplace-policy): 發布至 MicYou 官方插件市集的准入標準、GPLv3 插件例外條款、安全性要求與提交審核流程。
+- [插件系統總覽 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-overview): MicYou 插件系統架構設計：Native 與 WASM 雙執行階段、DSP 音訊處理鏈路接入、跨端訊息匯流排與插件分類。
+- [插件套件格式規範 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-package-format): MicYou 插件目錄結構、plugin.json 清單定義、ZIP 打包分發與市集索引規範。
+- [插件使用指南 - MicYou](https://micyou.top/zh-TW/docs/plugin/plugin-user-guide): MicYou 插件安裝、管理、設定修改、音效板與手機跨端同步使用說明。
+- [快速開始 - MicYou](https://micyou.top/zh-TW/docs/quick-start): 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將手機麥克風低延遲串流到電腦，並在 Discord、微信、QQ、OBS 等軟體中作為麥克風使用。
+- [下載 MicYou - Windows、macOS、Linux、Android](https://micyou.top/zh-TW/download): 獲取 MicYou 最新版本客戶端，支援 Windows、macOS、Linux 與 Android，快速將手機麥克風串流至電腦。
+- [影片教學 - MicYou](https://micyou.top/zh-TW/video): 透過影片快速了解 MicYou 的功能特色、版本更新與實際設定使用流程。
 
 ## Quick Start
 

@@ -1,21 +1,21 @@
 ---
-title: FAQ - MicYou Troubleshooting Guide
+title: FAQ - MicYou
 description: Frequently asked questions and troubleshooting guide for MicYou. Covers Wi-Fi, USB, and Web connection issues, audio routing, background keep-alive, latency optimization, and OS-specific fixes.
 keywords: MicYou FAQ,MicYou troubleshooting,cannot connect,no sound,audio routing,noise suppression,latency,background battery,VB-CABLE,BlackHole,PipeWire
 ---
 
 # Frequently Asked Questions (FAQ)
 
-Running into issues while using MicYou? Here is a curated guide to common questions and practical troubleshooting steps.
+Running into issues while using MicYou? Here is a practical troubleshooting guide covering the most common questions.
 
 ## 1. Connection & Network Issues
 
 ### Phone shows "Connection timed out" or fails to connect in Wi-Fi mode
 
-Wi-Fi mode requires your phone and computer to communicate over the local area network (LAN). If the connection fails, check the following points:
+Wi-Fi mode requires your phone and computer to communicate over your local area network (LAN). Please verify the following three items:
 
 1. **Allow Firewall Ports on Your Computer (Most Common)**  
-   Windows Firewall or third-party security software often blocks inbound local traffic. MicYou uses **TCP 6000** (control channel) and **UDP 6001** (audio streaming).
+   Windows Defender Firewall or third-party antivirus software often silently blocks incoming local connections. MicYou uses **TCP 6000** (control channel) and **UDP 6001** (audio data).
    - **Windows**: Open PowerShell as Administrator and run:
      ```powershell
      New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
@@ -27,33 +27,33 @@ Wi-Fi mode requires your phone and computer to communicate over the local area n
      ```
 
 2. **Check Router AP Isolation / Guest Network**  
-   - Ensure your phone and PC are connected to the same Wi-Fi router.
-   - On **campus networks, corporate Wi-Fi, or public rental networks**, routers frequently enable **AP Isolation (Client Isolation)**, preventing wireless devices from communicating with each other.
-   - **Solution**: Enable a Wi-Fi hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#_4-connection-mode-3-usb-cable-adb-ultra-low-latency).
+   - Make sure your phone and PC are connected to the same Wi-Fi router.
+   - On **campus networks, company public Wi-Fi, or shared apartment networks**, routers frequently have **AP Isolation (Client Isolation)** turned on, preventing devices from talking to each other.
+   - **Solution**: Enable a personal hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#option-b-usb-cable-adb-ultra-low-latency).
 
-3. **Multiple Network Adapters Selected Wrong IP**  
-   If your computer has WSL, virtual machines (VMware / VirtualBox), VPNs, or virtual mesh networks (Tailscale / ZeroTier) active, MicYou Desktop may list multiple IP addresses.  
-   - In MicYou Desktop's IP dropdown, select your PC's **physical Wi-Fi network adapter IP** (usually `192.168.x.x` or `10.x.x.x`), and make sure the phone connects to that same IP.
+3. **Wrong Network Adapter IP Selected**  
+   If your computer has WSL, virtual machines (VMware / VirtualBox), VPNs, or mesh networks (Tailscale / ZeroTier) enabled, MicYou Desktop may detect multiple virtual IP addresses.  
+   - In MicYou Desktop's IP dropdown, select your PC's **physical Wi-Fi network IP** (usually `192.168.x.x` or `10.x.x.x`), and make sure the phone connects to that matching address.
 
 ### USB (ADB) Mode says "No device detected" or connection fails
 
-USB mode utilizes ADB port reversal for stable, ultra-low-latency transmission. If your device is not recognized:
+USB mode utilizes local ADB port tunneling for rock-solid stability and minimum latency. If your phone is not recognized:
 
 1. **Enable USB Debugging & Grant Authorization**  
-   - Go to "Settings" > "About Phone", tap "Build Number" 7 times to enable Developer Options.
-   - Enter "Developer Options" and toggle on **USB Debugging**.
+   - Go to "Settings" > "About phone" and tap "Build number" 7 times to unlock Developer Options.
+   - Open "Developer options" and turn on **USB Debugging**.
    - Connect via USB cable. When the **"Allow USB debugging?"** prompt appears on your phone screen, check "Always allow from this computer" and tap OK.
 
 2. **Change USB Mode from "Charging Only"**  
-   After plugging in the cable, pull down your phone notification shade and change the USB mode to **"File Transfer (MTP)"** or **"PTP"**. Some phone manufacturers disable ADB debugging interfaces when in "Charging only" mode.
+   After plugging in the cable, pull down your phone notification shade and change the USB mode to **"File Transfer (MTP)"** or **"PTP"**. Some phone brands disable ADB debugging interfaces when set to "Charging only".
 
-3. **Verify ADB Status**  
+3. **Verify ADB Environment**  
    MicYou Desktop contains built-in ADB invocation logic. You can check the connection status in your terminal:
    ```bash
    adb devices
    ```
-   - If it lists `unauthorized`: Unlock your phone and accept the USB debugging authorization dialog.
-   - If `adb` is not recognized, install the platform tools via:
+   - If it lists `unauthorized`: Unlock your phone and accept the USB debugging prompt.
+   - If `adb` is not recognized, install platform tools via:
      - **Windows**: <Copy text="winget install -e --id Google.PlatformTools" type="info" />
      - **macOS**: <Copy text="brew install android-platform-tools" type="info" />
      - **Ubuntu / Debian**: <Copy text="sudo apt install android-tools-adb" type="info" />
@@ -70,11 +70,11 @@ USB mode utilizes ADB port reversal for stable, ultra-low-latency transmission. 
 
 ### Connected and volume meter is bouncing, but no sound in Discord, games, or meetings?
 
-This is the most common configuration pitfall: **swapping audio input and output directions**.
+This is the most common configuration issue: **swapping audio input and output directions**.
 
-::: tip Core Concept: Understanding Virtual Audio Routing
-- **MicYou Desktop** is the audio **sender** — it sends sound **OUT** to the virtual audio cable.
-- **Third-party software (Discord / Zoom / OBS / Game Voice)** is the audio **receiver** — it picks sound **IN** from the virtual audio cable as a microphone.
+::: tip Core Concept: Understanding Audio Routing
+- **MicYou Desktop** is the audio **sender** — it sends received phone audio **OUT** to the virtual audio cable.
+- **Third-party software (Discord / Zoom / OBS / Game Voice)** is the audio **receiver** — it captures sound **IN** from the virtual audio cable as a microphone.
 :::
 
 #### Verification Steps:
@@ -90,7 +90,7 @@ This is the most common configuration pitfall: **swapping audio input and output
    - **Linux**: Select the PipeWire `MicYou` virtual source
 
 3. **Check System Recording Levels**:  
-   Open your operating system's sound settings and ensure `CABLE Output` or `BlackHole` is not muted and the input volume is set to 80%~100%.
+   Open your operating system's sound control panel and ensure `CABLE Output` or `BlackHole` is not muted and the input volume is set to 80%~100%.
 
 **Windows Sound Device Configuration:**
 
@@ -113,12 +113,12 @@ This is the most common configuration pitfall: **swapping audio input and output
 3. **High Background Noise**:
    - Enable **PureVox AI Noise Suppression** or Voice Activity Detection (VAD) in MicYou Desktop to filter out keyboard clatter, fan noise, and ambient hiss.
 
-### Audio crackling, popping, or distorted robotic sound?
+### Audio crackling, popping, or distorted sound?
 
 1. **Sample Rate Mismatch (Windows)**:
    - Open Windows Sound Control Panel (`mmsys.cpl`).
    - Under `CABLE Input` (Playback tab) and `CABLE Output` (Recording tab) > "Properties" > "Advanced", set "Default Format" on both to **`2 channel, 16 bit, 48000 Hz`** (or `24 bit, 48000 Hz`).
-2. **Wi-Fi Packet Loss**:
+2. **Wi-Fi Network Jitter**:
    - Increase the Audio Buffer Size in MicYou Desktop settings.
    - Switch your mobile device to 5GHz Wi-Fi to avoid 2.4GHz Bluetooth and microwave congestion.
 
@@ -131,7 +131,7 @@ This is the most common configuration pitfall: **swapping audio input and output
 
 ### Sound drops or disconnects after phone screen turns off or app goes to background?
 
-Android's aggressive battery-saving features (Doze mode and OEM task killers) suspend network sockets and microphone capture when the screen is locked.
+Android's aggressive battery-saving features suspend background network sockets and microphone capture when the screen is locked.
 
 To ensure uninterrupted streaming:
 
@@ -168,13 +168,11 @@ To ensure uninterrupted streaming:
 On certain Linux environments (especially with proprietary NVIDIA drivers or specific WebKitGTK versions), DMA-BUF hardware acceleration can cause window rendering glitches.
 
 Launch the app with software rendering fallback:
-
 ```bash
 MicYou --software-rendering
 ```
 
 Or disable DMA-BUF acceleration via environment variable:
-
 ```bash
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 MicYou
@@ -183,7 +181,6 @@ MicYou
 ### Linux: PipeWire does not show the virtual microphone node
 
 MicYou provides native PipeWire integration. If the virtual source does not appear, check your user-level audio daemon status:
-
 ```bash
 systemctl --user status pipewire pipewire-pulse
 ```
