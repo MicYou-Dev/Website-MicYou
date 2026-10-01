@@ -26,6 +26,10 @@ export const nav: DefaultTheme.NavItem[] = [
 				text: '<iconify-icon class="i-mr" icon="mdi:history" style="color:#ff9800"></iconify-icon>更新日誌',
 				link: "/zh-TW/changelog",
 			},
+			{
+				text: '<iconify-icon class="i-mr" icon="mdi:heart" style="color:#e74c3c"></iconify-icon>贊助',
+				link: "https://afdian.com/a/LanRhyme",
+			},
 		],
 	},
 ];
@@ -33,9 +37,14 @@ export const nav: DefaultTheme.NavItem[] = [
 // 貢獻者組件翻譯
 export const contributors = {
 	author: "作者",
+	maintainer: "維護者",
 	contributions: "次貢獻",
 	developedWith: "MicYou 用 ❤ 發電",
 	thanksContributors: "感謝以下貢獻者,TA們讓 MicYou 變得更好",
+	sponsorTitle: "贊助與支持",
+	sponsorDesc:
+		"如果您喜歡 MicYou，歡迎前往愛發電贊助作者，您的支持是項目持續迭代的最大動力！",
+	sponsorBtn: "前往愛發電贊助",
 };
 
 // 下載組件翻譯
@@ -43,25 +52,24 @@ export const download = {
 	title: "下載應用",
 	viewReleaseNotes: "查看更新日誌",
 	windowsDesc: "Windows 10/11 64位元",
-	macOSDesc: "macOS 11.0 及以上",
-	linuxDesc: "主流 Linux 發行版",
-	androidDesc: "Android 8.0 及以上",
+	macOSDesc: "macOS 11.0 及以上 (Apple Silicon)",
+	linuxDesc: "主流 Linux 發行版 (x86_64)",
+	androidDesc: "Android 7.0 及以上（提供 5.0+ 相容版）",
 	// 檔案名
-	installer: "安裝程式",
-	portableJRE: "便攜版 (JRE)",
-	portableNoJRE: "便攜版 (NoJRE)",
-	dmgArm: "DMG (Apple Silicon)",
-	dmgIntel: "DMG (Intel)",
+	installer: "安裝程式 (.exe)",
+	appImage: "AppImage",
 	deb: "DEB",
 	rpm: "RPM",
 	arch: "Arch",
+	dmgArm: "DMG (Apple Silicon)",
 	apk: "APK",
 	copied: "已複製",
 	stable: "穩定版",
 	nightly: "快照版",
 	nightlyTip: "快照版包含最新功能，可能不穩定",
 	mirror: "Mirror 酱高速下載",
-	mirrorCqu: "重慶大學鏡像下載",
+	mirrorHernet: "河南省教育科研網鏡像",
+	mirrorCqu: "重慶大學鏡像",
 	mirrorWarning: "請勿使用多線程下載器，否則 IP 可能遭到封禁",
 };
 
@@ -81,8 +89,11 @@ export const umami = {
 // 致謝組件翻譯
 export const thankYou = {
 	title: "特別感謝",
+	hernetName: "河南省教育科研網開源軟體鏡像站",
+	hernetDesc:
+		"特別感謝 河南省教育科研網開源軟體鏡像站 為本專案提供鏡像下載服務",
 	cquName: "重慶大學開源軟體鏡像站",
-	cquDesc: "特別感謝 重慶大學開源軟體鏡像站 為本專案提供鏡像下載服務",
+	cquDesc: "特別感謝 重慶大學開源軟體鏡像站 過往的穩定支持",
 	mirrorName: "Mirror 醬",
 	mirrorDesc: "特別感謝 Mirror 醬 為本專案提供高速鏡像下載服務",
 };
@@ -120,11 +131,21 @@ export const themeConfig = {
 		provider: "local" as const,
 		options: {
 			translations: {
-				button: { buttonText: "搜尋文檔", buttonAriaLabel: "搜尋文檔" },
+				button: { buttonText: "搜尋文件", buttonAriaLabel: "搜尋文件" },
 				modal: {
-					noResultsText: "無法找到相關結果",
+					displayDetails: "顯示詳細列表",
 					resetButtonTitle: "清除查詢條件",
-					footer: { selectText: "選擇", navigateText: "切換" },
+					backButtonTitle: "關閉搜尋",
+					noResultsText: "無法找到相關結果",
+					footer: {
+						selectText: "選擇",
+						selectKeyAriaLabel: "Enter",
+						navigateText: "切換",
+						navigateUpKeyAriaLabel: "上箭頭",
+						navigateDownKeyAriaLabel: "下箭頭",
+						closeText: "關閉",
+						closeKeyAriaLabel: "esc",
+					},
 				},
 			},
 		},
@@ -268,7 +289,7 @@ export function getFooterData(): FooterData {
 						},
 						name: footer.sponsor,
 						link: "https://afdian.com/a/LanRhyme",
-						rel: "noopener noreferrer sponsored",
+						rel: "noopener noreferrer",
 					},
 				],
 			},
@@ -303,3 +324,93 @@ export function getFooterData(): FooterData {
 		],
 	};
 }
+
+// 閱讀增強翻譯
+export const enhancedReadabilities = {
+	title: { title: "閱讀增強", titleAriaLabel: "閱讀增強" },
+	layoutSwitch: {
+		title: "版面配置切換",
+		titleAriaLabel: "版面配置切換",
+		titleHelpMessage:
+			"調整 VitePress 的版面樣式，以適配不同的閱讀習慣和螢幕環境。",
+		titleScreenNavWarningMessage: "行動裝置暫無可切換版面。",
+		optionFullWidth: "全部展開",
+		optionFullWidthAriaLabel: "全部展開",
+		optionFullWidthHelpMessage: "使側邊欄和內容區域佔據整個螢幕的全部寬度。",
+		optionSidebarWidthAdjustableOnly: "全部展開，但側邊欄寬度可調",
+		optionSidebarWidthAdjustableOnlyAriaLabel: "全部展開，但側邊欄寬度可調",
+		optionSidebarWidthAdjustableOnlyHelpMessage:
+			"側邊欄寬度可調，但內容區域寬度不變，調整後的側邊欄將可以佔據整個螢幕的最大寬度。",
+		optionBothWidthAdjustable: "全部展開，且側邊欄和內容區域寬度均可調",
+		optionBothWidthAdjustableAriaLabel:
+			"全部展開，且側邊欄和內容區域寬度均可調",
+		optionBothWidthAdjustableHelpMessage:
+			"側邊欄和內容區域寬度均可調，調整後的側邊欄和內容區域將可以佔據整個螢幕的最大寬度。",
+		optionOriginalWidth: "原始寬度",
+		optionOriginalWidthAriaLabel: "原始寬度",
+		optionOriginalWidthHelpMessage: "原始的 VitePress 預設版面寬度",
+		contentLayoutMaxWidth: {
+			title: "內容最大寬度",
+			titleAriaLabel: "內容最大寬度",
+			titleHelpMessage:
+				"調整 VitePress 版面中內容區域的寬度，以適配不同的閱讀習慣和螢幕環境。",
+			titleScreenNavWarningMessage: "行動裝置暫不支援調整內容最大寬度。",
+			slider: "調整內容最大寬度",
+			sliderAriaLabel: "調整內容最大寬度",
+			sliderHelpMessage: "一個可調整的滑塊，用於選擇和自訂內容最大寬度。",
+		},
+		pageLayoutMaxWidth: {
+			title: "頁面最大寬度",
+			titleAriaLabel: "頁面最大寬度",
+			titleHelpMessage:
+				"調整 VitePress 版面中頁面的寬度，以適配不同的閱讀習慣和螢幕環境。",
+			titleScreenNavWarningMessage: "行動裝置暫不支援調整頁面最大寬度。",
+			slider: "調整頁面最大寬度",
+			sliderAriaLabel: "調整頁面最大寬度",
+			sliderHelpMessage: "一個可調整的滑塊，用於選擇和自訂頁面最大寬度。",
+		},
+	},
+	spotlight: {
+		title: "聚光燈",
+		titleAriaLabel: "聚光燈",
+		titleHelpMessage:
+			"支援在內文中醒目提示目前滑鼠懸停的行和元素，以最佳化閱讀和專注困難使用者的閱讀體驗。",
+		titleScreenNavWarningMessage: "行動裝置暫不支援聚光燈。",
+		optionOn: "開啟",
+		optionOnAriaLabel: "開啟",
+		optionOnHelpMessage: "開啟聚光燈。",
+		optionOff: "關閉",
+		optionOffAriaLabel: "關閉",
+		optionOffHelpMessage: "關閉聚光燈。",
+		styles: {
+			title: "聚光燈樣式",
+			titleAriaLabel: "聚光燈樣式",
+			titleHelpMessage: "調整聚光燈的樣式。",
+			titleScreenNavWarningMessage: "行動裝置暫不支援調整聚光燈樣式。",
+			optionUnder: "置於底部",
+			optionUnderAriaLabel: "置於底部",
+			optionUnderHelpMessage:
+				"在目前滑鼠懸停的元素下方新增一個純色背景以醒目提示目前滑鼠懸停的位置。",
+			optionAside: "置於側邊",
+			optionAsideAriaLabel: "置於側邊",
+			optionAsideHelpMessage:
+				"在目前滑鼠懸停的元素旁邊新增一條固定的純色線以醒目提示目前滑鼠懸停的位置。",
+		},
+	},
+};
+
+// 頁面歷史與貢獻者翻譯
+export const gitChangelog = {
+	changelog: {
+		title: "頁面歷史",
+		noData: "暫無最近變更歷史",
+		lastEdited: "最後編輯於 {{daysAgo}}",
+		lastEditedDateFnsLocaleName: "zhTW",
+		viewFullHistory: "查看完整歷史",
+		committedOn: " 於 {{date}}",
+	},
+	contributors: {
+		title: "貢獻者",
+		noData: "暫無相關貢獻者",
+	},
+};

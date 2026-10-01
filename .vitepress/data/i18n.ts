@@ -1,8 +1,8 @@
 import type { FooterData } from "@theojs/lumen";
 import type { DefaultTheme } from "vitepress";
-import * as en from "./lang/en";
-import * as zh from "./lang/zh";
-import * as zh_tw from "./lang/zh_tw";
+import * as en from "./lang/en.ts";
+import * as zh from "./lang/zh.ts";
+import * as zh_tw from "./lang/zh_tw.ts";
 
 export type Lang = "zh-CN" | "en" | "zh-TW";
 
@@ -56,6 +56,27 @@ export const themeConfigTranslations = {
 	"zh-CN": zh.themeConfig,
 	en: en.themeConfig,
 	"zh-TW": zh_tw.themeConfig,
+};
+
+// 本地搜索翻译
+export const searchTranslations = {
+	"zh-CN": zh.themeConfig.search.options.translations,
+	en: en.themeConfig.search.options.translations,
+	"zh-TW": zh_tw.themeConfig.search.options.translations,
+};
+
+// 阅读增强组件翻译
+export const enhancedReadabilitiesTranslations = {
+	"zh-CN": zh.enhancedReadabilities,
+	en: en.enhancedReadabilities,
+	"zh-TW": zh_tw.enhancedReadabilities,
+};
+
+// Git 变更与贡献者翻译
+export const gitChangelogTranslations = {
+	"zh-CN": zh.gitChangelog,
+	en: en.gitChangelog,
+	"zh-TW": zh_tw.gitChangelog,
 };
 
 // 根据语言获取页脚数据

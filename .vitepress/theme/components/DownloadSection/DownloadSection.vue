@@ -6,24 +6,19 @@ import {
 	type DownloadKey,
 	type Lang,
 } from "../../../data/i18n";
+import { useGhData } from "../../composables/useGhData";
 
 const { lang } = useData();
 const t = computed(
 	() =>
 		downloadTranslations[lang.value as Lang] || downloadTranslations["zh-CN"],
 );
-const version = ref("");
 
-onMounted(async () => {
-	try {
-		const res = await fetch(`/ghdata.json?t=${Date.now()}`);
-		if (res.ok) {
-			const data = await res.json();
-			version.value = data.version;
-		}
-	} catch {
-		// 静默处理：版本号未加载时不阻塞页面
-	}
+const { ghData, loadGhData } = useGhData();
+const version = computed(() => ghData.value.version);
+
+onMounted(() => {
+	loadGhData();
 });
 
 const copied = ref<string | null>(null);
@@ -47,14 +42,6 @@ const platforms: {
 				name: "installer",
 				pattern: "MicYou-Win-{version}-installer.exe",
 			},
-			{
-				name: "portableJRE",
-				pattern: "MicYou-Win-{version}.zip",
-			},
-			{
-				name: "portableNoJRE",
-				pattern: "MicYou-Win-NoJRE-{version}.zip",
-			},
 		],
 	},
 	{
@@ -66,14 +53,6 @@ const platforms: {
 				name: "dmgArm",
 				pattern: "MicYou-macOS-{version}-arm64.dmg",
 			},
-			{
-				name: "dmgIntel",
-				pattern: "MicYou-macOS-{version}-x64.dmg",
-			},
-			{
-				name: "portableNoJRE",
-				pattern: "MicYou-macOS-NoJRE-{version}.tar.gz",
-			},
 		],
 	},
 	{
@@ -81,6 +60,10 @@ const platforms: {
 		icon: "simple-icons:linux",
 		desc: "linuxDesc",
 		files: [
+			{
+				name: "appImage",
+				pattern: "MicYou-Linux-{version}.AppImage",
+			},
 			{
 				name: "deb",
 				pattern: "MicYou-Linux-{version}.deb",
@@ -90,10 +73,6 @@ const platforms: {
 				pattern: "MicYou-Linux-{version}.rpm",
 			},
 			{ name: "arch", copy: "paru -S micyou-bin" },
-			{
-				name: "portableNoJRE",
-				pattern: "MicYou-Linux-NoJRE-{version}.tar.gz",
-			},
 		],
 	},
 	{
@@ -115,7 +94,20 @@ const githubUrl = (pattern: string) =>
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
 const copyCmd = async (cmd: string) => {
-	await navigator.clipboard.writeText(cmd);
+	try {
+		await navigator.clipboard.writeText(cmd);
+	} catch {
+		const el = document.createElement("textarea");
+		el.value = cmd;
+		el.setAttribute("readonly", "");
+		el.style.position = "fixed";
+		el.style.left = "-9999px";
+		el.style.top = "-9999px";
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand("copy");
+		document.body.removeChild(el);
+	}
 	copied.value = cmd;
 	if (copyTimer) clearTimeout(copyTimer);
 	copyTimer = setTimeout(() => (copied.value = null), 2000);
@@ -144,19 +136,17 @@ const mirrorLink = computed(() => {
 		: "https://mirrorchyan.com/zh/projects?rid=MicYou";
 });
 
-const cquMirrorLink = computed(() => {
-	const currentLang = lang.value as Lang;
-	return currentLang === "en"
-		? "https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/"
-		: "https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/";
-});
+const hernetMirrorLink =
+	"https://mirrors.ha.edu.cn/github-release/LanRhyme/MicYou/";
+const cquMirrorLink =
+	"https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/";
 </script>
 
 <template>
   <div class="dl">
     <header class="dl-head">
       <h1>{{ t.title }}</h1>
-      <span class="ver">v{{ version }}</span>
+      <span v-if="version" class="ver">v{{ version }}</span>
     </header>
 
     <div class="card">
@@ -165,7 +155,11 @@ const cquMirrorLink = computed(() => {
           <iconify-icon icon="mdi:cloud-download-outline" />
           {{ t.mirror }}
         </a>
-        <a :href="cquMirrorLink" target="_blank" class="mirror-banner mirror-banner--secondary">
+        <a :href="hernetMirrorLink" target="_blank" class="mirror-banner mirror-banner--hernet">
+          <iconify-icon icon="mdi:server-network" />
+          {{ t.mirrorHernet }}
+        </a>
+        <a :href="cquMirrorLink" target="_blank" class="mirror-banner mirror-banner--cqu">
           <iconify-icon icon="mdi:school-outline" />
           {{ t.mirrorCqu }}
         </a>
@@ -246,6 +240,7 @@ const cquMirrorLink = computed(() => {
 
 .mirror-banners {
   display: flex;
+  flex-wrap: wrap;
   border-bottom: 1px solid var(--vp-c-divider);
 }
 
@@ -254,8 +249,8 @@ const cquMirrorLink = computed(() => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  flex: 1;
-  padding: 12px 24px;
+  flex: 1 1 200px;
+  padding: 12px 20px;
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -280,7 +275,11 @@ const cquMirrorLink = computed(() => {
   background: linear-gradient(135deg, var(--vp-c-brand-soft), var(--vp-c-brand-1));
 }
 
-.mirror-banner--secondary {
+.mirror-banner--hernet {
+  background: linear-gradient(135deg, #00897b, #004d40);
+}
+
+.mirror-banner--cqu {
   background: linear-gradient(135deg, #1565c0, #0d47a1);
 }
 
@@ -376,6 +375,15 @@ const cquMirrorLink = computed(() => {
 }
 
 @media (max-width: 768px) {
+  .mirror-banners {
+    flex-direction: column;
+  }
+
+  .mirror-banner + .mirror-banner {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
   .row {
     flex-direction: column;
     align-items: stretch;

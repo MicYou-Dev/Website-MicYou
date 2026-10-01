@@ -26,6 +26,10 @@ export const nav: DefaultTheme.NavItem[] = [
 				text: '<iconify-icon class="i-mr" icon="mdi:history" style="color:#ff9800"></iconify-icon>Changelog',
 				link: "/en/changelog",
 			},
+			{
+				text: '<iconify-icon class="i-mr" icon="mdi:heart" style="color:#e74c3c"></iconify-icon>Sponsor',
+				link: "https://afdian.com/a/LanRhyme",
+			},
 		],
 	},
 ];
@@ -33,9 +37,14 @@ export const nav: DefaultTheme.NavItem[] = [
 // Contributors component translations
 export const contributors = {
 	author: "Author",
+	maintainer: "Maintainer",
 	contributions: "contributions",
 	developedWith: "MicYou made by ❤",
 	thanksContributors: "Thanks to our contributors, who make MicYou better",
+	sponsorTitle: "Sponsor & Support",
+	sponsorDesc:
+		"If you find MicYou helpful, consider sponsoring the author on Afdian to support continued development!",
+	sponsorBtn: "Sponsor on Afdian",
 };
 
 // Download component translations
@@ -43,24 +52,23 @@ export const download = {
 	title: "Download",
 	viewReleaseNotes: "View release notes",
 	windowsDesc: "Windows 10/11 64-bit",
-	macOSDesc: "macOS 11.0 and later",
-	linuxDesc: "Major Linux distributions",
-	androidDesc: "Android 8.0 and later",
+	macOSDesc: "macOS 11.0 and later (Apple Silicon)",
+	linuxDesc: "Major Linux distributions (x86_64)",
+	androidDesc: "Android 7.0 and later (5.0+ compat build available)",
 	// File names
-	installer: "Installer",
-	portableJRE: "Portable (JRE)",
-	portableNoJRE: "Portable (NoJRE)",
-	dmgArm: "DMG (Apple Silicon)",
-	dmgIntel: "DMG (Intel)",
+	installer: "Installer (.exe)",
+	appImage: "AppImage",
 	deb: "DEB",
 	rpm: "RPM",
 	arch: "Arch",
+	dmgArm: "DMG (Apple Silicon)",
 	apk: "APK",
 	copied: "Copied",
 	stable: "Stable",
 	nightly: "Nightly",
 	nightlyTip: "Nightly includes latest features, may be unstable",
 	mirror: "MirrorChyan High-Speed Download",
+	mirrorHernet: "HeRNET Mirror Download",
 	mirrorCqu: "CQU Mirror Download",
 	mirrorWarning:
 		"Do not use multi-threaded download tools, or your IP may be banned",
@@ -82,9 +90,12 @@ export const umami = {
 // ThankYou component translations
 export const thankYou = {
 	title: "Special Thanks",
+	hernetName: "HeRNET Open Source Software Mirror",
+	hernetDesc:
+		"Special thanks to HeRNET Open Source Software Mirror for providing mirror download services",
 	cquName: "CQU Open Source Software Mirror",
 	cquDesc:
-		"Special thanks to CQU Open Source Software Mirror for providing mirror download services",
+		"Special thanks to CQU Open Source Software Mirror for your consistent support in the past",
 	mirrorName: "MirrorChyan",
 	mirrorDesc:
 		"Special thanks to MirrorChyan for providing high-speed mirror download services",
@@ -123,11 +134,21 @@ export const themeConfig = {
 		provider: "local" as const,
 		options: {
 			translations: {
-				button: { buttonText: "Search", buttonAriaLabel: "Search" },
+				button: { buttonText: "Search docs", buttonAriaLabel: "Search docs" },
 				modal: {
+					displayDetails: "Display detailed list",
+					resetButtonTitle: "Clear query",
+					backButtonTitle: "Close search",
 					noResultsText: "No results found",
-					resetButtonTitle: "Clear search query",
-					footer: { selectText: "Select", navigateText: "Navigate" },
+					footer: {
+						selectText: "to select",
+						selectKeyAriaLabel: "Enter",
+						navigateText: "to navigate",
+						navigateUpKeyAriaLabel: "Up arrow",
+						navigateDownKeyAriaLabel: "Down arrow",
+						closeText: "to close",
+						closeKeyAriaLabel: "esc",
+					},
 				},
 			},
 		},
@@ -271,7 +292,7 @@ export function getFooterData(): FooterData {
 						},
 						name: footer.sponsor,
 						link: "https://afdian.com/a/LanRhyme",
-						rel: "noopener noreferrer sponsored",
+						rel: "noopener noreferrer",
 					},
 				],
 			},
@@ -306,3 +327,27 @@ export function getFooterData(): FooterData {
 		],
 	};
 }
+
+// Enhanced Readabilities translations
+export const enhancedReadabilities = {
+	title: {
+		title: "Enhanced Readability",
+		titleAriaLabel: "Enhanced Readability",
+	},
+};
+
+// Page History and Contributors translations
+export const gitChangelog = {
+	changelog: {
+		title: "Changelog",
+		noData: "No recent changes",
+		lastEdited: "Last edited {{daysAgo}}",
+		lastEditedDateFnsLocaleName: "enUS",
+		viewFullHistory: "View full history",
+		committedOn: " on {{date}}",
+	},
+	contributors: {
+		title: "Contributors",
+		noData: "No contributors",
+	},
+};

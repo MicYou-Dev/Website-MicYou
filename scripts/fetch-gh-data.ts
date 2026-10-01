@@ -23,6 +23,9 @@ const REPO = { owner: "LanRhyme" as const, name: "MicYou" as const };
 const EXCLUDE_USERS = new Set([
 	"LanRhyme",
 	"ChinsaaWei",
+	"ChouChiu",
+	"OrientCOMPASS",
+	"WingChunWong",
 	"dependabot[bot]",
 	"crowdin-bot",
 	"github-actions[bot]",

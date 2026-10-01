@@ -26,6 +26,10 @@ export const nav: DefaultTheme.NavItem[] = [
 				text: '<iconify-icon class="i-mr" icon="mdi:history" style="color:#ff9800"></iconify-icon>更新日志',
 				link: "/changelog",
 			},
+			{
+				text: '<iconify-icon class="i-mr" icon="mdi:heart" style="color:#e74c3c"></iconify-icon>赞助',
+				link: "https://afdian.com/a/LanRhyme",
+			},
 		],
 	},
 ];
@@ -33,9 +37,14 @@ export const nav: DefaultTheme.NavItem[] = [
 // 贡献者组件翻译
 export const contributors = {
 	author: "作者",
+	maintainer: "维护者",
 	contributions: "次贡献",
 	developedWith: "MicYou 用 ❤ 发电",
 	thanksContributors: "感谢以下贡献者，TA们让 MicYou 变得更好",
+	sponsorTitle: "赞助与支持",
+	sponsorDesc:
+		"如果您喜欢 MicYou，欢迎前往爱发电赞助作者，您的支持是项目持续迭代与完善的最大动力！",
+	sponsorBtn: "前往爱发电赞助",
 };
 
 // 下载组件翻译
@@ -43,25 +52,24 @@ export const download = {
 	title: "下载应用",
 	viewReleaseNotes: "查看更新日志",
 	windowsDesc: "Windows 10/11 64位",
-	macOSDesc: "macOS 11.0 及以上",
-	linuxDesc: "主流 Linux 发行版",
-	androidDesc: "Android 8.0 及以上",
+	macOSDesc: "macOS 11.0 及以上 (Apple Silicon)",
+	linuxDesc: "主流 Linux 发行版 (x86_64)",
+	androidDesc: "Android 7.0 及以上（提供 5.0+ 兼容版）",
 	// 文件名
-	installer: "安装程序",
-	portableJRE: "便携版 (JRE)",
-	portableNoJRE: "便携版 (NoJRE)",
-	dmgArm: "DMG (Apple Silicon)",
-	dmgIntel: "DMG (Intel)",
+	installer: "安装程序 (.exe)",
+	appImage: "AppImage",
 	deb: "DEB",
 	rpm: "RPM",
 	arch: "Arch",
+	dmgArm: "DMG (Apple Silicon)",
 	apk: "APK",
 	copied: "已复制",
 	stable: "稳定版",
 	nightly: "快照版",
 	nightlyTip: "快照版包含最新功能，可能不稳定",
 	mirror: "Mirror 酱高速下载",
-	mirrorCqu: "重庆大学镜像下载",
+	mirrorHernet: "河南省教育科研网镜像",
+	mirrorCqu: "重庆大学镜像",
 	mirrorWarning: "请勿使用多线程下载器，否则 IP 可能遭到封禁",
 };
 
@@ -81,8 +89,11 @@ export const umami = {
 // 致谢组件翻译
 export const thankYou = {
 	title: "特别感谢",
+	hernetName: "河南省教育科研网开源软件镜像站",
+	hernetDesc:
+		"特别感谢 河南省教育科研网开源软件镜像站 为本项目提供镜像下载服务",
 	cquName: "重庆大学开源软件镜像站",
-	cquDesc: "特别感谢 重庆大学开源软件镜像站 为本项目提供镜像下载服务",
+	cquDesc: "特别感谢 重庆大学开源软件镜像站 过往的稳定支持",
 	mirrorName: "Mirror 酱",
 	mirrorDesc: "特别感谢 Mirror 酱 为本项目提供高速镜像下载服务",
 };
@@ -122,9 +133,19 @@ export const themeConfig = {
 			translations: {
 				button: { buttonText: "搜索文档", buttonAriaLabel: "搜索文档" },
 				modal: {
-					noResultsText: "无法找到相关结果",
+					displayDetails: "显示详细列表",
 					resetButtonTitle: "清除查询条件",
-					footer: { selectText: "选择", navigateText: "切换" },
+					backButtonTitle: "关闭搜索",
+					noResultsText: "无法找到相关结果",
+					footer: {
+						selectText: "选择",
+						selectKeyAriaLabel: "回车",
+						navigateText: "切换",
+						navigateUpKeyAriaLabel: "上箭头",
+						navigateDownKeyAriaLabel: "下箭头",
+						closeText: "关闭",
+						closeKeyAriaLabel: "esc",
+					},
 				},
 			},
 		},
@@ -268,7 +289,7 @@ export function getFooterData(): FooterData {
 						},
 						name: footer.sponsor,
 						link: "https://afdian.com/a/LanRhyme",
-						rel: "noopener noreferrer sponsored",
+						rel: "noopener noreferrer",
 					},
 				],
 			},
@@ -303,3 +324,24 @@ export function getFooterData(): FooterData {
 		],
 	};
 }
+
+// 阅读增强翻译
+export const enhancedReadabilities = {
+	title: { title: "阅读增强", titleAriaLabel: "阅读增强" },
+};
+
+// 页面历史与贡献者翻译
+export const gitChangelog = {
+	changelog: {
+		title: "页面历史",
+		noData: "暂无最近变更历史",
+		lastEdited: "最后编辑于 {{daysAgo}}",
+		lastEditedDateFnsLocaleName: "zhCN",
+		viewFullHistory: "查看完整历史",
+		committedOn: " 于 {{date}}",
+	},
+	contributors: {
+		title: "贡献者",
+		noData: "暂无相关贡献者",
+	},
+};

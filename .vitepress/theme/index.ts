@@ -18,7 +18,20 @@ import {
 	Pill,
 	umamiAnalytics,
 } from "@theojs/lumen";
-import { getFooterData, type Lang } from "../data/i18n";
+import {
+	NolebaseEnhancedReadabilitiesMenu,
+	NolebaseEnhancedReadabilitiesPlugin,
+	NolebaseEnhancedReadabilitiesScreenMenu,
+} from "@nolebase/vitepress-plugin-enhanced-readabilities/client";
+import { NolebaseGitChangelogPlugin } from "@nolebase/vitepress-plugin-git-changelog/client";
+import "@nolebase/vitepress-plugin-enhanced-readabilities/client/style.css";
+import "@nolebase/vitepress-plugin-git-changelog/client/style.css";
+import {
+	enhancedReadabilitiesTranslations,
+	getFooterData,
+	gitChangelogTranslations,
+	type Lang,
+} from "../data/i18n.ts";
 import Contributors from "./components/ContributorsCards/Contributors.vue";
 import ChangelogViewer from "./components/ChangelogViewer/ChangelogViewer.vue";
 import DownloadSection from "./components/DownloadSection/DownloadSection.vue";
@@ -51,9 +64,15 @@ export default {
 				const { frontmatter } = useData();
 				// 只在首页显示统计
 				const isHome = frontmatter.value.layout === "home";
-				return isHome
-					? h("div", { class: "nav-stats-center" }, h(UmamiStats))
-					: null;
+				return [
+					isHome
+						? h("div", { class: "nav-stats-center" }, h(UmamiStats))
+						: null,
+					h(NolebaseEnhancedReadabilitiesMenu),
+				];
+			},
+			"nav-screen-content-after": () => {
+				return h(NolebaseEnhancedReadabilitiesScreenMenu);
 			},
 			"layout-bottom": () => {
 				// 从 VitePress 获取当前语言
@@ -77,6 +96,15 @@ export default {
 		app.component("UmamiStats", UmamiStats);
 		app.component("ThankYou", ThankYou);
 		app.component("ViewTrans", ViewTrans);
+
+		// 注册阅读增强与页面历史插件
+		app.use(NolebaseEnhancedReadabilitiesPlugin, {
+			locales: enhancedReadabilitiesTranslations,
+		});
+		app.use(NolebaseGitChangelogPlugin, {
+			locales: gitChangelogTranslations,
+		});
+
 		// 注册 Umami Analytics 插件 - 延迟加载优化 INP
 		if (typeof window !== "undefined") {
 			// 使用 requestIdleCallback 延迟加载分析脚本

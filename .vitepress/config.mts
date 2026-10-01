@@ -1,7 +1,15 @@
 import { figure } from "@mdit/plugin-figure";
+import {
+	GitChangelog,
+	GitChangelogMarkdownSection,
+} from "@nolebase/vitepress-plugin-git-changelog/vite";
 import { defineConfig, type HeadConfig } from "vitepress";
-import { docsSidebar, getSidebarPath } from "../src/docs/sidebar";
-import { navTranslations, themeConfigTranslations } from "./data/i18n";
+import { docsSidebar, getSidebarPath } from "../src/docs/sidebar.ts";
+import {
+	navTranslations,
+	searchTranslations,
+	themeConfigTranslations,
+} from "./data/i18n.ts";
 
 // SEO 相关常量
 const SITE_URL = "https://micyou.top";
@@ -72,6 +80,94 @@ export default defineConfig({
 		},
 	},
 
+	vite: {
+		plugins: [
+			GitChangelog({
+				repoURL: () => "https://github.com/LanRhyme/Website-MicYou",
+				mapAuthors: [
+					{
+						name: "ChouChiu",
+						username: "ChouChiu",
+						mapByNameAliases: ["WingChunWong", "Wong Wing Chun"],
+						mapByEmailAliases: [
+							"huangrongjun2200@outlook.com",
+							"lshengevery@gmail.com",
+						],
+					},
+					{
+						name: "LanRhyme",
+						username: "LanRhyme",
+						mapByNameAliases: ["LanRhyme", "lanrhyme"],
+						mapByEmailAliases: [
+							"xiao_ren233@foxmail.com",
+							"lanrhyme@users.noreply.github.com",
+							"113491998+LanRhyme@users.noreply.github.com",
+						],
+					},
+					{
+						name: "OrientCOMPASS",
+						username: "OrientCOMPASS",
+						mapByNameAliases: ["OrientCOMPASS"],
+						mapByEmailAliases: [
+							"316423573+OrientCOMPASS@users.noreply.github.com",
+						],
+					},
+					{
+						name: "luminset",
+						username: "luminset",
+						mapByNameAliases: ["luminset"],
+						mapByEmailAliases: [
+							"2272826959@qq.com",
+							"41487531+luminset@users.noreply.github.com",
+						],
+					},
+					{
+						name: "Damon Lu",
+						username: "WhatDamon",
+						mapByNameAliases: ["Damon Lu", "Damon  Lu", "WhatDamon"],
+						mapByEmailAliases: ["59256766+WhatDamon@users.noreply.github.com"],
+					},
+					{
+						name: "raindropQWQ",
+						username: "raindropQWQ",
+						mapByNameAliases: ["raindropQWQ", "raindropQwQ", "snowdropQwQ"],
+						mapByEmailAliases: [
+							"102001942+raindropQWQ@users.noreply.github.com",
+							"85062843+snowdropQwQ@users.noreply.github.com",
+						],
+					},
+					{
+						name: "ChinsaaWei",
+						username: "ChinsaaWei",
+						mapByNameAliases: ["ChinsaaWei"],
+						mapByEmailAliases: ["chinsaa@163.com"],
+					},
+				],
+			}),
+			GitChangelogMarkdownSection({
+				exclude: (id) => !id.includes("/docs/"),
+				sections: {
+					disableChangelog: false,
+					disableContributors: false,
+				},
+			}),
+		],
+		optimizeDeps: {
+			exclude: [
+				"@nolebase/vitepress-plugin-enhanced-readabilities/client",
+				"@nolebase/vitepress-plugin-git-changelog/client",
+				"@nolebase/ui",
+			],
+		},
+		ssr: {
+			noExternal: [
+				"@nolebase/vitepress-plugin-enhanced-readabilities",
+				"@nolebase/vitepress-plugin-git-changelog",
+				"@nolebase/ui",
+			],
+		},
+	},
+
 	head: [
 		["link", { rel: "icon", href: "/favicon.ico" }],
 		["meta", { name: "theme-color", content: "#021f4d" }],
@@ -112,7 +208,15 @@ export default defineConfig({
 		],
 		[
 			"link",
-			{ rel: "preconnect", href: "https://umami.micyou.top", crossorigin: "" },
+			{ rel: "preconnect", href: "https://cloud.umami.is", crossorigin: "" },
+		],
+		[
+			"link",
+			{
+				rel: "preconnect",
+				href: "https://api-gateway.umami.dev",
+				crossorigin: "",
+			},
 		],
 		[
 			"link",
@@ -275,5 +379,21 @@ export default defineConfig({
 			{ icon: "github", link: "https://github.com/LanRhyme/MicYou" },
 			{ icon: "telegram", link: "https://t.me/MicYouChannel" },
 		],
+		search: {
+			provider: "local",
+			options: {
+				locales: {
+					root: {
+						translations: searchTranslations["zh-CN"],
+					},
+					en: {
+						translations: searchTranslations.en,
+					},
+					"zh-TW": {
+						translations: searchTranslations["zh-TW"],
+					},
+				},
+			},
+		},
 	},
 });

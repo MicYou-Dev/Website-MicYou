@@ -117,11 +117,14 @@ if (!extensionsRegistered) {
 	extensionsRegistered = true;
 }
 
-const renderedContent = computed(() =>
-	changelog.value
-		? marked.parse(changelog.value, { gfm: true, breaks: true })
-		: "",
-);
+const renderedContent = computed(() => {
+	if (!changelog.value) return "";
+	try {
+		return marked.parse(changelog.value, { gfm: true, breaks: true }) as string;
+	} catch {
+		return changelog.value;
+	}
+});
 
 onMounted(async () => {
 	const cache = getCache();

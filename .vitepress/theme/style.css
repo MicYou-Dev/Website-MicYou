@@ -86,10 +86,13 @@ iframe {
 }
 
 .nav-stats-center {
-	position: absolute;
+	position: fixed;
 	left: 50%;
-	top: 50%;
+	top: calc(var(--vp-nav-height) / 2);
 	transform: translate(-50%, -50%);
+	pointer-events: auto;
+	z-index: var(--vp-z-index-nav, 20);
+	transition: opacity 0.25s ease;
 }
 
 .VPNavBar:not(.home.top) .nav-stats-center {
@@ -97,7 +100,7 @@ iframe {
 	pointer-events: none;
 }
 
-:focus-visible {
+:focus-visible:not(input):not(textarea):not(select) {
 	outline: 2px solid var(--vp-c-brand-1);
 	outline-offset: 2px;
 }
@@ -106,6 +109,7 @@ button:focus-visible,
 .btn:focus-visible {
 	outline: 2px solid var(--vp-c-brand-1);
 	outline-offset: 2px;
+	border-radius: 4px;
 }
 
 a:focus-visible {
@@ -186,11 +190,12 @@ a:focus-visible {
 	transform: translateY(-5px);
 }
 
+.VPNavBarTitle.has-sidebar .title,
 .VPNavBar.screen-open,
 .VPNavScreenMenuLink,
 .VPNavScreenMenuGroup,
 .VPLocalNav {
-	border-bottom: none;
+	border: none !important;
 }
 
 .divider {
@@ -201,9 +206,100 @@ a:focus-visible {
 	background-color: rgba(30, 30, 32, 0);
 }
 
-.DocSearch-Button {
-	background-color: rgba(255, 255, 255, 0);
-	backdrop-filter: blur(10px);
+/* 导航栏分割线：保留“菜单与本地化”、“颜色切换与社交媒体”之间的分割线，隐藏其他项之间的分割线 */
+.VPNavBar .menu + .appearance::before,
+.VPNavBar .menu + .social-links::before,
+.VPNavBar .translations + .appearance::before {
+	display: none !important;
+}
+
+/* 移动端汉堡菜单展开屏幕中，在菜单与本地化之间添加水平分割线 */
+.VPNavScreen .menu + .translations {
+	border-top: 1px solid var(--vp-c-divider);
+	padding-top: 1.5rem;
+}
+
+/* ========================================================
+   导航栏搜索栏及 Logo 对齐修正：修复 Nólëbase 插件超宽/自定义布局及默认布局下的错位
+   ======================================================== */
+
+@media (min-width: 60rem) {
+	.VPNavBar .search {
+		padding-left: 1rem !important;
+	}
+}
+
+@media (min-width: 1280px) {
+	/* Nólëbase 阅读增强插件在超宽（FullWidth）或自定义宽度（BothWidthAdjustable / SidebarWidthAdjustableOnly）模式下，
+	   其内联样式对 .VPNavBar.has-sidebar > .wrapper > .container > .content 误加了重复的
+	   padding-left: max(32px, var(--vp-sidebar-width)) !important，
+	   而 .title 区域本身已经设置了对应侧边栏的宽度，导致搜索栏被额外右推一个侧边栏宽度产生严重错位。
+	   同时，对 .title 误加了重复的 padding-left: max(32px, ...)，
+	   导致左侧 Logo 图标比侧边栏文字多缩进 32px 无法贴边对齐。
+	   在此重置这些重复的 padding-left，使其恢复与侧边栏边界的精确对齐。 */
+	body[class*="VPNolebaseEnhancedReadabilitiesLayoutSwitch"]
+		.VPNavBar.has-sidebar
+		> .wrapper
+		> .container
+		> .title {
+		padding-left: 0 !important;
+	}
+
+	body[class*="VPNolebaseEnhancedReadabilitiesLayoutSwitch"]
+		.VPNavBar.has-sidebar
+		> .wrapper
+		> .container
+		> .content {
+		padding-left: 0 !important;
+	}
+}
+
+.DocSearch-Button,
+.VPNavBarSearchButton {
+	border-radius: 8px;
+	border: 1px solid var(--vp-c-divider) !important;
+	transition: all 0.2s ease !important;
+}
+
+.DocSearch-Button:hover,
+.VPNavBarSearchButton:hover {
+	border-color: var(--vp-c-brand-1) !important;
+}
+
+.VPNavBarSearchButton:focus-visible {
+	outline: 2px solid var(--vp-c-brand-1);
+	outline-offset: 2px;
+	border-radius: 8px;
+}
+
+/* Local search modal & input focus */
+.VPLocalSearchBox .search-input,
+.VPLocalSearchBox .search-input:focus,
+.VPLocalSearchBox .search-input:focus-visible {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.VPLocalSearchBox .search-bar {
+	border-radius: 8px;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.VPLocalSearchBox .search-bar:focus-within {
+	border-color: var(--vp-c-brand-1);
+	box-shadow: 0 0 0 2px var(--vp-c-brand-soft);
+}
+
+@media (min-width: 48rem) {
+	.VPLocalSearchBox .shell {
+		border-radius: 12px;
+	}
+}
+
+.VPLocalSearchBox .result {
+	border-radius: 8px;
 }
 
 .VPFeature {

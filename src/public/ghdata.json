@@ -5,18 +5,6 @@
 	"releaseNotes": "## What's Changed\n* 为cli/tui依赖Tauri的插件api提供纯后端实现 by @OrientCOMPASS in https://github.com/LanRhyme/MicYou/pull/327\n\n\n**Full Changelog**: https://github.com/LanRhyme/MicYou/compare/v2.0.2...v2.0.3",
 	"contributors": [
 		{
-			"login": "ChouChiu",
-			"avatar_url": "https://avatars.githubusercontent.com/u/108796769?u=3e46fc8c1895cfd644b3efe2f71708444ffab258&v=4",
-			"html_url": "https://github.com/ChouChiu",
-			"contributions": 93
-		},
-		{
-			"login": "OrientCOMPASS",
-			"avatar_url": "https://avatars.githubusercontent.com/u/316423573?v=4",
-			"html_url": "https://github.com/OrientCOMPASS",
-			"contributions": 49
-		},
-		{
 			"login": "WhatDamon",
 			"avatar_url": "https://avatars.githubusercontent.com/u/59256766?u=71c9ab35a75b83a1240ca5e78ee437b84531839d&v=4",
 			"html_url": "https://github.com/WhatDamon",
