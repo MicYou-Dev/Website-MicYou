@@ -1,119 +1,200 @@
 ---
-title: 常見問題 - MicYou 疑難排解
-description: MicYou 常見問題解答，包括裝置連線問題、防火牆設定、ADB 設定、音訊輸出疑難排解及 Linux 渲染問題等。
-keywords: MicYou常見問題,MicYou疑難排解,MicYou無法連線,防火牆設定,ADB問題,音訊問題,PipeWire,軟體渲染
+title: 常見問題 - MicYou 疑難排解指南
+description: MicYou 常見問題解答與疑難排解指南。涵蓋 Wi-Fi / USB / Web 連線、音訊路由設定、音量過小/雜音/回音排查、背景保活與各系統專屬問題。
+keywords: MicYou常見問題,MicYou疑難排解,無法連線,沒有聲音,雜音爆音,延遲最佳化,背景保活,VB-CABLE,BlackHole,PipeWire,防火牆
 ---
 
 # 常見問題
 
-## 無法連線裝置
+在使用 MicYou 的過程中遇到問題？這裡彙整了最常見的使用疑問與排查步驟。
 
-### Wi-Fi 模式
+## 1. 連線與網路排查
 
-1. **確認防火牆設定**
+### Wi-Fi 模式選手機點擊「連線」提示逾時或連不上
 
-   Windows 防火牆可能會攔截傳入連線。請按照以下方法手動放行連接埠：
+Wi-Fi 模式依賴手機與電腦在同一個區域網路（LAN）內通訊。如果連線失敗，請依序排查以下三點：
 
-   1. 按下 `Win+R`，輸入 `powershell`，同時按住 `Ctrl+Shift`，點擊「確定」以系統管理員身分執行 PowerShell。
-   2. 輸入以下命令：
+1. **放行電腦防火牆連接埠（最常見原因）**  
+   Windows 防火牆或第三方防毒軟體常會默默攔截傳入的網路請求。MicYou 預設使用 **TCP 6000**（控制指令）與 **UDP 6001**（音訊資料）連接埠。
+   - **Windows**：以系統管理員身分開啟 PowerShell，執行以下命令放行連接埠：
+     ```powershell
+     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     ```
+   - **Linux**（啟用 `ufw` 時）：
+     ```bash
+     sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp
+     ```
 
-      ```powershell
-      New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-      New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
-      ```
+2. **檢查區域網路 AP 隔離 / 訪客網路**  
+   - 確保手機和電腦連線的是同一台路由器的 Wi-Fi。
+   - 如果處於**校園網路、企業公共 Wi-Fi 或租屋公共網路**，路由器通常開啟了 **AP 隔離（Client Isolation）**，禁止區域網路內裝置互相存取。
+   - **解決方案**：手機開啟行動熱點讓電腦連線，或直接使用 [USB 資料線模式](/zh-TW/docs/quick-start#_4-連線方式三-usb-資料線模式-極低延遲)。
 
-      > MicYou 預設使用 TCP 連接埠 `6000`（控制通道）和 UDP 連接埠 `6001`（音訊串流）。如已修改連接埠號，請將命令中的連接埠替換為實際值。
+3. **電腦有多張網路卡，選錯了 IP 位址**  
+   如果電腦啟用了 WSL、虛擬機器（VMware / VirtualBox）、VPN 或虛擬區域網路（Tailscale / ZeroTier），電腦端介面可能會偵測到多個虛擬 IP。  
+   - 請在 MicYou 桌面端的 IP 下拉選單中，選擇手機可存取的**真實無線區域網路 IP**（通常為 `192.168.x.x` 或 `10.x.x.x`），並確保手機端輸入的 IP 與之相符。
 
-      若未出現任何錯誤提示，表示操作成功，可以重新嘗試連線。
+### USB (ADB) 模式提示「未偵測到裝置」或連線失敗
 
-2. **檢查裝置是否在同一子網路**
+USB 模式透過 ADB 進行本機連接埠反向代理，連線穩定且延遲極低。如果無法辨識裝置：
 
-   - 確保 Android 手機和 PC 連線的是**同一個**路由器的 Wi-Fi
-   - 確保路由器已關閉 **AP 隔離** 或 **網路裝置隔離** 功能（詳情請參閱路由器說明書）
+1. **確認已開啟 USB 偵錯並完成授權**  
+   - 進入手機「設定」>「關於手機」，連續點擊「版本號碼」7 次開啟開發人員選項。
+   - 進入「開發人員選項」，開啟 **USB 偵錯**。
+   - 用傳輸線連接電腦後，手機螢幕會彈出 **「允許 USB 偵錯嗎？」** 提示視窗，請勾選「一律允許」並點擊確定。
 
-> [!TIP]
-> 進階使用者可嘗試使用 ping 或 nmap 等工具排查手機與電腦之間的網路連通性。
+2. **變更 USB 連接用途**  
+   插線後在手機下拉通知列中，將 USB 連接模式從「僅充電」切換為 **「檔案傳輸 (MTP)」** 或 **「相片傳輸 (PTP)」**。部分品牌手機在僅充電模式下會主動關閉 ADB 偵錯通道。
 
-### USB (ADB) 模式
-
-1. **開啟開發人員選項**
-
-   - 在手機設定中找到「關於手機」，連續點擊 7 次「版本號碼」開啟開發人員選項
-   - 進入開發人員選項，開啟 **USB 偵錯**
-
-2. **確認 ADB 連線**
-
-   執行以下命令，確認有且僅有一個裝置已成功授權連線：
-
+3. **檢查電腦端 ADB 環境**  
+   MicYou 桌面端內建了 ADB 呼叫邏輯。你可以在電腦終端機中執行 `adb devices` 驗證狀態：
    ```bash
    adb devices
    ```
+   - 若狀態顯示為 `unauthorized`：表示手機上尚未點擊允許偵錯彈窗，請解鎖手機並確認。
+   - 若提示找不到 `adb` 命令，可透過套件管理器一鍵安裝：
+     - **Windows**: <Copy text="winget install -e --id Google.PlatformTools" type="info" />
+     - **macOS**: <Copy text="brew install android-platform-tools" type="info" />
+     - **Ubuntu / Debian**: <Copy text="sudo apt install android-tools-adb" type="info" />
+     - **Arch Linux**: <Copy text="sudo pacman -S android-tools" type="info" />
 
-   如果列出了多個裝置，則需要指定目標裝置序號進行連接埠轉發：
+### Web 網頁免安裝模式打不開或無法錄音
 
-   ```bash
-   adb -s <裝置序號> reverse tcp:6000 tcp:6000
-   ```
+1. **手機打不開電腦端顯示的網址**：確認手機與電腦在同一個 Wi-Fi 下，且電腦防火牆已放行桌面端提示的 Web 連接埠。
+2. **打得開網頁但沒有聲音傳輸**：
+   - 首次開啟網頁時，瀏覽器會跳出麥克風權限請求，必須點擊 **「允許存取麥克風」**。
+   - 建議使用現代瀏覽器（Chrome、Safari、Edge、Firefox）。請勿在通訊軟體內建掃描器等受限 WebView 中直接使用，建議複製連結至系統原生瀏覽器中開啟。
 
-   > 裝置序號可在 `adb devices` 的輸出中找到。
+## 2. 聲音與音訊路由排查
 
-### Web 網頁模式
+### 手機與電腦已連線、波形有跳動，但在通訊/遊戲軟體裡聽不到聲音？
 
-1. **無法開啟網頁**：確認手機與電腦連線至同一 Wi-Fi，且電腦防火牆放行了桌面端提示的 Web 連接埠。
-2. **麥克風無法錄製**：請確保手機瀏覽器支援 WebRTC 標準（推薦 Chrome、Safari、Edge 或 Firefox），並在瀏覽器提示中選擇「允許存取麥克風」。
+這是最常見的設定問題，99% 的原因在於**音訊輸入輸出方向設定顛倒**。
 
-## 連線裝置後無聲音輸出
+::: tip 核心邏輯：輸入與輸出的分工
+- **MicYou 桌面端**是音訊的**發送端**，需要把聲音**輸出**到虛擬音效卡。
+- **第三方軟體（Discord / 微信 / LINE / OBS / 遊戲語音）**是音訊的**接收端**，需要把虛擬音效卡作為**麥克風輸入**。
+:::
 
-### Windows
+#### 檢查步驟：
 
-請確保 VB-Audio 驅動程式已正確安裝，且以下裝置均**未被停用**：
+1. **檢查 MicYou 桌面端的「音訊輸出裝置」**：
+   - **Windows**：選擇 `CABLE Input (VB-Audio Virtual Cable)`
+   - **macOS**：選擇 `BlackHole 2ch`
+   - **Linux**：選擇預設 PipeWire 虛擬輸出節點
 
-- **輸出裝置**：CABLE Input (VB-Audio Virtual Cable)
-- **輸入裝置**：CABLE Output (VB-Audio Virtual Cable)
+2. **檢查第三方通訊 / 錄音軟體的「麥克風 / 輸入裝置」**：
+   - **Windows**：選擇 `CABLE Output (VB-Audio Virtual Cable)`
+   - **macOS**：選擇 `BlackHole 2ch`
+   - **Linux**：選擇 PipeWire 對應的 `MicYou` 虛擬麥克風
 
-檢查方式：開啟「設定」> 「聲音」，驗證兩個裝置均為**已啟用**狀態：
+3. **檢查系統音量設定**：  
+   開啟系統聲音控制台，確保 `CABLE Output` 或 `BlackHole` 沒有被靜音，且輸入音量大小處於 80%~100%。
+
+**Windows 系統聲音裝置檢查示意圖：**
 
 ![輸入裝置](/input-device.png)
 
 ![輸出裝置](/output-device.png)
 
-### macOS
+**macOS 系統聲音輸入設定示意圖：**
 
-請確保 BlackHole 驅動程式已正確安裝：
+![macOS 輸入裝置](/macos-sound-zhtw.png)
 
-若未安裝 `switchaudio-osx`，您需要手動在 「系統設定」/「系統偏好設定」>「聲音」>「輸入」中將麥克風切換為 BlackHole。
+### 聲音過小、背景雜音明顯或有刺耳的回音嘯叫？
 
-![輸入裝置](/macos-sound-zhtw.png)
+1. **聲音音量偏小**：
+   - 在手機端 MicYou 介面調大麥克風收音增益。
+   - 在 Windows「聲音設定」>「更多聲音設定」>「錄製」> 點兩下 `CABLE Output` >「等級」中，將音量調至 100。
+2. **刺耳嘯叫（回音反饋）**：
+   - 嘯叫通常是因為電腦喇叭播放的聲音被手機麥克風再次收錄，形成閉環正反饋。
+   - **解決方法**：配戴耳機收聽電腦聲音；或在 MicYou 桌面端設定中開啟 **AEC (聲學回音消除)** 與 **PureVox 降噪**。
+3. **環境雜音過大**：
+   - 在桌面端開啟 **PureVox AI 降噪** 或語音活動偵測（VAD），可智慧過濾風扇聲、鍵盤敲擊聲與環境白雜訊。
 
-### Linux (PipeWire)
+### 聲音出現雜音、爆音或斷續撕裂？
 
-MicYou 針對 PipeWire 實作了原生整合。若系統未辨識到虛擬節點，請檢查 PipeWire 服務狀態：
+1. **音訊取樣率不相符（Windows）**：
+   - 開啟 Windows 聲音控制台（`mmsys.cpl`）。
+   - 分別進入 `CABLE Input`（播放分頁）與 `CABLE Output`（錄製分頁）的「內容」>「進階」。
+   - 將「預設格式」統一修改為 **`2 聲道, 16 位元, 48000 Hz`** 或 **`2 聲道, 24 位元, 48000 Hz`**，保持兩端取樣率一致。
+2. **Wi-Fi 網路抖動導致封包遺失**：
+   - 在 MicYou 設定中適度加大音訊緩衝區（Buffer Size）。
+   - 優先連線至 5GHz Wi-Fi 頻段，避開 2.4GHz 藍牙與微波爐頻段干擾。
 
-```bash
-systemctl --user status pipewire pipewire-pulse
-```
+### 結束 MicYou 後，電腦自帶麥克風 / 耳機沒有聲音了？
 
-## 結束軟體後裝置自帶麥克風無法使用
+- **macOS**：macOS 在連線時可能會將系統預設輸入裝置切換至 BlackHole。如果未安裝 `switchaudio-osx` 自動切換工具，或軟體意外結束，請手動開啟「系統設定」>「聲音」>「輸入」，切回您的硬體麥克風（如「MacBook Pro 麥克風」或外接耳機）。
+- **Windows**：檢查語音軟體中是否將麥克風固定設定為 `CABLE Output`，切回「預設通訊裝置」或您的實體耳機麥克風即可。
 
-### macOS
+## 3. 背景保活與延遲最佳化
 
-若您的 Mac 已有麥克風，當您未安裝 `switchaudio-osx` 或者軟體非正常結束時，麥克風設定可能不會自動還原。
+### 手機鎖定螢幕或切換至背景後，過一會兒聲音就中斷或卡頓？
 
-您需要手動在 「系統設定」/「系統偏好設定」>「聲音」>「輸入」中改回您的裝置麥克風（如「MacBook Pro 麥克風」）。
+Android 系統為了節省電量，在螢幕關閉後會積極凍結背景應用程式的網路連線與麥克風擷取（Doze 機制）。請進行以下系統設定：
 
-## Linux 客戶端出現白畫面或視窗透明
+1. **關閉電池最佳化 / 設為無限制（最關鍵）**：
+   - 進入手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理 / 省電策略」。
+   - 將策略修改為 **「無限制」**（或「允許完全背景執行 / 不受省電策略限制」）。
+2. **在多工任務列表中「鎖定」**：
+   - 開啟手機的多工任務預覽畫面，長按或唯唯下拉 MicYou 預覽卡片，點擊「鎖頭」圖示將其鎖定，防止被一鍵清理。
+3. **保持前景通知開啟**：
+   - 確保允許 MicYou 顯示常駐通知列訊息，這是 Android 系統保證背景服務不被回收的核心機制。
 
-部分 Linux 發行版（特別是搭載 NVIDIA 獨立顯示卡或特定版本的 WebKitGTK 環境）在 DMA-BUF 硬體加速渲染時可能出現白畫面或透明視窗異常。
+### 玩遊戲通話對延遲要求極高，如何將延遲降到最低？
 
-可透過附加 `--software-rendering` 參數啟動：
+1. **首選 USB 資料線模式**：USB 傳輸不受無線訊號抖動影響，延遲可穩定在 10ms 以內。
+2. **Wi-Fi 模式最佳化**：
+   - 電腦盡量使用實體網路線直連路由器，手機連線至 5GHz 頻段 Wi-Fi。
+   - 在網路連線品質穩定的情況下，進入 MicYou 設定將音訊緩衝區調至更小數值。
+
+## 4. 作業系統專屬問題
+
+### Windows：安裝 VB-CABLE 驅動程式後仍無法辨識
+
+- 安裝時請務必解壓縮 ZIP 套件，在 `VBCABLE_Setup_x64.exe` 上按右鍵並選擇 **「以系統管理員身分執行」**。
+- 安裝完成後**必須重新啟動電腦**，驅動程式才會被 Windows 音訊核心服務正確載入。
+
+### macOS：提示「無法打開，因為無法驗證開發者」
+
+- 首次開啟若被 Gatekeeper 攔截，請進入 macOS「系統設定」>「隱私權與安全性」，滑至底部找到 MicYou 的攔截提示，點擊 **「強制打開」**。
+- 在「隱私權與安全性」>「麥克風」中，確保已勾選允許 MicYou 存取。
+
+### Linux：客戶端開啟後出現白畫面、黑畫面或視窗透明
+
+部分搭載 NVIDIA 顯示卡或特定 WebKitGTK 版本的 Linux 發行版在啟用 DMA-BUF 硬體加速渲染時可能出現視窗渲染異常。
+
+可透過附加參數啟動軟體渲染：
 
 ```bash
 MicYou --software-rendering
 ```
 
-或者設定環境變數：
+或設定環境變數停用 DMA-BUF 渲染器：
 
 ```bash
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 MicYou
 ```
+
+### Linux：PipeWire 未辨識到虛擬輸入節點
+
+MicYou 原生支援 PipeWire 音訊架構。如果系統未出現虛擬節點，請檢查 PipeWire 服務狀態：
+
+```bash
+systemctl --user status pipewire pipewire-pulse
+```
+
+## 5. 外掛程式與老舊裝置相容
+
+### 外掛程式載入失敗或啟用後音訊卡頓爆音？
+
+1. **外掛程式載入失敗**：請檢查外掛程式架構是否與目前系統相符（如 x86_64 / arm64 / WASM），以及 `plugin.json` 中宣告的 `apiVersion` 是否與目前 MicYou 版本相容。
+2. **聲音異常或卡頓**：部分即時音訊 DSP 外掛程式如果在主音訊執行緒進行耗時 I/O 或記憶體配置會導致掉幀。建議在「設定」>「插件」中先停用該外掛程式，並點擊卡片上的「查看日誌」定位問題。
+
+### Android 5.0 / 6.0 等老舊手機能當麥克風使用嗎？
+
+可以！MicYou 官方 Release 版本預設相容 Android 7.0+ (API 24+)。針對閒置的 Android 5.0+ (API 21+) 老舊手機，專案專門提供了相容構建流水線。
+
+你可以前往下載頁面取得相容安裝套件，或參考 [Android 相容構建指南](/zh-TW/docs/android-compat) 自行編譯安裝。

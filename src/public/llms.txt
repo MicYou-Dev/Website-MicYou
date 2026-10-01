@@ -20,7 +20,7 @@ MicYou 是一款跨平台音频传输应用，可以将 Android 手机变成电�
 - [MicYou - 将手机变成电脑麦克风](https://micyou.top/): MicYou 是一款高质量、低延迟、跨平台的音频传输解决方案，支持 Wi-Fi、USB 与 Web 网页连接，可将 Android 手机变成电脑的高性能麦克风。
 - [更新日志 - MicYou 版本历史](https://micyou.top/changelog): MicYou 更新日志，查看所有版本的新功能、改进和修复内容。
 - [Android 低版本兼容构建指南 - MicYou](https://micyou.top/docs/android-compat): MicYou Android 客户端针对 Android 5.0+ (API 21+) 及老旧 32 位设备的兼容构建指南与架构机制说明。
-- [常见问题 - MicYou 故障排除](https://micyou.top/docs/faq): MicYou 常见问题解答，包括设备连接问题、防火墙设置、ADB 配置、音频输出故障排除及 Linux 渲染问题等。
+- [常见问题 - MicYou 故障排除指南](https://micyou.top/docs/faq): MicYou 常见问题解答与故障排查指南。涵盖 Wi-Fi / USB / Web 连接、音频路由设置、声音小/杂音/回声排查、后台保活与各系统专属问题。
 - [MicYou 插件 API 参考](https://micyou.top/docs/plugin/plugin-api-reference): 完整 Host API 参考：C ABI、WASM import、权限、消息协议与错误码
 - [MicYou 插件最佳实践与扩展性](https://micyou.top/docs/plugin/plugin-best-practices): 插件架构、安全模型、版本兼容策略与 Android 扩展路线
 - [MicYou 插件开发指南](https://micyou.top/docs/plugin/plugin-development-guide): 插件系统开发快速入门：双运行时、manifest、示例插件与开发工具
@@ -37,7 +37,7 @@ MicYou 是一款跨平台音频传输应用，可以将 Android 手机变成电�
 - [MicYou - Turn Your Phone into a PC Microphone](https://micyou.top/en/): MicYou is a high-quality, low-latency, cross-platform audio transmission solution supporting Wi-Fi, USB, and Web modes to turn your Android phone into a high-performance PC microphone.
 - [Changelog - MicYou Version History](https://micyou.top/en/changelog): MicYou changelog with all version updates, new features, improvements and bug fixes.
 - [Android Legacy Compatibility Build Guide - MicYou](https://micyou.top/en/docs/android-compat): Build guide and fallback architecture for compiling MicYou Android client targeting Android 5.0+ (API 21+) and 32-bit legacy devices.
-- [FAQ - MicYou Troubleshooting](https://micyou.top/en/docs/faq): Frequently asked questions for MicYou, covering connection issues, firewall configurations, ADB debugging, audio routing, and Linux rendering solutions.
+- [FAQ - MicYou Troubleshooting Guide](https://micyou.top/en/docs/faq): Frequently asked questions and troubleshooting guide for MicYou. Covers Wi-Fi, USB, and Web connection issues, audio routing, background keep-alive, latency optimization, and OS-specific fixes.
 - [MicYou Plugin API Reference](https://micyou.top/en/docs/plugin/plugin-api-reference): Complete Host API reference: C ABI, WASM imports, permissions, message protocol and error codes
 - [MicYou Plugin Architecture & Best Practices](https://micyou.top/en/docs/plugin/plugin-best-practices): Plugin architecture, security model, version compatibility strategies, and the Android extensibility roadmap.
 - [MicYou Plugin Development Guide](https://micyou.top/en/docs/plugin/plugin-development-guide): Quick start for the plugin system: dual runtime, manifest, example plugins and dev tools
@@ -54,7 +54,7 @@ MicYou 是一款跨平台音频传输应用，可以将 Android 手机变成电�
 - [MicYou - 將手機變成電腦麥克風](https://micyou.top/zh-TW/): MicYou 是一款高品質、低延遲、跨平台的音訊傳輸解決方案，支援 Wi-Fi、USB 與 Web 網頁連線，可將 Android 手機變成電腦的高效能麥克風。
 - [更新日誌 - MicYou 版本歷史](https://micyou.top/zh-TW/changelog): MicYou 更新日誌，查看所有版本的新功能、改進和修復內容。
 - [Android 低版本相容構建指南 - MicYou](https://micyou.top/zh-TW/docs/android-compat): MicYou Android 客戶端針對 Android 5.0+ (API 21+) 及老舊 32 位元裝置的相容構建指南與架構機制說明。
-- [常見問題 - MicYou 疑難排解](https://micyou.top/zh-TW/docs/faq): MicYou 常見問題解答，包括裝置連線問題、防火牆設定、ADB 設定、音訊輸出疑難排解及 Linux 渲染問題等。
+- [常見問題 - MicYou 疑難排解指南](https://micyou.top/zh-TW/docs/faq): MicYou 常見問題解答與疑難排解指南。涵蓋 Wi-Fi / USB / Web 連線、音訊路由設定、音量過小/雜音/回音排查、背景保活與各系統專屬問題。
 - [MicYou 插件 API 參考](https://micyou.top/zh-TW/docs/plugin/plugin-api-reference): 完整 Host API 參考：C ABI、WASM import、權限、消息協議與錯誤碼
 - [MicYou 插件最佳實踐與擴展性](https://micyou.top/zh-TW/docs/plugin/plugin-best-practices): 插件架構、安全模型、版本兼容策略與 Android 擴展路線
 - [MicYou 插件開發指南](https://micyou.top/zh-TW/docs/plugin/plugin-development-guide): 插件系統開發快速入門：雙運行時、manifest、示例插件與開發工具
