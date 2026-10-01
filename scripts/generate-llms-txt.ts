@@ -23,7 +23,7 @@ const LLMS_FULL_TXT_FILE = join(PUBLIC_DIR, "llms-full.txt");
 const SITE_URL = "https://micyou.top";
 const SITE_NAME = "MicYou";
 const SITE_DESCRIPTION =
-	"MicYou 将 Android 设备转变为 PC 的高质量麦克风，支持 Wi-Fi、USB 多种连接模式，提供专业音频处理功能。";
+	"MicYou 将 Android 设备转变为 PC 的高质量麦克风，支持 Wi-Fi、USB 与 Web 网页模式，提供专业音频处理与插件扩展功能。";
 
 interface DocInfo {
 	path: string;
@@ -132,10 +132,19 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	);
 	lines.push("");
 	lines.push("核心功能：");
-	lines.push("- 多种连接模式：Wi-Fi、USB (ADB/AOA)");
-	lines.push("- 专业音频处理：噪声抑制、自动增益控制 (AGC)、去混响");
-	lines.push("- 虚拟麦克风支持：配合 VB-Cable 作为系统麦克风输入");
-	lines.push("- 跨平台：支持 Windows、Linux、macOS");
+	lines.push(
+		"- 多种连接模式：Wi-Fi、USB (ADB)、Web 网页模式（扫码直连免客户端）",
+	);
+	lines.push(
+		"- 专业音频处理：PureVox AI 降噪、AEC7 回声消除、去混响、均衡器、自动增益 (AGC)、语音活动检测 (VAD)",
+	);
+	lines.push(
+		"- 虚拟麦克风支持：原生适配 Windows (VB-CABLE)、Linux (PipeWire)、macOS (BlackHole)",
+	);
+	lines.push(
+		"- 跨平台与多样态：Windows、Linux、macOS，支持 GUI 图形界面、CLI 命令行与 TUI 终端仪表盘",
+	);
+	lines.push("- 双运行时插件生态：Web 与 Native 双运行时扩展及插件市场");
 	lines.push("");
 
 	// 文档索引
@@ -163,10 +172,13 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	// 可选内容块 - 快速开始
 	lines.push("## Quick Start");
 	lines.push("");
-	lines.push("1. 从 GitHub Releases 下载桌面端应用");
-	lines.push("2. 下载并安装 Android APK");
-	lines.push("3. 确保设备在同一网络（Wi-Fi 模式）或通过 USB 连接");
-	lines.push("4. 在两端选择相同的连接模式");
+	lines.push(
+		"1. 从 GitHub Releases 下载桌面端应用与 Android APK（或使用免安装的 Web 模式）",
+	);
+	lines.push(
+		"2. 配置系统虚拟麦克风（Windows: VB-CABLE，macOS: BlackHole，Linux: PipeWire）",
+	);
+	lines.push("3. 选择连接模式（Wi-Fi、USB 或 Web 模式）开始音频推流");
 	lines.push("");
 
 	// 可选内容块 - 下载链接
