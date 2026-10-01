@@ -29,8 +29,10 @@
 		"dotenv": "^18.0.4",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.6.0",
+		"mermaid": "^12.0.0",
 		"pngjs": "^7.0.0",
-		"vitepress": "2.0.0-alpha.20"
+		"vitepress": "2.0.0-alpha.20",
+		"vitepress-plugin-mermaid": "^2.0.17"
 	},
 	"lint-staged": {
 		"*.{js,ts,vue,json,mts,mjs,cjs,cts}": "biome format --write"
