@@ -13,7 +13,7 @@ Transform your Android device into a high-quality microphone for PC
 [![License][badge-license]][license-url]
 [![VitePress][badge-vitepress]][vitepress-url]
 [![Vue][badge-vue]][vue-url]
-[![pnpm][badge-pnpm]][pnpm-url]
+[![bun][badge-bun]][bun-url]
 
 [Live Site][live-site] | [Main Project][main-project] | [Telegram][telegram] | [Report Issues][report-issues]
 
@@ -33,8 +33,7 @@ Transform your Android device into a high-quality microphone for PC
 
 | Dependency | Version |
 |------------|---------|
-| [Node.js](https://nodejs.org/) | >= 22 |
-| [pnpm](https://pnpm.io/) | >= 10 |
+| [Bun](https://bun.sh/) | >= 1.2 |
 
 ### Installation
 
@@ -44,10 +43,10 @@ git clone https://github.com/LanRhyme/Website-MicYou.git
 cd Website-MicYou
 
 # Install dependencies
-pnpm install
+bun install
 
 # Start development server
-pnpm dev
+bun dev
 ```
 
 The site will be available at `http://localhost:5173`.
@@ -56,10 +55,10 @@ The site will be available at `http://localhost:5173`.
 
 ```bash
 # Build for production
-pnpm build
+bun run build
 
 # Preview production build locally
-pnpm preview
+bun run preview
 ```
 
 ## Tech Stack
@@ -68,8 +67,8 @@ pnpm preview
 |------------|---------|---------|
 | [VitePress](https://vitepress.dev/) | 2.0.0-alpha | Static site generator |
 | [Vue](https://vuejs.org/) | 3.5 | Frontend framework |
-| [@theojs/lumen](https://github.com/s-theo/lumen) | 6.4 | Theme component library |
-| [pnpm](https://pnpm.io/) | 10.x | Package manager |
+| [@theojs/lumen](https://github.com/s-theo/lumen) | 7.x | Theme component library |
+| [Bun](https://bun.sh/) | 1.x | Package manager & runtime |
 | [Biome](https://biomejs.dev/) | 2.x | Code formatting and linting |
 
 ## Project Structure
@@ -136,13 +135,13 @@ Copyright © 2026 LanRhyme
 [badge-license]: https://img.shields.io/badge/License-MIT-yellow.svg
 [badge-vitepress]: https://img.shields.io/badge/VitePress-2.0.0--alpha-646cff?logo=vitepress&logoColor=white
 [badge-vue]: https://img.shields.io/badge/Vue-3.5-4fc08d?logo=vue.js&logoColor=white
-[badge-pnpm]: https://img.shields.io/badge/pnpm-10.x-f69220?logo=pnpm&logoColor=white
+[badge-bun]: https://img.shields.io/badge/bun-1.x-fbf0df?logo=bun&logoColor=black
 
 <!-- URL References -->
 [license-url]: https://opensource.org/licenses/MIT
 [vitepress-url]: https://vitepress.dev/
 [vue-url]: https://vuejs.org/
-[pnpm-url]: https://pnpm.io/
+[bun-url]: https://bun.sh/
 [live-site]: https://micyou.top/
 [main-project]: https://github.com/LanRhyme/MicYou
 [telegram]: https://t.me/MicYouChannel

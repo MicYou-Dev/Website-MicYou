@@ -36,8 +36,7 @@ Found a bug or have a suggestion?
 
 | Dependency | Version |
 |------------|---------|
-| Node.js | >= 22 |
-| pnpm | >= 10.32 |
+| [Bun](https://bun.sh/) | >= 1.2 |
 
 ### Getting Started
 
@@ -47,22 +46,23 @@ git clone https://github.com/YOUR_USERNAME/Website-MicYou.git
 cd Website-MicYou
 
 # Install dependencies
-pnpm install
+bun install
 
 # Start dev server
-pnpm dev
+bun dev
 ```
 
 ### Useful Commands
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Build for production (includes fetch:ghdata) |
-| `pnpm preview` | Preview production build |
-| `pnpm lint` | Run Biome linter |
-| `pnpm format` | Format code with Biome |
-| `pnpm fetch:ghdata` | Fetch GitHub data (releases, stats) |
+| `bun dev` | Start development server |
+| `bun run build` | Build for production |
+| `bun run preview` | Preview production build |
+| `bun run lint` | Run Biome linter |
+| `bun run format` | Format code with Biome |
+| `bun run fetch:ghdata` | Fetch GitHub data (releases, stats) |
+| `bun run llms:generate` | Generate llms.txt & llms-full.txt |
 
 ## Coding Standards
 
@@ -149,7 +149,7 @@ const sidebarTranslations = {
 
 ```markdown
 ```bash
-pnpm install
+bun install
 ```
 ```
 
@@ -194,7 +194,7 @@ Content...
 
 ### Before Submitting
 
-- [ ] Code builds without errors (`pnpm build`)
+- [ ] Code builds without errors (`bun run build`)
 - [ ] All languages updated (if applicable)
 - [ ] Commit messages follow conventions
 - [ ] Branch is up to date with `main`

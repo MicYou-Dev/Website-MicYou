@@ -1,17 +1,17 @@
 # AGENTS.md
 
-VitePress 2.0.0-alpha static site for the MicYou Android microphone app. Vue 3 + pnpm + Biome.
+VitePress 2.0.0-alpha static site for the MicYou Android microphone app. Vue 3 + Bun + Biome.
 
 ## Commands
 
 ```bash
-pnpm dev            # Dev server at localhost:5173
-pnpm build          # Production build → .vitepress/dist/
-pnpm preview        # Preview production build
-pnpm lint           # Biome linter check
-pnpm format         # Biome auto-fix formatting
-pnpm fetch:ghdata   # Fetch GitHub release/contributor data (needs GH_TOKEN or GITHUB_TOKEN)
-pnpm llms:generate  # Generate llms.txt and llms-full.txt
+bun dev             # Dev server at localhost:5173
+bun run build       # Production build → .vitepress/dist/
+bun run preview     # Preview production build
+bun run lint        # Biome linter check
+bun run format      # Biome auto-fix formatting
+bun run fetch:ghdata   # Fetch GitHub release/contributor data (needs GH_TOKEN or GITHUB_TOKEN)
+bun run llms:generate  # Generate llms.txt and llms-full.txt
 ```
 
 No test framework is configured. There are no tests to run.
@@ -69,6 +69,8 @@ The fetch script uses GitHub GraphQL API to count non-merge commits on master (m
 ## Dependencies
 
 - `@theojs/lumen` — Theme component library (BoxCube, Card, Links, Pill, Footer, CopyText, umamiAnalytics)
+- `@nolebase/vitepress-plugin-enhanced-readabilities` — Enhanced readabilities plugin (layout mode, spotlight, reading aids)
+- `@nolebase/vitepress-plugin-git-changelog` — Git changelog and per-page contributor cards
 - `@mdit/plugin-figure` — Markdown figure plugin for images
 - `marked` — Markdown parsing (used in ChangelogViewer for runtime rendering)
 - `iconify-icon` — Icon component (registered as custom element in VitePress config)

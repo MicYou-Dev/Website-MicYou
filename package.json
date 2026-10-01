@@ -1,6 +1,7 @@
 {
 	"name": "micyouwebsite",
 	"version": "1.0.0",
+	"type": "module",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -11,32 +12,33 @@
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"prepare": "husky",
-		"fetch:ghdata": "npx tsx scripts/fetch-gh-data.ts",
-		"llms:generate": "npx tsx scripts/generate-llms-txt.ts"
+		"fetch:ghdata": "bun scripts/fetch-gh-data.ts",
+		"llms:generate": "bun scripts/generate-llms-txt.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee",
+	"packageManager": "bun@1.4.2",
 	"devDependencies": {
 		"@fontsource/noto-sans": "^5.3.0",
 		"@fontsource/noto-sans-sc": "^5.3.0",
 		"@fontsource/noto-sans-tc": "^5.3.0",
-		"@mdit/plugin-figure": "^1.1.0",
-		"dotenv": "^17.4.2",
+		"@mdit/plugin-figure": "^1.2.2",
+		"@nolebase/vitepress-plugin-enhanced-readabilities": "^2.18.2",
+		"@nolebase/vitepress-plugin-git-changelog": "^2.18.2",
+		"dotenv": "^18.0.4",
 		"husky": "^9.1.7",
-		"lint-staged": "^17.3.0",
+		"lint-staged": "^17.6.0",
 		"pngjs": "^7.0.0",
-		"tsx": "^4.23.10",
-		"vitepress": "2.0.0-alpha.17"
+		"vitepress": "2.0.0-alpha.20"
 	},
 	"lint-staged": {
 		"*.{js,ts,vue,json,mts,mjs,cjs,cts}": "biome format --write"
 	},
 	"dependencies": {
-		"@biomejs/biome": "^2.5.7",
+		"@biomejs/biome": "^2.5.14",
 		"@theojs/lumen": "^7.0.1",
-		"marked": "^18.0.9",
-		"vue": "^3.5.41"
+		"marked": "^18.0.14",
+		"vue": "^3.5.43"
 	}
 }
