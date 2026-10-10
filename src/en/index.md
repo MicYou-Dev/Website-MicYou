@@ -2,7 +2,7 @@
 layout: home
 title: MicYou - Turn Your Phone into a PC Microphone
 description: Stream your phone microphone to your computer over Wi-Fi, USB, or Web with low latency. Built-in AI noise cancellation, echo cancellation, and virtual audio routing.
-keywords: MicYou,phone microphone,PC microphone,Android microphone,wireless microphone,USB microphone,Wi-Fi microphone,Web microphone,cross-platform audio,low latency audio,PureVox,echo cancellation
+keywords: MicYou,phone microphone,PC microphone,Android microphone,iOS microphone,iPhone microphone,wireless microphone,USB microphone,Wi-Fi microphone,Web microphone,cross-platform audio,low latency audio,PureVox,echo cancellation
 
 hero:
   name: "MicYou"
@@ -37,7 +37,7 @@ features:
     details: Native integration with VB-CABLE (Windows), BlackHole (macOS), and PipeWire (Linux). Ready out-of-the-box for Discord, OBS, Zoom, and games.
   - icon: 🖥️
     title: Cross-Platform & Multi-Form
-    details: Full desktop support across Windows, macOS, and Linux. Choose between a clean desktop GUI, a lightweight CLI, or an interactive terminal TUI.
+    details: Full support across Windows, macOS, Linux, Android, and iOS. Choose between a clean desktop GUI, a lightweight CLI, or an interactive terminal TUI.
   - icon: 🧩
     title: Rich Plugin Ecosystem
     details: Extend functionality with Native and WebAssembly plugins. Add custom DSP audio filters, dedicated setting panels, and global hotkeys.

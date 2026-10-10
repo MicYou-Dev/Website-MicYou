@@ -55,6 +55,7 @@ export const download = {
 	macOSDesc: "macOS 11.0 or later (Apple Silicon)",
 	linuxDesc: "Major Linux distributions (x86_64)",
 	androidDesc: "Android 7.0 or later (5.0+ compat build available)",
+	iosDesc: "iOS 18.0 or later (sideloading required)",
 	// File names
 	installer: "Installer (.exe)",
 	appImage: "AppImage",
@@ -63,6 +64,9 @@ export const download = {
 	arch: "Arch Linux",
 	dmgArm: "DMG (Apple Silicon)",
 	apk: "APK Package",
+	ipa: "IPA Package",
+	ipaLiveContainer: "IPA (LiveContainer)",
+	iosInstallGuide: "Install Guide",
 	copied: "Copied",
 	stable: "Stable",
 	nightly: "Nightly Build",
@@ -70,7 +74,6 @@ export const download = {
 		"Nightly builds include experimental features and may be unstable",
 	mirror: "MirrorChyan High-Speed Download",
 	mirrorHernet: "HeRNET Mirror Download",
-	mirrorCqu: "CQU Mirror Download",
 	mirrorWarning:
 		"Please avoid multi-threaded download managers to prevent IP rate-limiting",
 };
@@ -111,6 +114,7 @@ export const footer = {
 	llmTxt: "llms.txt",
 	llmFullTxt: "llms-full.txt",
 	githubRepo: "GitHub Repository",
+	iosRepo: "iOS Repository",
 	downloadLatest: "Download Latest",
 	feedback: "Report Issue",
 	contributing: "Contributing Guide",
@@ -202,7 +206,17 @@ export function getFooterData(): FooterData {
 							color: { light: "#334355", dark: "#6b8aad" },
 						},
 						name: footer.githubRepo,
-						link: "https://github.com/LanRhyme/Website-MicYou",
+						link: "https://github.com/MicYou-Dev/MicYou",
+						rel: "noopener noreferrer",
+					},
+					{
+						icon: {
+							light: "simple-icons:ios",
+							dark: "simple-icons:ios",
+							color: { light: "#334355", dark: "#6b8aad" },
+						},
+						name: footer.iosRepo,
+						link: "https://github.com/MicYou-Dev/MicYou-iOS",
 						rel: "noopener noreferrer",
 					},
 					{
@@ -212,7 +226,7 @@ export function getFooterData(): FooterData {
 							color: { light: "#334355", dark: "#6b8aad" },
 						},
 						name: footer.downloadLatest,
-						link: "https://github.com/LanRhyme/MicYou/releases/latest",
+						link: "https://github.com/MicYou-Dev/MicYou/releases/latest",
 						rel: "noopener noreferrer",
 					},
 					{
@@ -222,7 +236,7 @@ export function getFooterData(): FooterData {
 							color: { light: "#e74c3c", dark: "#ff6b6b" },
 						},
 						name: footer.feedback,
-						link: "https://github.com/LanRhyme/MicYou/issues",
+						link: "https://github.com/MicYou-Dev/MicYou/issues",
 						rel: "noopener noreferrer",
 					},
 					{
@@ -232,7 +246,7 @@ export function getFooterData(): FooterData {
 							color: { light: "#334355", dark: "#6b8aad" },
 						},
 						name: footer.contributing,
-						link: "https://github.com/LanRhyme/MicYou/blob/master/CONTRIBUTING.md",
+						link: "https://github.com/MicYou-Dev/MicYou/blob/master/CONTRIBUTING.md",
 						rel: "noopener noreferrer",
 					},
 				],

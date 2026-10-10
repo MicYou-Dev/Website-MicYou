@@ -7,6 +7,7 @@ const sidebarTranslations = {
 	"zh-CN": {
 		docs: "文档",
 		quick_start: "快速开始",
+		ios_install: "在 iOS 上安装",
 		android_compat: "Android 兼容构建",
 		faq: "常见问题",
 		plugin_system: "插件系统",
@@ -21,6 +22,7 @@ const sidebarTranslations = {
 	en: {
 		docs: "Docs",
 		quick_start: "Quick Start",
+		ios_install: "Install on iOS",
 		android_compat: "Android Compat Build",
 		faq: "FAQ",
 		plugin_system: "Plugin System",
@@ -35,6 +37,7 @@ const sidebarTranslations = {
 	"zh-TW": {
 		docs: "文檔",
 		quick_start: "快速開始",
+		ios_install: "在 iOS 上安裝",
 		android_compat: "Android 相容構建",
 		faq: "常見問題",
 		plugin_system: "插件系統",
@@ -58,6 +61,7 @@ export function docsSidebar(lang: Lang = "zh-CN"): DefaultTheme.SidebarItem[] {
 			text: t.docs,
 			items: [
 				{ text: t.quick_start, link: `${prefix}/docs/quick-start` },
+				{ text: t.ios_install, link: `${prefix}/docs/how-to-install-in-ios` },
 				{ text: t.android_compat, link: `${prefix}/docs/android-compat` },
 				{ text: t.faq, link: `${prefix}/docs/faq` },
 			],

@@ -28,7 +28,8 @@ Your computer's voice apps (Discord, Zoom, games, etc.) receive the incoming str
 
 Pick whichever method suits your setup:
 
-- **Mobile App (Recommended)**: Download the MicYou Android APK from the [Download page](/en/download). Grant microphone permissions on first open.
+- **Android App**: Download the MicYou Android APK from the [Download page](/en/download). Grant microphone permissions on first open.
+- **iOS App (iOS 18+)**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it. Grant microphone and local network permissions when prompted.
 - **Web Browser (Zero-Install)**: No app needed—simply scan a QR code in your mobile browser (great for quick use on a friend's PC).
 
 ## 2. Connect Your Devices
@@ -48,10 +49,10 @@ No cables needed, instant setup—perfect for casual calls, meetings, and stream
      > Linux users using `ufw`: `sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 3. **Connect**:
    - Open MicYou on your PC, select **Wi-Fi** mode, and note the local IP and port displayed.
-   - Open the MicYou App on your phone, enter the IP and port, and tap "Connect".
+   - Open the MicYou App on your phone, select your computer under "Nearby Computers" (or enter the IP and port manually), and tap "Connect".
    - Speak into your phone and watch the volume meter bounce on your PC—you're live!
 
-### Option B: USB Cable / ADB (Ultra-Low Latency)
+### Option B: USB Cable / ADB (Ultra-Low Latency, Android Only)
 
 Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gaming or restricted networks (campus Wi-Fi with AP isolation).
 
@@ -73,7 +74,7 @@ Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gamin
 
 ### Option C: Web Browser Mode (No Installation)
 
-No APK installation required—ideal when using a shared or temporary computer.
+No app installation required—ideal when using a shared or temporary computer.
 
 1. Ensure your phone and PC are on the same Wi-Fi network.
 2. Switch MicYou on your PC to **Web** mode to display a QR code and local URL.
@@ -100,11 +101,12 @@ Once streaming is active, select the virtual microphone driver in your target so
 ## 4. Quick Troubleshooting & Tips
 
 - **Wi-Fi connection fails or times out?**  
-  Confirm Windows Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
+  Confirm Windows Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
   Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
 - **Audio cuts off when phone screen turns off?**  
-  Android aggressive battery savers freeze background network and microphone tasks. Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
+  - **Android**: Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
+  - **iOS**: Due to iOS recording rules, start the connection while MicYou is in the foreground first. Once streaming begins, you can lock your screen or switch to the background, and control mute/disconnect right from the Lock Screen Live Activity or Dynamic Island.
 
 > [!TIP]
 > Running into other issues? Check the [FAQ](/en/docs/faq) for comprehensive troubleshooting guides.

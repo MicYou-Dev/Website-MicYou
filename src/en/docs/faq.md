@@ -197,3 +197,10 @@ systemctl --user status pipewire pipewire-pulse
 Yes! While official release builds target Android 7.0+ (API 24+), the project includes a dedicated compatibility build pipeline for Android 5.0+ (API 21+) legacy devices.
 
 You can download the compatibility APK from our download page or build it yourself by following the [Android Compatibility Build Guide](/en/docs/android-compat).
+
+### How do I install and use MicYou on iOS (iPhone / iPad)?
+
+MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support.
+
+- **Installation**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it via Sideloadly or LiveContainer + SideStore.
+- **Usage Tip**: Due to iOS audio recording restrictions, start streaming while MicYou is in the foreground first; once connected, you can lock your screen or switch apps freely. For devices below iOS 18 or quick zero-install setups, you can also use **Web Mode**.

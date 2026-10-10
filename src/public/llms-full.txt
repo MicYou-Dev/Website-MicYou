@@ -320,6 +320,76 @@ systemctl --user status pipewire pipewire-pulse
 
 你可以前往下载页面获取兼容包，或参考 [Android 旧设备兼容构建](/docs/android-compat) 自行编译安装。
 
+### iOS (iPhone / iPad) 设备如何安装与使用 MicYou？
+
+MicYou 提供了原生 iOS 客户端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支持 Bonjour 自动发现、后台与锁屏持续传输、锁屏实时活动（Live Activity）与灵动岛（Dynamic Island）。
+
+- **安装方式**：前往 [下载页面](/download) 下载 IPA 安装包，并参考 [在 iOS 上安装](/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 进行自签安装。
+- **使用提示**：受 iOS 录音限制，需先在 MicYou 前台点击「连接」开始传输，随后即可锁屏或切到后台持续收音。若你的设备低于 iOS 18 或不便自签，也可直接使用免安装的 **Web 网页模式**。
+
+
+---
+
+# 在 iOS 上安装 - MicYou
+
+URL: https://micyou.top/docs/how-to-install-in-ios
+Description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sideloadly 或 LiveContainer + SideStore 进行侧载安装。
+
+# 在 iOS 上安装
+
+[MicYou for iOS](https://github.com/MicYou-Dev/MicYou-iOS) 需要 **iOS 18.0 及以上**系统。由于未上架 App Store，可使用 **Sideloadly**、**LiveContainer + SideStore**、**AltStore** 等侧载工具自签安装。
+
+免费 Apple ID 签名存在以下限制：
+- 签名有效期为 **7 天**，到期后需续签，否则应用无法打开。
+- 单个免费 Apple ID 最多同时安装 **3 个**侧载应用。
+
+## 准备工作
+
+- **硬件**：macOS 或 Windows 电脑、iPhone / iPad（iOS 18+）及可靠的数据线。
+- **账号**：使用邮箱注册的 [Apple ID](https://support.apple.com/zh-cn/apple-account)（手机号注册的账号不支持自签）。
+- **Windows 环境**：需安装非 Microsoft Store 版本的 [iTunes](https://www.apple.com.cn/itunes/)（若已安装商店版，请先卸载）。
+- **IPA 安装包**：从[下载页](/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下载：
+  - `MicYou-<版本>.ipa`：完整版（含锁屏实时活动、灵动岛与控制中心按钮），用于 **Sideloadly**、**SideStore** 或 **AltStore** 直接安装。
+  - `MicYou-<版本>-LiveContainer.ipa`：移除小组件扩展的 **LiveContainer 专用版**。
+
+## 方法一：使用 Sideloadly 安装
+
+1. 下载并安装 [Sideloadly](https://sideloadly.io/#download)。
+2. 打开 Sideloadly，在 `Apple ID` 栏输入 Apple 账号邮箱。
+3. 用数据线将 iOS 设备连至电脑，在手机上点击**信任此电脑**并输入锁屏密码。
+4. 点击左侧 `IPA` 图标，选择 `MicYou-<版本>.ipa`，点击 `Start` 开始安装（建议保持左侧自动刷新图标开启，以便在同一 Wi-Fi 下自动续签）。
+5. 按提示输入 Apple ID 密码及双重认证验证码，等待进度显示 `Done.` 即安装完成。
+
+## 方法二：使用 LiveContainer + SideStore 安装
+
+此方案配置完成后，只需在手机端开启 VPN 即可随时续签，且安装在 LiveContainer 内的应用不占用侧载数量限制。
+
+### 1. 开启开发者模式（iOS 16+）
+
+前往 iOS `设置` -> `隐私与安全性` -> 底部 `开发者模式` -> **开启**，按提示重启设备并确认开启。
+
+### 2. 安装并信任 LiveContainer + SideStore
+
+1. 在电脑上下载并打开 [iloader](https://github.com/nab138/iloader/releases/latest)。
+2. 连接 iOS 设备至电脑并选择“信任此电脑”。
+3. 在 iloader 中登录 Apple ID，点击 **LiveContainer + SideStore (Stable)** 完成安装。
+4. 前往 iOS `设置` -> `通用` -> `VPN 与设备管理`，在 `开发者 APP` 下点击你的 Apple ID 并选择**信任**。
+
+### 3. 配置证书与安装 MicYou
+
+1. 在 App Store 下载 [LocalDevVPN](https://apps.apple.com/hk/app/localdevvpn/id6755608044)（需外区 ID）并保持开启。
+2. 打开 **LiveContainer**，点击左上角 **SideStore** 图标（首次可能闪退，重开即可）。
+3. 在 SideStore 的 **My Apps** 页面点击 `Refresh All`，登录 Apple ID 完成激活。
+4. 返回 **LiveContainer** -> **设置**，点击 `从 SideStore 导入证书`。
+5. 安装 MicYou（二选一）：
+   - **LiveContainer 内安装（不占名额）**：在 LiveContainer 主页点击左上角 **“+”**，选择 `MicYou-<版本>-LiveContainer.ipa`。
+   - **SideStore 独立安装（支持实时活动与灵动岛）**：在 SideStore 的 **My Apps** 页面点击左上角 **“+”**，选择标准版 `MicYou-<版本>.ipa`。
+
+## 常见问题
+
+- **提示“不受信任的开发者”**：前往 `设置` -> `通用` -> `VPN 与设备管理`，点击你的 Apple ID 并选择**信任**。
+- **实时活动或灵动岛不可用**：LiveContainer 专用版不含小组件扩展；若需使用实时活动、灵动岛和控制中心按钮，请通过 Sideloadly 或 SideStore 直接安装标准版 `MicYou-<版本>.ipa`。
+
 
 ---
 
@@ -1155,7 +1225,8 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 
 根据使用场景选择适合你的方式：
 
-- **App 方式（推荐）**：在 [下载页面](/download) 下载安装 MicYou Android 客户端（`.apk`）。首次打开时请授予麦克风录音权限。
+- **Android 客户端**：在 [下载页面](/download) 下载安装 MicYou Android 客户端（`.apk`）。首次打开时请授予麦克风录音权限。
+- **iOS 客户端（iOS 18+）**：在 [下载页面](/download) 获取 IPA 安装包，并参考 [在 iOS 上安装](/docs/how-to-install-in-ios) 完成自签安装；首次连接时请允许麦克风与本地网络权限。
 - **Web 网页免安装**：无需安装任何 App，直接用手机浏览器扫码即可使用（适合临时借用电脑）。
 
 ## 2. 选择连接方式
@@ -1175,10 +1246,10 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
      > Linux 用户若启用了 `ufw`，可执行：`sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 3. **建立连接**：
    - 电脑端打开 MicYou，选择 **Wi-Fi** 模式，界面会显示电脑的局域网 IP 与端口。
-   - 手机端打开 MicYou App，输入对应的 IP 和端口，点击「连接」。
+   - 手机端打开 MicYou App，在「附近的电脑」中选择自动发现的电脑（或手动输入对应的 IP 和端口），点击「连接」。
    - 对着手机说话，观察电脑端 MicYou 界面上的音量电平跳动，即代表音频传输成功！
 
-### 方式 B：USB 数据线连接（超低延迟）
+### 方式 B：USB 数据线连接（超低延迟，仅限 Android）
 
 不受 Wi-Fi 信号波动影响，延迟稳定在 10ms 以内，适合对低延迟要求极高的竞技游戏或受限网络（如校园网 / 开启了 AP 隔离的网络）。
 
@@ -1200,7 +1271,7 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 
 ### 方式 C：Web 网页免安装连接
 
-无需在手机安装 APK，适合在他人电脑上临时应急使用。
+无需在手机安装客户端，适合在他人电脑上临时应急使用。
 
 1. 确保手机与电脑在同一 Wi-Fi 网络下（防火墙规则同 Wi-Fi 模式）。
 2. 电脑端 MicYou 切换到 **Web** 模式，界面会生成访问二维码与局域网链接。
@@ -1227,11 +1298,12 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 ## 4. 常见排查与使用建议
 
 - **Wi-Fi 模式连不上？**  
-  检查电脑防火墙是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接或开启手机热点。
+  检查电脑防火墙是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接（Android）或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
   重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
 - **手机锁屏后声音断开？**  
-  部分 Android 系统会在锁屏后强制冻结后台网络和麦克风。请在手机「设置」>「应用管理」>「MicYou」>「电池 / 耗电管理」中设为 **「无限制」**（允许完全后台运行），并在多任务切换界面锁定 MicYou。
+  - **Android**：请在手机「设置」>「应用管理」>「MicYou」>「电池 / 耗电管理」中设为 **「无限制」**（允许完全后台运行），并在多任务切换界面锁定 MicYou。
+  - **iOS**：受 iOS 录音限制，需先在前台点击「连接」开始传输，之后即可锁屏或切到后台持续传输，并通过锁屏实时活动或灵动岛随时静音或断开。
 
 > [!TIP]
 > 遇到其他问题？请查阅 [常见问题 (FAQ)](/docs/faq) 获取更全面的排查方法。
@@ -1239,10 +1311,10 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 
 ---
 
-# 下载 MicYou - Windows、macOS、Linux、Android
+# 下载 MicYou - Windows、macOS、Linux、Android、iOS
 
 URL: https://micyou.top/download
-Description: 获取 MicYou 最新版本客户端，支持 Windows、macOS、Linux 与 Android，快速将手机麦克风串流至电脑。
+Description: 获取 MicYou 最新版本客户端，支持 Windows、macOS、Linux、Android 与 iOS，快速将手机麦克风串流至电脑。
 
 <DownloadSection />
 
@@ -1631,6 +1703,76 @@ systemctl --user status pipewire pipewire-pulse
 Yes! While official release builds target Android 7.0+ (API 24+), the project includes a dedicated compatibility build pipeline for Android 5.0+ (API 21+) legacy devices.
 
 You can download the compatibility APK from our download page or build it yourself by following the [Android Compatibility Build Guide](/en/docs/android-compat).
+
+### How do I install and use MicYou on iOS (iPhone / iPad)?
+
+MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support.
+
+- **Installation**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it via Sideloadly or LiveContainer + SideStore.
+- **Usage Tip**: Due to iOS audio recording restrictions, start streaming while MicYou is in the foreground first; once connected, you can lock your screen or switch apps freely. For devices below iOS 18 or quick zero-install setups, you can also use **Web Mode**.
+
+
+---
+
+# Install on iOS - MicYou
+
+URL: https://micyou.top/en/docs/how-to-install-in-ios
+Description: Guide to sideloading and installing MicYou on iOS devices using Sideloadly or LiveContainer + SideStore.
+
+# Install on iOS
+
+[MicYou for iOS](https://github.com/MicYou-Dev/MicYou-iOS) requires **iOS 18.0 or later**. Since it is not listed on the App Store, you can sideload it using **Sideloadly**, **LiveContainer + SideStore**, **AltStore**, or other IPA signing tools.
+
+Free Apple ID signing limitations:
+- App signatures expire after **7 days** and must be refreshed.
+- A free Apple ID can install at most **3 sideloaded apps** simultaneously.
+
+## Prerequisites
+
+- **Hardware**: A macOS or Windows computer, an iPhone or iPad (iOS 18+), and a USB data cable.
+- **Account**: An [Apple ID](https://support.apple.com/apple-account) registered with an email address (phone-number-only accounts are not supported).
+- **Windows Requirement**: Install the non-Microsoft Store version of [iTunes](https://www.apple.com/itunes/) (uninstall the Microsoft Store version first if installed).
+- **IPA Package**: Download from the [Download page](/en/download) or [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest):
+  - `MicYou-<version>.ipa`: Full build (with Live Activity, Dynamic Island, and Control Center widget) for direct installation via **Sideloadly**, **SideStore**, or **AltStore**.
+  - `MicYou-<version>-LiveContainer.ipa`: Build without widget extensions, dedicated for **LiveContainer**.
+
+## Method 1: Install with Sideloadly
+
+1. Download and install [Sideloadly](https://sideloadly.io/#download).
+2. Open Sideloadly and enter your Apple ID email in the `Apple ID` field.
+3. Connect your iOS device via USB, tap **Trust** on the device, and enter your passcode.
+4. Click the `IPA` icon on the left, select `MicYou-<version>.ipa`, and click `Start` (keep the refresh icon next to `Start` enabled for automatic Wi-Fi renewal).
+5. Enter your Apple ID password and 2FA code when prompted. Installation is complete when `Done.` appears.
+
+## Method 2: Install with LiveContainer + SideStore
+
+Once configured, this method lets you refresh apps directly on your device with a local VPN, and apps inside LiveContainer do not count toward the 3-app limit.
+
+### 1. Enable Developer Mode (iOS 16+)
+
+Go to iOS `Settings` -> `Privacy & Security` -> `Developer Mode` -> turn it **On**, then restart your device and confirm.
+
+### 2. Install & Trust LiveContainer + SideStore
+
+1. Download and launch [iloader](https://github.com/nab138/iloader/releases/latest) on your computer.
+2. Connect your iOS device via USB and trust the computer.
+3. Sign in with your Apple ID in iloader and click **LiveContainer + SideStore (Stable)** to install.
+4. On iOS, go to `Settings` -> `General` -> `VPN & Device Management`, tap your Apple ID under `Developer App`, and tap **Trust**.
+
+### 3. Configure Certificate & Install MicYou
+
+1. Install [LocalDevVPN](https://apps.apple.com/app/localdevvpn/id6755608044) from the App Store and keep it connected.
+2. Open **LiveContainer** and tap the **SideStore** icon in the top-left corner (reopen if it closes on first launch).
+3. In SideStore's **My Apps** tab, tap `Refresh All` and sign in with your Apple ID.
+4. Return to **LiveContainer** -> **Settings** and tap `Import Certificate from SideStore`.
+5. Install MicYou (choose one):
+   - **Inside LiveContainer (No slot limit)**: Tap **"+"** in LiveContainer and select `MicYou-<version>-LiveContainer.ipa`.
+   - **Standalone via SideStore (Supports Live Activity & Dynamic Island)**: Tap **"+"** in SideStore's **My Apps** tab and select `MicYou-<version>.ipa`.
+
+## Troubleshooting
+
+- **"Untrusted Developer" prompt**: Go to `Settings` -> `General` -> `VPN & Device Management`, tap your Apple ID, and select **Trust**.
+- **Live Activity or Dynamic Island unavailable**: The LiveContainer build omits widget extensions. To use Live Activity, Dynamic Island, and the Control Center button, install the standard `MicYou-<version>.ipa` directly via Sideloadly or SideStore.
 
 
 ---
@@ -2466,7 +2608,8 @@ Your computer's voice apps (Discord, Zoom, games, etc.) receive the incoming str
 
 Pick whichever method suits your setup:
 
-- **Mobile App (Recommended)**: Download the MicYou Android APK from the [Download page](/en/download). Grant microphone permissions on first open.
+- **Android App**: Download the MicYou Android APK from the [Download page](/en/download). Grant microphone permissions on first open.
+- **iOS App (iOS 18+)**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it. Grant microphone and local network permissions when prompted.
 - **Web Browser (Zero-Install)**: No app needed—simply scan a QR code in your mobile browser (great for quick use on a friend's PC).
 
 ## 2. Connect Your Devices
@@ -2486,10 +2629,10 @@ No cables needed, instant setup—perfect for casual calls, meetings, and stream
      > Linux users using `ufw`: `sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 3. **Connect**:
    - Open MicYou on your PC, select **Wi-Fi** mode, and note the local IP and port displayed.
-   - Open the MicYou App on your phone, enter the IP and port, and tap "Connect".
+   - Open the MicYou App on your phone, select your computer under "Nearby Computers" (or enter the IP and port manually), and tap "Connect".
    - Speak into your phone and watch the volume meter bounce on your PC—you're live!
 
-### Option B: USB Cable / ADB (Ultra-Low Latency)
+### Option B: USB Cable / ADB (Ultra-Low Latency, Android Only)
 
 Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gaming or restricted networks (campus Wi-Fi with AP isolation).
 
@@ -2511,7 +2654,7 @@ Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gamin
 
 ### Option C: Web Browser Mode (No Installation)
 
-No APK installation required—ideal when using a shared or temporary computer.
+No app installation required—ideal when using a shared or temporary computer.
 
 1. Ensure your phone and PC are on the same Wi-Fi network.
 2. Switch MicYou on your PC to **Web** mode to display a QR code and local URL.
@@ -2538,11 +2681,12 @@ Once streaming is active, select the virtual microphone driver in your target so
 ## 4. Quick Troubleshooting & Tips
 
 - **Wi-Fi connection fails or times out?**  
-  Confirm Windows Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
+  Confirm Windows Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
   Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
 - **Audio cuts off when phone screen turns off?**  
-  Android aggressive battery savers freeze background network and microphone tasks. Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
+  - **Android**: Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
+  - **iOS**: Due to iOS recording rules, start the connection while MicYou is in the foreground first. Once streaming begins, you can lock your screen or switch to the background, and control mute/disconnect right from the Lock Screen Live Activity or Dynamic Island.
 
 > [!TIP]
 > Running into other issues? Check the [FAQ](/en/docs/faq) for comprehensive troubleshooting guides.
@@ -2550,10 +2694,10 @@ Once streaming is active, select the virtual microphone driver in your target so
 
 ---
 
-# Download MicYou - Windows, macOS, Linux, Android
+# Download MicYou - Windows, macOS, Linux, Android, iOS
 
 URL: https://micyou.top/en/download
-Description: Download the latest MicYou releases for Windows, macOS, Linux, and Android to turn your phone into a high-quality PC microphone.
+Description: Download the latest MicYou releases for Windows, macOS, Linux, Android, and iOS to turn your phone into a high-quality PC microphone.
 
 <DownloadSection />
 
@@ -2940,6 +3084,76 @@ systemctl --user status pipewire pipewire-pulse
 可以！MicYou 官方 Release 版本預設相容 Android 7.0+ (API 24+)。針對閒置的 Android 5.0+ (API 21+) 老舊手機，專案專門提供了相容構建流水線。
 
 你可以前往下載頁面取得相容套件，或參考 [Android 舊裝置相容構建](/zh-TW/docs/android-compat) 自行編譯安裝。
+
+### iOS (iPhone / iPad) 裝置如何安裝與使用 MicYou？
+
+MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支援 Bonjour 自動探索、背景與鎖定螢幕持續傳輸、鎖定畫面即時動態（Live Activity）與動態島（Dynamic Island）。
+
+- **安裝方式**：前往 [下載頁面](/zh-TW/download) 下載 IPA 安裝套件，並參考 [在 iOS 上安裝](/zh-TW/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 進行自簽安裝。
+- **使用提示**：受 iOS 錄音限制，需先在 MicYou 前景點擊「連線」開始傳輸，隨後即可鎖定螢幕或切到背景持續收音。若你的裝置低於 iOS 18 或不便自簽，也可直接使用免安裝的 **Web 網頁模式**。
+
+
+---
+
+# 在 iOS 上安裝 - MicYou
+
+URL: https://micyou.top/zh-TW/docs/how-to-install-in-ios
+Description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sideloadly 或 LiveContainer + SideStore 進行側載安裝。
+
+# 在 iOS 上安裝
+
+[MicYou for iOS](https://github.com/MicYou-Dev/MicYou-iOS) 需要 **iOS 18.0 及以上**系統。由於未上架 App Store，可使用 **Sideloadly**、**LiveContainer + SideStore**、**AltStore** 等側載工具自簽安裝。
+
+免費 Apple ID 簽名存在以下限制：
+- 簽名有效期為 **7 天**，到期後需續簽，否則應用程式無法開啟。
+- 單一免費 Apple ID 最多同時安裝 **3 個**側載應用程式。
+
+## 準備工作
+
+- **硬體**：macOS 或 Windows 電腦、iPhone / iPad（iOS 18+）及穩定的傳輸線。
+- **帳號**：使用電子郵件註冊的 [Apple ID](https://support.apple.com/zh-tw/apple-account)（手機號碼註冊的帳號不支援自簽）。
+- **Windows 環境**：需安裝非 Microsoft Store 版本的 [iTunes](https://www.apple.com/itunes/)（若已安裝商店版，請先解除安裝）。
+- **IPA 安裝套件**：從[下載頁](/zh-TW/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下載：
+  - `MicYou-<版本>.ipa`：完整版（含鎖定畫面即時動態、動態島與控制中心按鈕），用於 **Sideloadly**、**SideStore** 或 **AltStore** 直接安裝。
+  - `MicYou-<版本>-LiveContainer.ipa`：移除小工具擴充功能的 **LiveContainer 專用版**。
+
+## 方法一：使用 Sideloadly 安裝
+
+1. 下載並安裝 [Sideloadly](https://sideloadly.io/#download)。
+2. 開啟 Sideloadly，在 `Apple ID` 欄位輸入 Apple 帳號信箱。
+3. 用傳輸線將 iOS 裝置連至電腦，在手機上點擊**信任這部電腦**並輸入鎖定畫面密碼。
+4. 點擊左側 `IPA` 圖示，選擇 `MicYou-<版本>.ipa`，點擊 `Start` 開始安裝（建議保持左側自動重新整理圖示開啟，以便在同一 Wi-Fi 下自動續簽）。
+5. 按提示輸入 Apple ID 密碼及雙重認證驗證碼，等待進度顯示 `Done.` 即安裝完成。
+
+## 方法二：使用 LiveContainer + SideStore 安裝
+
+此方案設定完成後，只需在手機端開啟 VPN 即可隨時續簽，且安裝在 LiveContainer 內的應用程式不佔用側載數量限制。
+
+### 1. 開啟開發者模式（iOS 16+）
+
+前往 iOS `設定` -> `隱私權與安全性` -> 底部 `開發者模式` -> **開啟**，按提示重新啟動裝置並確認開啟。
+
+### 2. 安裝並信任 LiveContainer + SideStore
+
+1. 在電腦上下載並開啟 [iloader](https://github.com/nab138/iloader/releases/latest)。
+2. 連接 iOS 裝置至電腦並選擇「信任這部電腦」。
+3. 在 iloader 中登入 Apple ID，點擊 **LiveContainer + SideStore (Stable)** 完成安裝。
+4. 前往 iOS `設定` -> `一般` -> `VPN 與裝置管理`，在 `開發者 APP` 下點擊你的 Apple ID 並選擇**信任**。
+
+### 3. 設定憑證與安裝 MicYou
+
+1. 在 App Store 下載 [LocalDevVPN](https://apps.apple.com/app/localdevvpn/id6755608044) 並保持開啟。
+2. 開啟 **LiveContainer**，點擊左上角 **SideStore** 圖示（首次可能閃退，重開即可）。
+3. 在 SideStore 的 **My Apps** 頁面點擊 `Refresh All`，登入 Apple ID 完成啟用。
+4. 返回 **LiveContainer** -> **設定**，點擊 `從 SideStore 匯入憑證`。
+5. 安裝 MicYou（二選一）：
+   - **LiveContainer 內安裝（不佔名額）**：在 LiveContainer 主頁點擊左上角 **「+」**，選擇 `MicYou-<版本>-LiveContainer.ipa`。
+   - **SideStore 獨立安裝（支援即時動態與動態島）**：在 SideStore 的 **My Apps** 頁面點擊左上角 **「+」**，選擇標準版 `MicYou-<版本>.ipa`。
+
+## 常見問題
+
+- **提示「不受信任的開發者」**：前往 `設定` -> `一般` -> `VPN 與裝置管理`，點擊你的 Apple ID 並選擇**信任**。
+- **即時動態或動態島不可用**：LiveContainer 專用版不含小工具擴充功能；若需使用即時動態、動態島和控制中心按鈕，請透過 Sideloadly 或 SideStore 直接安裝標準版 `MicYou-<版本>.ipa`。
 
 
 ---
@@ -3776,7 +3990,8 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 
 根據使用場景選擇適合你的方式：
 
-- **App 方式（推薦）**：在 [下載頁面](/zh-TW/download) 下載安裝 MicYou Android 客戶端（`.apk`）。首次開啟時請授予麥克風錄音權限。
+- **Android 客戶端**：在 [下載頁面](/zh-TW/download) 下載安裝 MicYou Android 客戶端（`.apk`）。首次開啟時請授予麥克風錄音權限。
+- **iOS 客戶端（iOS 18+）**：在 [下載頁面](/zh-TW/download) 獲取 IPA 安裝套件，並參考 [在 iOS 上安裝](/zh-TW/docs/how-to-install-in-ios) 完成自簽安裝；首次連線時請允許麥克風與區域網路權限。
 - **Web 網頁免安裝**：無需安裝任何 App，直接用手機瀏覽器掃描 QR Code 即可使用（適合臨時借用電腦）。
 
 ## 2. 選擇連線方式
@@ -3796,10 +4011,10 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
      > Linux 使用者若啟用了 `ufw`，可執行：`sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
 3. **建立連線**：
    - 電腦端開啟 MicYou，選擇 **Wi-Fi** 模式，介面會顯示電腦的區域網路 IP 與連接埠。
-   - 手機端開啟 MicYou App，輸入對應的 IP 和連接埠，點擊「連線」。
+   - 手機端開啟 MicYou App，在「附近的電腦」中選擇自動探索到的電腦（或手動輸入對應的 IP 和連接埠），點擊「連線」。
    - 對著手機說話，觀察電腦端 MicYou 介面上的音量電平跳動，即代表音訊傳輸成功！
 
-### 方式 B：USB 資料線連線（超低延遲）
+### 方式 B：USB 資料線連線（超低延遲，僅限 Android）
 
 不受 Wi-Fi 訊號波動影響，延遲穩定在 10ms 以內，適合對低延遲要求極高的競技遊戲或受限網路（如校園網路 / 開啟了 AP 隔離的網路）。
 
@@ -3821,7 +4036,7 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 
 ### 方式 C：Web 網頁免安裝連線
 
-無需在手機安裝 APK，適合在他人的電腦上臨時應急使用。
+無需在手機安裝客戶端，適合在他人的電腦上臨時應急使用。
 
 1. 確保手機與電腦在同一 Wi-Fi 網路下（防火牆規則同 Wi-Fi 模式）。
 2. 電腦端 MicYou 切換到 **Web** 模式，介面會產生存取 QR Code 與區域網路連結。
@@ -3848,11 +4063,12 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 ## 4. 常見疑難排解與使用建議
 
 - **Wi-Fi 模式連不上？**  
-  檢查電腦防火牆是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線或開啟手機熱點。
+  檢查電腦防火牆是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線（Android）或開啟手機熱點。
 - **電平有跳動，但聊天軟體裡聽不到聲音？**  
   重點檢查輸入輸出方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
 - **手機鎖定螢幕後聲音斷開？**  
-  部分 Android 系統會在鎖定螢幕後強制凍結背景網路和麥克風。請在手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理」中設為 **「無限制」**（允許完全背景執行），並在多工切換介面鎖定 MicYou。
+  - **Android**：請在手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理」中設為 **「無限制」**（允許完全背景執行），並在多工切換介面鎖定 MicYou。
+  - **iOS**：受 iOS 錄音限制，需先在前景點擊「連線」開始傳輸，之後即可鎖定螢幕或切到背景持續傳輸，並透過鎖定畫面即時動態或動態島隨時靜音或中斷連線。
 
 > [!TIP]
 > 遇到其他問題？請參閱 [常見問題 (FAQ)](/zh-TW/docs/faq) 獲取更全面的排查方法。
@@ -3860,10 +4076,10 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 
 ---
 
-# 下載 MicYou - Windows、macOS、Linux、Android
+# 下載 MicYou - Windows、macOS、Linux、Android、iOS
 
 URL: https://micyou.top/zh-TW/download
-Description: 獲取 MicYou 最新版本客戶端，支援 Windows、macOS、Linux 與 Android，快速將手機麥克風串流至電腦。
+Description: 獲取 MicYou 最新版本客戶端，支援 Windows、macOS、Linux、Android 與 iOS，快速將手機麥克風串流至電腦。
 
 <DownloadSection />
 

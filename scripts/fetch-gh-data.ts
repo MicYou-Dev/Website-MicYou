@@ -19,7 +19,8 @@ const OUTPUT_FILE = join(
 	"public",
 	"ghdata.json",
 );
-const REPO = { owner: "LanRhyme" as const, name: "MicYou" as const };
+const REPO = { owner: "MicYou-Dev" as const, name: "MicYou" as const };
+const IOS_REPO = { owner: "MicYou-Dev" as const, name: "MicYou-iOS" as const };
 const EXCLUDE_USERS = new Set([
 	"LanRhyme",
 	"ChinsaaWei",
@@ -36,6 +37,8 @@ interface OutputData {
 	releaseUrl: string;
 	releaseDate: string;
 	releaseNotes: string;
+	iosVersion?: string;
+	iosReleaseUrl?: string;
 	contributors: Array<{
 		login: string;
 		avatar_url: string;
@@ -109,22 +112,24 @@ async function main() {
 	console.log("Fetching GitHub data...");
 
 	try {
-		// 获取 release
-		const releaseRes: GraphQLResponse<ReleaseResponse> =
-			await fetchGraphQL<ReleaseResponse>(
-				`query($owner: String!, $name: String!) {
+		// 获取主仓库 release
+		const releaseQuery = `query($owner: String!, $name: String!) {
         repository(owner: $owner, name: $name) {
           latestRelease { tagName publishedAt url description }
         }
-      }`,
-				REPO,
-				token,
-			);
+      }`;
+		const releaseRes: GraphQLResponse<ReleaseResponse> =
+			await fetchGraphQL<ReleaseResponse>(releaseQuery, REPO, token);
 		const release = releaseRes.data?.repository?.latestRelease;
 		if (!release) throw new Error("No releases found");
 
-		// 统计 master 分支上的非 merge 提交（与 GitHub /graphs/contributors 一致）
-		console.log("Counting commits on master (excluding merges)...");
+		// 获取 iOS 仓库 release
+		const iosReleaseRes: GraphQLResponse<ReleaseResponse> =
+			await fetchGraphQL<ReleaseResponse>(releaseQuery, IOS_REPO, token);
+		const iosRelease = iosReleaseRes.data?.repository?.latestRelease;
+
+		// 统计默认分支上的非 merge 提交（与 GitHub /graphs/contributors 一致）
+		console.log("Counting commits (excluding merges)...");
 		const QUERY = `
       query($owner: String!, $name: String!, $after: String) {
         repository(owner: $owner, name: $name) {
@@ -147,50 +152,53 @@ async function main() {
 
 		type ContributorEntry = OutputData["contributors"][number];
 		const contributorMap = new Map<string, ContributorEntry>();
-		let after: string | null = null;
-		let page = 0;
-		let totalCommits = 0;
-		let mergeSkipped = 0;
 
-		while (true) {
-			page++;
-			const res: GraphQLResponse<CommitHistoryResponse> =
-				await fetchGraphQL<CommitHistoryResponse>(
-					QUERY,
-					{ ...REPO, after },
-					token,
-				);
-			const history = res.data?.repository?.defaultBranchRef?.target?.history;
-			if (!history) break;
-			for (const node of history.nodes) {
-				// 跳过 merge commit（有多个 parent）
-				if (node.parents?.totalCount > 1) {
-					mergeSkipped++;
-					continue;
+		for (const repo of [REPO, IOS_REPO]) {
+			let after: string | null = null;
+			let page = 0;
+			let totalCommits = 0;
+			let mergeSkipped = 0;
+
+			while (true) {
+				page++;
+				const res: GraphQLResponse<CommitHistoryResponse> =
+					await fetchGraphQL<CommitHistoryResponse>(
+						QUERY,
+						{ ...repo, after },
+						token,
+					);
+				const history = res.data?.repository?.defaultBranchRef?.target?.history;
+				if (!history) break;
+				for (const node of history.nodes) {
+					// 跳过 merge commit（有多个 parent）
+					if (node.parents?.totalCount > 1) {
+						mergeSkipped++;
+						continue;
+					}
+					const u = node.author?.user;
+					totalCommits++;
+					if (
+						!u?.login ||
+						EXCLUDE_USERS.has(u.login) ||
+						u.login.includes("[bot]")
+					)
+						continue;
+					const existing = contributorMap.get(u.login);
+					if (existing) existing.contributions++;
+					else
+						contributorMap.set(u.login, {
+							login: u.login,
+							avatar_url: u.avatarUrl,
+							html_url: u.url,
+							contributions: 1,
+						});
 				}
-				const u = node.author?.user;
-				totalCommits++;
-				if (
-					!u?.login ||
-					EXCLUDE_USERS.has(u.login) ||
-					u.login.includes("[bot]")
-				)
-					continue;
-				const existing = contributorMap.get(u.login);
-				if (existing) existing.contributions++;
-				else
-					contributorMap.set(u.login, {
-						login: u.login,
-						avatar_url: u.avatarUrl,
-						html_url: u.url,
-						contributions: 1,
-					});
+				console.log(
+					`  [${repo.name}] Page ${page}: ${totalCommits} commits (+${mergeSkipped} merges skipped)`,
+				);
+				if (!history.pageInfo.hasNextPage) break;
+				after = history.pageInfo.endCursor;
 			}
-			console.log(
-				`  Page ${page}: ${totalCommits} commits (+${mergeSkipped} merges skipped)`,
-			);
-			if (!history.pageInfo.hasNextPage) break;
-			after = history.pageInfo.endCursor;
 		}
 
 		const contributors = Array.from(contributorMap.values()).sort(
@@ -202,6 +210,12 @@ async function main() {
 			releaseUrl: release.url,
 			releaseDate: release.publishedAt,
 			releaseNotes: release.description || "",
+			...(iosRelease
+				? {
+						iosVersion: iosRelease.tagName.replace(/^v/, ""),
+						iosReleaseUrl: iosRelease.url,
+					}
+				: {}),
 			contributors,
 		};
 
@@ -212,11 +226,12 @@ async function main() {
 			);
 			if (
 				existing.version === newData.version &&
+				existing.iosVersion === newData.iosVersion &&
 				JSON.stringify(existing.contributors) ===
 					JSON.stringify(newData.contributors)
 			) {
 				console.log(
-					`✓ Version: ${newData.version}, Contributors: ${newData.contributors.length} (no changes)`,
+					`✓ Version: ${newData.version}, iOS: ${newData.iosVersion ?? "N/A"}, Contributors: ${newData.contributors.length} (no changes)`,
 				);
 				return;
 			}

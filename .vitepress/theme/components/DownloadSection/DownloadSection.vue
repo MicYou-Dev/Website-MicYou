@@ -16,12 +16,25 @@ const t = computed(
 
 const { ghData, loadGhData } = useGhData();
 const version = computed(() => ghData.value.version);
+const iosVersion = computed(() => ghData.value.iosVersion || "1.0.0");
 
 onMounted(() => {
 	loadGhData();
 });
 
 const copied = ref<string | null>(null);
+
+const iosInstallGuideLink = computed(() => {
+	const currentLang = lang.value as Lang;
+	switch (currentLang) {
+		case "en":
+			return "/en/docs/how-to-install-in-ios";
+		case "zh-TW":
+			return "/zh-TW/docs/how-to-install-in-ios";
+		default:
+			return "/docs/how-to-install-in-ios";
+	}
+});
 
 const platforms: {
 	name: string;
@@ -30,6 +43,8 @@ const platforms: {
 	files: {
 		name: DownloadKey;
 		pattern?: string;
+		repo?: "main" | "ios";
+		link?: "iosGuide";
 		copy?: string;
 	}[];
 }[] = [
@@ -86,10 +101,36 @@ const platforms: {
 			},
 		],
 	},
+	{
+		name: "iOS",
+		icon: "simple-icons:ios",
+		desc: "iosDesc",
+		files: [
+			{
+				name: "ipa",
+				pattern: "MicYou-{version}.ipa",
+				repo: "ios",
+			},
+			{
+				name: "ipaLiveContainer",
+				pattern: "MicYou-{version}-LiveContainer.ipa",
+				repo: "ios",
+			},
+			{
+				name: "iosInstallGuide",
+				link: "iosGuide",
+			},
+		],
+	},
 ];
 
-const githubUrl = (pattern: string) =>
-	`https://github.com/LanRhyme/MicYou/releases/download/v${version.value}/${pattern.replace("{version}", version.value)}`;
+const githubUrl = (pattern: string, repo: "main" | "ios" = "main") => {
+	if (repo === "ios") {
+		const ver = iosVersion.value;
+		return `https://github.com/MicYou-Dev/MicYou-iOS/releases/download/v${ver}/${pattern.replace("{version}", ver)}`;
+	}
+	return `https://github.com/MicYou-Dev/MicYou/releases/download/v${version.value}/${pattern.replace("{version}", version.value)}`;
+};
 
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -138,8 +179,6 @@ const mirrorLink = computed(() => {
 
 const hernetMirrorLink =
 	"https://mirrors.ha.edu.cn/github-release/LanRhyme/MicYou/";
-const cquMirrorLink =
-	"https://mirrors.cqu.edu.cn/github-release/LanRhyme/MicYou/";
 </script>
 
 <template>
@@ -159,12 +198,8 @@ const cquMirrorLink =
           <iconify-icon icon="mdi:server-network" />
           {{ t.mirrorHernet }}
         </a>
-        <a :href="cquMirrorLink" target="_blank" class="mirror-banner mirror-banner--cqu">
-          <iconify-icon icon="mdi:school-outline" />
-          {{ t.mirrorCqu }}
-        </a>
       </div>
-      <div v-for="(p, i) in platforms" :key="p.name" class="row" :class="{ border: i }">
+      <div v-for="p in platforms" :key="p.name" class="row">
         <div class="info">
           <iconify-icon :icon="p.icon" class="icon" />
           <div>
@@ -173,14 +208,21 @@ const cquMirrorLink =
           </div>
         </div>
         <div class="opts">
-          <template v-for="f in p.files" :key="f.pattern || f.copy">
+          <template v-for="f in p.files" :key="f.pattern || f.link || f.copy">
             <a
               v-if="f.pattern"
-              :href="githubUrl(f.pattern)"
+              :href="githubUrl(f.pattern, f.repo)"
               class="btn"
               target="_blank"
             >
               <iconify-icon icon="mdi:download" />{{ t[f.name] }}
+            </a>
+            <a
+              v-else-if="f.link === 'iosGuide'"
+              :href="iosInstallGuideLink"
+              class="btn"
+            >
+              <iconify-icon icon="mdi:book-open-variant-outline" />{{ t[f.name] }}
             </a>
             <button v-else class="btn" :class="{ done: copied === f.copy }" @click="copyCmd(f.copy!)">
               <iconify-icon :icon="copied === f.copy ? 'mdi:check' : 'mdi:content-copy'" />
@@ -279,10 +321,6 @@ const cquMirrorLink =
   background: linear-gradient(135deg, #00897b, #004d40);
 }
 
-.mirror-banner--cqu {
-  background: linear-gradient(135deg, #1565c0, #0d47a1);
-}
-
 .row {
   padding: 20px 24px;
   display: flex;
@@ -295,7 +333,7 @@ const cquMirrorLink =
   background: var(--vp-c-bg);
 }
 
-.row.border {
+.row + .row {
   border-top: 1px solid var(--vp-c-divider);
 }
 

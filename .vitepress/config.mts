@@ -18,7 +18,7 @@ const SITE_NAME = "MicYou";
 const DEFAULT_DESCRIPTION =
 	"把手机变成电脑麦克风。支持 Wi-Fi、USB 与 Web 网页连接，低延迟音频传输，内置 AI 降噪与回声消除。";
 const DEFAULT_KEYWORDS =
-	"MicYou,手机麦克风,电脑麦克风,Android麦克风,无线麦克风,USB麦克风,Wi-Fi麦克风,Web麦克风,音频传输,降噪,低延迟";
+	"MicYou,手机麦克风,电脑麦克风,Android麦克风,iOS麦克风,iPhone麦克风,无线麦克风,USB麦克风,Wi-Fi麦克风,Web麦克风,音频传输,降噪,低延迟";
 
 // JSON-LD 结构化数据
 const jsonLdWebSite = {
@@ -39,7 +39,7 @@ const jsonLdSoftwareApp = {
 	"@type": "SoftwareApplication",
 	name: SITE_NAME,
 	applicationCategory: "MultimediaApplication",
-	operatingSystem: ["Windows", "macOS", "Linux", "Android"],
+	operatingSystem: ["Windows", "macOS", "Linux", "Android", "iOS"],
 	offers: {
 		"@type": "Offer",
 		price: "0",

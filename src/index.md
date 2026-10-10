@@ -2,7 +2,7 @@
 layout: home
 title: MicYou - 把手机变成电脑麦克风
 description: MicYou 支持通过 Wi-Fi、USB 与 Web 网页连接，将手机麦克风低延迟串流至电脑，内置 AI 降噪与回声消除，无缝适配各类语音与会议软件。
-keywords: MicYou,手机麦克风,电脑麦克风,Android麦克风,无线麦克风,USB麦克风,Wi-Fi麦克风,Web麦克风,跨平台音频,低延迟音频,PureVox,回声消除
+keywords: MicYou,手机麦克风,电脑麦克风,Android麦克风,iOS麦克风,iPhone麦克风,无线麦克风,USB麦克风,Wi-Fi麦克风,Web麦克风,跨平台音频,低延迟音频,PureVox,回声消除
 
 hero:
   name: "MicYou"
@@ -37,7 +37,7 @@ features:
     details: 原生适配 Windows (VB-CABLE)、macOS (BlackHole) 与 Linux (PipeWire)，各类通话与游戏软件即选即用
   - icon: 🖥️
     title: 跨平台与多形态支持
-    details: 完美适配 Windows、macOS 与 Linux；提供精美桌面 GUI、轻量命令行 CLI 与终端 TUI
+    details: 全面覆盖 Windows、macOS、Linux、Android 与 iOS；桌面端提供精美 GUI、轻量 CLI 与终端 TUI
   - icon: 🧩
     title: 强大插件扩展生态
     details: 支持 Native 与 WebAssembly 双运行时插件，自由接入自定义音频处理节点、专属面板与全局快捷键

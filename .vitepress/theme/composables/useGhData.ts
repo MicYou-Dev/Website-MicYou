@@ -12,12 +12,15 @@ export interface GhData {
 	releaseUrl?: string;
 	releaseDate?: string;
 	releaseNotes?: string;
+	iosVersion?: string;
+	iosReleaseUrl?: string;
 	contributors: Contributor[];
 	fetchedAt?: string;
 }
 
 const ghData = ref<GhData>({
 	version: "",
+	iosVersion: "",
 	contributors: [],
 });
 

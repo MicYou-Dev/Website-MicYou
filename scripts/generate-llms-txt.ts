@@ -142,7 +142,7 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 		"- 虚拟麦克风支持：原生适配 Windows (VB-CABLE)、macOS (BlackHole) 与 Linux (PipeWire)",
 	);
 	lines.push(
-		"- 全平台支持：覆盖 Windows、macOS 与 Linux，支持精美 GUI、轻量 CLI 与终端 TUI",
+		"- 全平台支持：覆盖 Windows、macOS、Linux、Android 与 iOS，桌面端支持精美 GUI、轻量 CLI 与终端 TUI",
 	);
 	lines.push("- 插件生态：支持 Native 与 WebAssembly 插件扩展及插件市场");
 	lines.push("");
@@ -173,7 +173,7 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	lines.push("## Quick Start");
 	lines.push("");
 	lines.push(
-		"1. 从 GitHub Releases 下载桌面端应用与 Android APK（或使用免安装的 Web 模式）",
+		"1. 从下载页或 GitHub Releases 下载桌面端应用与 Android APK / iOS IPA（或使用免安装的 Web 模式）",
 	);
 	lines.push(
 		"2. 配置系统虚拟麦克风（Windows: VB-CABLE，macOS: BlackHole，Linux: PipeWire）",
@@ -185,7 +185,10 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	lines.push("## Downloads");
 	lines.push("");
 	lines.push(
-		`- [GitHub Releases](https://github.com/LanRhyme/MicYou/releases)`,
+		`- [GitHub Releases](https://github.com/MicYou-Dev/MicYou/releases)`,
+	);
+	lines.push(
+		`- [iOS Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases)`,
 	);
 	lines.push(`- [下载页面](${SITE_URL}/download)`);
 	lines.push("");
@@ -193,7 +196,8 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 	// 可选内容块 - 相关链接
 	lines.push("## Links");
 	lines.push("");
-	lines.push(`- [GitHub 仓库](https://github.com/LanRhyme/MicYou)`);
+	lines.push(`- [GitHub 仓库](https://github.com/MicYou-Dev/MicYou)`);
+	lines.push(`- [iOS 仓库](https://github.com/MicYou-Dev/MicYou-iOS)`);
 	lines.push(`- [Telegram 频道](https://t.me/MicYouChannel)`);
 	lines.push("");
 

@@ -195,3 +195,10 @@ systemctl --user status pipewire pipewire-pulse
 可以！MicYou 官方 Release 版本默认适配 Android 7.0+ (API 24+)。针对闲置的 Android 5.0+ (API 21+) 老旧手机，项目专门提供了兼容构建管线。
 
 你可以前往下载页面获取兼容包，或参考 [Android 旧设备兼容构建](/docs/android-compat) 自行编译安装。
+
+### iOS (iPhone / iPad) 设备如何安装与使用 MicYou？
+
+MicYou 提供了原生 iOS 客户端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支持 Bonjour 自动发现、后台与锁屏持续传输、锁屏实时活动（Live Activity）与灵动岛（Dynamic Island）。
+
+- **安装方式**：前往 [下载页面](/download) 下载 IPA 安装包，并参考 [在 iOS 上安装](/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 进行自签安装。
+- **使用提示**：受 iOS 录音限制，需先在 MicYou 前台点击「连接」开始传输，随后即可锁屏或切到后台持续收音。若你的设备低于 iOS 18 或不便自签，也可直接使用免安装的 **Web 网页模式**。
