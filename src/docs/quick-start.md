@@ -43,10 +43,10 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
    - Windows 首次启动 MicYou 弹出防火墙窗口时，务必勾选「专用网络」和「公用网络」并允许访问。
    - 若之前误点了取消或连接超时，以管理员身份运行 PowerShell 执行以下命令放行端口：
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
-     > Linux 用户若启用了 `ufw`，可执行：`sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
+     > Linux 用户若启用了 `ufw`，可执行：`sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp`
 3. **建立连接**：
    - 电脑端打开 MicYou，选择 **Wi-Fi** 模式，界面会显示电脑的局域网 IP 与端口。
    - 手机端打开 MicYou App，在「附近的电脑」中选择自动发现的电脑（或手动输入对应的 IP 和端口），点击「连接」。
@@ -76,7 +76,7 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
 
 无需在手机安装客户端，适合在他人电脑上临时应急使用。
 
-1. 确保手机与电脑在同一 Wi-Fi 网络下（防火墙规则同 Wi-Fi 模式）。
+1. 确保手机与电脑在同一 Wi-Fi 网络下，并在电脑防火墙中放行 Web 模式的 TCP 8443 端口。
 2. 电脑端 MicYou 切换到 **Web** 模式，界面会生成访问二维码与局域网链接。
 3. 手机使用自带相机或现代浏览器（Chrome、Safari、Edge 等）扫码打开网页。
 4. 网页请求录音权限时点击 **「允许使用麦克风」**，音频即通过 WebRTC 实时串流到电脑。
@@ -101,7 +101,7 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
 ## 4. 常见排查与使用建议
 
 - **Wi-Fi 模式连不上？**  
-  检查电脑防火墙是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接（Android）或开启手机热点。
+  检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接（Android）或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
   重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
 - **手机锁屏后声音断开？**  

@@ -15,15 +15,15 @@ keywords: MicYou常见问题,MicYou故障排除,无法连接,没有声音,杂音
 Wi-Fi 模式要求手机和电脑在同一个局域网内通信。请依次排查以下三点：
 
 1. **放行电脑防火墙端口（最常见）**  
-   Windows 防火墙或第三方杀毒软件常会静默拦截入站连接。MicYou 默认使用 **TCP 6000**（控制指令）和 **UDP 6001**（音频数据）端口。
+   Windows 防火墙或第三方杀毒软件常会静默拦截入站连接。MicYou 默认使用 **TCP 8554**（控制指令）和 **UDP 8555**（音频数据）端口。
    - **Windows**：以管理员身份打开 PowerShell，运行以下命令放行端口：
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
    - **Linux**（开启了 `ufw` 时）：
      ```bash
-     sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp
+     sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp
      ```
 
 2. **检查路由器是否开启了 AP 隔离 / 访客网络**  
@@ -61,7 +61,7 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 
 ### Web 网页免安装模式打不开或无法录音
 
-1. **手机打不开电脑端显示的网址**：确认手机与电脑在同一 Wi-Fi 下，且电脑防火墙已放行对应端口。
+1. **手机打不开电脑端显示的网址**：确认手机与电脑在同一 Wi-Fi 下，且电脑防火墙已放行 Web 模式的 TCP 8443 端口。
 2. **打得开网页但没有声音传输**：
    - 首次打开网页时，浏览器会弹出麦克风权限请求，必须点击 **「允许使用麦克风」**。
    - 请使用现代浏览器（Chrome、Safari、Edge、Firefox）。请勿在微信或内置扫一扫等受限 WebView 中直接使用，建议复制链接到系统浏览器中打开。

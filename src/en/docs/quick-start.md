@@ -43,10 +43,10 @@ No cables needed, instant setup—perfect for casual calls, meetings, and stream
    - On Windows, check both "Private Networks" and "Public Networks" when the firewall prompt appears.
    - If previously cancelled or if connections time out, open PowerShell as Administrator and run:
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
-     > Linux users using `ufw`: `sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
+     > Linux users using `ufw`: `sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp`
 3. **Connect**:
    - Open MicYou on your PC, select **Wi-Fi** mode, and note the local IP and port displayed.
    - Open the MicYou App on your phone, select your computer under "Nearby Computers" (or enter the IP and port manually), and tap "Connect".
@@ -76,7 +76,7 @@ Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gamin
 
 No app installation required—ideal when using a shared or temporary computer.
 
-1. Ensure your phone and PC are on the same Wi-Fi network.
+1. Ensure your phone and PC are on the same Wi-Fi network, and allow TCP port 8443 (the Web mode port) through the PC firewall.
 2. Switch MicYou on your PC to **Web** mode to display a QR code and local URL.
 3. Scan the QR code using your phone's camera or modern browser (Chrome, Safari, Edge, etc.).
 4. Tap **"Allow"** when prompted for microphone access. Audio streams in real-time to your PC via WebRTC.
@@ -101,7 +101,7 @@ Once streaming is active, select the virtual microphone driver in your target so
 ## 4. Quick Troubleshooting & Tips
 
 - **Wi-Fi connection fails or times out?**  
-  Confirm Windows Firewall or Linux ufw has unblocked TCP 6000 and UDP 6001. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
+  Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
   Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
 - **Audio cuts off when phone screen turns off?**  

@@ -15,15 +15,15 @@ keywords: MicYou常見問題,MicYou疑難排解,無法連線,沒有聲音,雜音
 Wi-Fi 模式要求手機和電腦在同一個區域網路內通訊。請依序排查以下三點：
 
 1. **放行電腦防火牆連接埠（最常見）**  
-   Windows 防火牆或第三方防毒軟體常會默默攔截傳入連線。MicYou 預設使用 **TCP 6000**（控制指令）與 **UDP 6001**（音訊資料）連接埠。
+   Windows 防火牆或第三方防毒軟體常會默默攔截傳入連線。MicYou 預設使用 **TCP 8554**（控制指令）與 **UDP 8555**（音訊資料）連接埠。
    - **Windows**：以系統管理員身分開啟 PowerShell，執行以下命令放行連接埠：
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
    - **Linux**（啟用 `ufw` 時）：
      ```bash
-     sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp
+     sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp
      ```
 
 2. **檢查路由器是否開啟了 AP 隔離 / 訪客網路**  
@@ -61,7 +61,7 @@ USB 模式透過 ADB 進行本機連接埠代理，連線穩定且延遲極低�
 
 ### Web 網頁免安裝模式打不開或無法錄音
 
-1. **手機打不開電腦端顯示的網址**：確認手機與電腦在同一個 Wi-Fi 下，且電腦防火牆已放行對應連接埠。
+1. **手機打不開電腦端顯示的網址**：確認手機與電腦在同一個 Wi-Fi 下，且電腦防火牆已放行 Web 模式的 TCP 8443 連接埠。
 2. **打得開網頁但沒有聲音傳輸**：
    - 首次開啟網頁時，瀏覽器會彈出麥克風權限請求，必須點擊 **「允許使用麥克風」**。
    - 請使用現代瀏覽器（Chrome、Safari、Edge、Firefox）。請勿在通訊軟體內建掃描器等受限 WebView 中直接使用，建議複製連結到系統瀏覽器中開啟。

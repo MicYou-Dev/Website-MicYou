@@ -43,10 +43,10 @@ keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連
    - Windows 首次啟動 MicYou 跳出防火牆視窗時，務必勾選「私人網路」與「公用網路」並允許存取。
    - 若先前誤點了取消或連線逾時，以系統管理員身分執行 PowerShell 執行以下命令放行連接埠：
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
-     > Linux 使用者若啟用了 `ufw`，可執行：`sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp`
+     > Linux 使用者若啟用了 `ufw`，可執行：`sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp`
 3. **建立連線**：
    - 電腦端開啟 MicYou，選擇 **Wi-Fi** 模式，介面會顯示電腦的區域網路 IP 與連接埠。
    - 手機端開啟 MicYou App，在「附近的電腦」中選擇自動探索到的電腦（或手動輸入對應的 IP 和連接埠），點擊「連線」。
@@ -76,7 +76,7 @@ keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連
 
 無需在手機安裝客戶端，適合在他人的電腦上臨時應急使用。
 
-1. 確保手機與電腦在同一 Wi-Fi 網路下（防火牆規則同 Wi-Fi 模式）。
+1. 確保手機與電腦在同一 Wi-Fi 網路下，並在電腦防火牆中放行 Web 模式的 TCP 8443 連接埠。
 2. 電腦端 MicYou 切換到 **Web** 模式，介面會產生存取 QR Code 與區域網路連結。
 3. 手機使用內建相機或現代瀏覽器（Chrome、Safari、Edge 等）掃描 QR Code 開啟網頁。
 4. 網頁請求錄音權限時點擊 **「允許使用麥克風」**，音訊即透過 WebRTC 即時串流到電腦。
@@ -101,7 +101,7 @@ keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連
 ## 4. 常見疑難排解與使用建議
 
 - **Wi-Fi 模式連不上？**  
-  檢查電腦防火牆是否放行了 TCP 6000 和 UDP 6001。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線（Android）或開啟手機熱點。
+  檢查電腦防火牆是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線（Android）或開啟手機熱點。
 - **電平有跳動，但聊天軟體裡聽不到聲音？**  
   重點檢查輸入輸出方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
 - **手機鎖定螢幕後聲音斷開？**  

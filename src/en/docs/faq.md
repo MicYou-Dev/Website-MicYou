@@ -15,15 +15,15 @@ Running into issues while using MicYou? Here is a practical troubleshooting guid
 Wi-Fi mode requires your phone and computer to communicate over your local area network (LAN). Please verify the following three items:
 
 1. **Allow Firewall Ports on Your Computer (Most Common)**  
-   Windows Defender Firewall or third-party antivirus software often silently blocks incoming local connections. MicYou uses **TCP 6000** (control channel) and **UDP 6001** (audio data).
+   Windows Defender Firewall or third-party antivirus software often silently blocks incoming local connections. MicYou uses **TCP 8554** (control channel) and **UDP 8555** (audio data).
    - **Windows**: Open PowerShell as Administrator and run:
      ```powershell
-     New-NetFirewallRule -DisplayName "MicYou-6000-TCP" -Direction Inbound -LocalPort 6000 -Protocol TCP -Action Allow
-     New-NetFirewallRule -DisplayName "MicYou-6001-UDP" -Direction Inbound -LocalPort 6001 -Protocol UDP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8554-TCP" -Direction Inbound -LocalPort 8554 -Protocol TCP -Action Allow
+     New-NetFirewallRule -DisplayName "MicYou-8555-UDP" -Direction Inbound -LocalPort 8555 -Protocol UDP -Action Allow
      ```
    - **Linux** (if `ufw` is active):
      ```bash
-     sudo ufw allow 6000/tcp && sudo ufw allow 6001/udp
+     sudo ufw allow 8554/tcp && sudo ufw allow 8555/udp
      ```
 
 2. **Check Router AP Isolation / Guest Network**  
@@ -61,7 +61,7 @@ USB mode utilizes local ADB port tunneling for rock-solid stability and minimum 
 
 ### Web Mode fails to open or cannot record audio
 
-1. **Browser cannot open the URL**: Ensure both devices are on the same Wi-Fi and that the PC firewall allows inbound connections on the generated Web port.
+1. **Browser cannot open the URL**: Ensure both devices are on the same Wi-Fi and that the PC firewall allows inbound connections on the Web mode port, TCP 8443 by default.
 2. **Page loads but no audio is transmitted**:
    - When loading the page, you must tap **"Allow"** when the browser requests microphone permissions.
    - Use standard modern browsers (Chrome, Safari, Edge, Firefox). Avoid in-app WebViews (like WeChat's built-in scanner); open the link directly in your system browser instead.
