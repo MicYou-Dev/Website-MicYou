@@ -52,9 +52,11 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
    - 手机端打开 MicYou App，在「附近的电脑」中选择自动发现的电脑（或手动输入对应的 IP 和端口），点击「连接」。
    - 对着手机说话，观察电脑端 MicYou 界面上的音量电平跳动，即代表音频传输成功！
 
-### 方式 B：USB 数据线连接（超低延迟，仅限 Android）
+### 方式 B：USB 数据线连接（超低延迟）
 
 不受 Wi-Fi 信号波动影响，延迟稳定在 10ms 以内，适合对低延迟要求极高的竞技游戏或受限网络（如校园网 / 开启了 AP 隔离的网络）。
+
+#### Android
 
 1. **开启手机 USB 调试**：
    - 进入手机「设置」>「关于手机」，连续点击「版本号」**7 次**进入开发者模式。
@@ -71,6 +73,16 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
 > - macOS: <Copy text="brew install android-platform-tools" type="info" />
 > - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
 > - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
+
+#### iOS
+
+1. **准备 USB 驱动**：macOS 无需额外安装；Windows 需要安装 iTunes（与[在 iOS 上安装](/docs/how-to-install-in-ios)的要求相同）；Linux 需要安装 usbmuxd：
+   - Ubuntu / Debian: <Copy text="sudo apt install usbmuxd" type="info" />
+   - Arch Linux: <Copy text="sudo pacman -S usbmuxd" type="info" />
+2. **连接电脑**：用数据线将 iPhone / iPad 连至电脑，若弹出「要信任此电脑吗？」，点击**信任**并输入锁屏密码。
+3. **开始串流**：电脑端 MicYou 切换到 **USB** 模式并点击开始；手机端点击顶部的电脑卡片，选择「USB 数据线」，再点击「连接」。
+
+iOS 通过 USB 连接时音频固定使用 TCP 传输。
 
 ### 方式 C：Web 网页免安装连接
 
@@ -101,7 +113,7 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
 ## 4. 常见排查与使用建议
 
 - **Wi-Fi 模式连不上？**  
-  检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接（Android）或开启手机热点。
+  检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
   重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
 - **手机锁屏后声音断开？**  

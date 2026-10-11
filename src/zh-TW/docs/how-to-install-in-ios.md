@@ -18,7 +18,7 @@ keywords: MicYou iOS,iOS自簽,iOS側載,Sideloadly,SideStore,LiveContainer,IPA�
 - **帳號**：使用電子郵件註冊的 [Apple ID](https://support.apple.com/zh-tw/apple-account)（手機號碼註冊的帳號不支援自簽）。
 - **Windows 環境**：需安裝非 Microsoft Store 版本的 [iTunes](https://www.apple.com/itunes/)（若已安裝商店版，請先解除安裝）。
 - **IPA 安裝套件**：從[下載頁](/zh-TW/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下載：
-  - `MicYou-<版本>.ipa`：完整版（含鎖定畫面即時動態、動態島與控制中心按鈕），用於 **Sideloadly**、**SideStore** 或 **AltStore** 直接安裝。
+  - `MicYou-<版本>.ipa`：完整版（含鎖定畫面即時動態與動態島），用於 **Sideloadly**、**SideStore** 或 **AltStore** 直接安裝。
   - `MicYou-<版本>-LiveContainer.ipa`：移除小工具擴充功能的 **LiveContainer 專用版**。
 
 ## 方法一：使用 Sideloadly 安裝
@@ -57,4 +57,4 @@ keywords: MicYou iOS,iOS自簽,iOS側載,Sideloadly,SideStore,LiveContainer,IPA�
 ## 常見問題
 
 - **提示「不受信任的開發者」**：前往 `設定` -> `一般` -> `VPN 與裝置管理`，點擊你的 Apple ID 並選擇**信任**。
-- **即時動態或動態島不可用**：LiveContainer 專用版不含小工具擴充功能；若需使用即時動態、動態島和控制中心按鈕，請透過 Sideloadly 或 SideStore 直接安裝標準版 `MicYou-<版本>.ipa`。
+- **即時動態或動態島不可用**：LiveContainer 專用版不含小工具擴充功能；若需使用即時動態和動態島，請透過 Sideloadly 或 SideStore 直接安裝標準版 `MicYou-<版本>.ipa`。

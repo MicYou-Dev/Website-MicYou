@@ -198,7 +198,8 @@ systemctl --user status pipewire pipewire-pulse
 
 ### iOS (iPhone / iPad) 裝置如何安裝與使用 MicYou？
 
-MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支援 Bonjour 自動探索、背景與鎖定螢幕持續傳輸、鎖定畫面即時動態（Live Activity）與動態島（Dynamic Island）。
+MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支援 Bonjour 自動探索、USB 傳輸線連線、背景與鎖定螢幕持續傳輸、鎖定畫面即時動態（Live Activity）與動態島（Dynamic Island），傳輸時還能查看電腦端測得的往返延遲與丟包率。
 
 - **安裝方式**：前往 [下載頁面](/zh-TW/download) 下載 IPA 安裝套件，並參考 [在 iOS 上安裝](/zh-TW/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 進行自簽安裝。
 - **使用提示**：受 iOS 錄音限制，需先在 MicYou 前景點擊「連線」開始傳輸，隨後即可鎖定螢幕或切到背景持續收音。若你的裝置低於 iOS 18 或不便自簽，也可直接使用免安裝的 **Web 網頁模式**。
+- **USB 連線**：參考[快速開始](/zh-TW/docs/quick-start#方式-b-usb-資料線連線-超低延遲)。若提示電腦沒有透過 USB 連線，請確認電腦端 MicYou 已在 USB 模式下開始；Windows 需要安裝 iTunes，Linux 需要安裝並執行 usbmuxd。

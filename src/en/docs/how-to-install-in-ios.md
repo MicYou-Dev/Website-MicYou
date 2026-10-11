@@ -18,7 +18,7 @@ Free Apple ID signing limitations:
 - **Account**: An [Apple ID](https://support.apple.com/apple-account) registered with an email address (phone-number-only accounts are not supported).
 - **Windows Requirement**: Install the non-Microsoft Store version of [iTunes](https://www.apple.com/itunes/) (uninstall the Microsoft Store version first if installed).
 - **IPA Package**: Download from the [Download page](/en/download) or [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest):
-  - `MicYou-<version>.ipa`: Full build (with Live Activity, Dynamic Island, and Control Center widget) for direct installation via **Sideloadly**, **SideStore**, or **AltStore**.
+  - `MicYou-<version>.ipa`: Full build (with Live Activity and Dynamic Island) for direct installation via **Sideloadly**, **SideStore**, or **AltStore**.
   - `MicYou-<version>-LiveContainer.ipa`: Build without widget extensions, dedicated for **LiveContainer**.
 
 ## Method 1: Install with Sideloadly
@@ -57,4 +57,4 @@ Go to iOS `Settings` -> `Privacy & Security` -> `Developer Mode` -> turn it **On
 ## Troubleshooting
 
 - **"Untrusted Developer" prompt**: Go to `Settings` -> `General` -> `VPN & Device Management`, tap your Apple ID, and select **Trust**.
-- **Live Activity or Dynamic Island unavailable**: The LiveContainer build omits widget extensions. To use Live Activity, Dynamic Island, and the Control Center button, install the standard `MicYou-<version>.ipa` directly via Sideloadly or SideStore.
+- **Live Activity or Dynamic Island unavailable**: The LiveContainer build omits widget extensions. To use Live Activity and Dynamic Island, install the standard `MicYou-<version>.ipa` directly via Sideloadly or SideStore.

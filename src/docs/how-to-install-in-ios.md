@@ -18,7 +18,7 @@ keywords: MicYou iOS,iOS自签,iOS侧载,Sideloadly,SideStore,LiveContainer,IPA�
 - **账号**：使用邮箱注册的 [Apple ID](https://support.apple.com/zh-cn/apple-account)（手机号注册的账号不支持自签）。
 - **Windows 环境**：需安装非 Microsoft Store 版本的 [iTunes](https://www.apple.com.cn/itunes/)（若已安装商店版，请先卸载）。
 - **IPA 安装包**：从[下载页](/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下载：
-  - `MicYou-<版本>.ipa`：完整版（含锁屏实时活动、灵动岛与控制中心按钮），用于 **Sideloadly**、**SideStore** 或 **AltStore** 直接安装。
+  - `MicYou-<版本>.ipa`：完整版（含锁屏实时活动与灵动岛），用于 **Sideloadly**、**SideStore** 或 **AltStore** 直接安装。
   - `MicYou-<版本>-LiveContainer.ipa`：移除小组件扩展的 **LiveContainer 专用版**。
 
 ## 方法一：使用 Sideloadly 安装
@@ -57,4 +57,4 @@ keywords: MicYou iOS,iOS自签,iOS侧载,Sideloadly,SideStore,LiveContainer,IPA�
 ## 常见问题
 
 - **提示“不受信任的开发者”**：前往 `设置` -> `通用` -> `VPN 与设备管理`，点击你的 Apple ID 并选择**信任**。
-- **实时活动或灵动岛不可用**：LiveContainer 专用版不含小组件扩展；若需使用实时活动、灵动岛和控制中心按钮，请通过 Sideloadly 或 SideStore 直接安装标准版 `MicYou-<版本>.ipa`。
+- **实时活动或灵动岛不可用**：LiveContainer 专用版不含小组件扩展；若需使用实时活动和灵动岛，请通过 Sideloadly 或 SideStore 直接安装标准版 `MicYou-<版本>.ipa`。

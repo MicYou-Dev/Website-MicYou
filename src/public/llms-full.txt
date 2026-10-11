@@ -322,10 +322,11 @@ systemctl --user status pipewire pipewire-pulse
 
 ### iOS (iPhone / iPad) 设备如何安装与使用 MicYou？
 
-MicYou 提供了原生 iOS 客户端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支持 Bonjour 自动发现、后台与锁屏持续传输、锁屏实时活动（Live Activity）与灵动岛（Dynamic Island）。
+MicYou 提供了原生 iOS 客户端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支持 Bonjour 自动发现、USB 数据线连接、后台与锁屏持续传输、锁屏实时活动（Live Activity）与灵动岛（Dynamic Island），传输时还能查看电脑端测得的往返延迟与丢包率。
 
 - **安装方式**：前往 [下载页面](/download) 下载 IPA 安装包，并参考 [在 iOS 上安装](/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 进行自签安装。
 - **使用提示**：受 iOS 录音限制，需先在 MicYou 前台点击「连接」开始传输，随后即可锁屏或切到后台持续收音。若你的设备低于 iOS 18 或不便自签，也可直接使用免安装的 **Web 网页模式**。
+- **USB 连接**：参考[快速开始](/docs/quick-start#方式-b-usb-数据线连接-超低延迟)。若提示电脑没有通过 USB 连接，请确认电脑端 MicYou 已在 USB 模式下开始；Windows 需要安装 iTunes，Linux 需要安装并运行 usbmuxd。
 
 
 ---
@@ -349,7 +350,7 @@ Description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sidel
 - **账号**：使用邮箱注册的 [Apple ID](https://support.apple.com/zh-cn/apple-account)（手机号注册的账号不支持自签）。
 - **Windows 环境**：需安装非 Microsoft Store 版本的 [iTunes](https://www.apple.com.cn/itunes/)（若已安装商店版，请先卸载）。
 - **IPA 安装包**：从[下载页](/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下载：
-  - `MicYou-<版本>.ipa`：完整版（含锁屏实时活动、灵动岛与控制中心按钮），用于 **Sideloadly**、**SideStore** 或 **AltStore** 直接安装。
+  - `MicYou-<版本>.ipa`：完整版（含锁屏实时活动与灵动岛），用于 **Sideloadly**、**SideStore** 或 **AltStore** 直接安装。
   - `MicYou-<版本>-LiveContainer.ipa`：移除小组件扩展的 **LiveContainer 专用版**。
 
 ## 方法一：使用 Sideloadly 安装
@@ -388,7 +389,7 @@ Description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sidel
 ## 常见问题
 
 - **提示“不受信任的开发者”**：前往 `设置` -> `通用` -> `VPN 与设备管理`，点击你的 Apple ID 并选择**信任**。
-- **实时活动或灵动岛不可用**：LiveContainer 专用版不含小组件扩展；若需使用实时活动、灵动岛和控制中心按钮，请通过 Sideloadly 或 SideStore 直接安装标准版 `MicYou-<版本>.ipa`。
+- **实时活动或灵动岛不可用**：LiveContainer 专用版不含小组件扩展；若需使用实时活动和灵动岛，请通过 Sideloadly 或 SideStore 直接安装标准版 `MicYou-<版本>.ipa`。
 
 
 ---
@@ -1249,9 +1250,11 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
    - 手机端打开 MicYou App，在「附近的电脑」中选择自动发现的电脑（或手动输入对应的 IP 和端口），点击「连接」。
    - 对着手机说话，观察电脑端 MicYou 界面上的音量电平跳动，即代表音频传输成功！
 
-### 方式 B：USB 数据线连接（超低延迟，仅限 Android）
+### 方式 B：USB 数据线连接（超低延迟）
 
 不受 Wi-Fi 信号波动影响，延迟稳定在 10ms 以内，适合对低延迟要求极高的竞技游戏或受限网络（如校园网 / 开启了 AP 隔离的网络）。
+
+#### Android
 
 1. **开启手机 USB 调试**：
    - 进入手机「设置」>「关于手机」，连续点击「版本号」**7 次**进入开发者模式。
@@ -1268,6 +1271,16 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 > - macOS: <Copy text="brew install android-platform-tools" type="info" />
 > - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
 > - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
+
+#### iOS
+
+1. **准备 USB 驱动**：macOS 无需额外安装；Windows 需要安装 iTunes（与[在 iOS 上安装](/docs/how-to-install-in-ios)的要求相同）；Linux 需要安装 usbmuxd：
+   - Ubuntu / Debian: <Copy text="sudo apt install usbmuxd" type="info" />
+   - Arch Linux: <Copy text="sudo pacman -S usbmuxd" type="info" />
+2. **连接电脑**：用数据线将 iPhone / iPad 连至电脑，若弹出「要信任此电脑吗？」，点击**信任**并输入锁屏密码。
+3. **开始串流**：电脑端 MicYou 切换到 **USB** 模式并点击开始；手机端点击顶部的电脑卡片，选择「USB 数据线」，再点击「连接」。
+
+iOS 通过 USB 连接时音频固定使用 TCP 传输。
 
 ### 方式 C：Web 网页免安装连接
 
@@ -1298,7 +1311,7 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 ## 4. 常见排查与使用建议
 
 - **Wi-Fi 模式连不上？**  
-  检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接（Android）或开启手机热点。
+  检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
   重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
 - **手机锁屏后声音断开？**  
@@ -1535,7 +1548,7 @@ Wi-Fi mode requires your phone and computer to communicate over your local area 
 2. **Check Router AP Isolation / Guest Network**  
    - Make sure your phone and PC are connected to the same Wi-Fi router.
    - On **campus networks, company public Wi-Fi, or shared apartment networks**, routers frequently have **AP Isolation (Client Isolation)** turned on, preventing devices from talking to each other.
-   - **Solution**: Enable a personal hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#option-b-usb-cable-adb-ultra-low-latency).
+   - **Solution**: Enable a personal hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#option-b-usb-cable-ultra-low-latency).
 
 3. **Wrong Network Adapter IP Selected**  
    If your computer has WSL, virtual machines (VMware / VirtualBox), VPNs, or mesh networks (Tailscale / ZeroTier) enabled, MicYou Desktop may detect multiple virtual IP addresses.  
@@ -1706,10 +1719,11 @@ You can download the compatibility APK from our download page or build it yourse
 
 ### How do I install and use MicYou on iOS (iPhone / iPad)?
 
-MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support.
+MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, USB cable connections, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support. While streaming it also shows the round trip time and packet loss measured by the PC.
 
 - **Installation**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it via Sideloadly or LiveContainer + SideStore.
 - **Usage Tip**: Due to iOS audio recording restrictions, start streaming while MicYou is in the foreground first; once connected, you can lock your screen or switch apps freely. For devices below iOS 18 or quick zero-install setups, you can also use **Web Mode**.
+- **USB Connection**: See the [Quick Start](/en/docs/quick-start#option-b-usb-cable-ultra-low-latency). If the app says the computer did not connect over USB, make sure MicYou on the PC is started in USB mode; Windows needs iTunes, and Linux needs usbmuxd installed and running.
 
 
 ---
@@ -1733,7 +1747,7 @@ Free Apple ID signing limitations:
 - **Account**: An [Apple ID](https://support.apple.com/apple-account) registered with an email address (phone-number-only accounts are not supported).
 - **Windows Requirement**: Install the non-Microsoft Store version of [iTunes](https://www.apple.com/itunes/) (uninstall the Microsoft Store version first if installed).
 - **IPA Package**: Download from the [Download page](/en/download) or [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest):
-  - `MicYou-<version>.ipa`: Full build (with Live Activity, Dynamic Island, and Control Center widget) for direct installation via **Sideloadly**, **SideStore**, or **AltStore**.
+  - `MicYou-<version>.ipa`: Full build (with Live Activity and Dynamic Island) for direct installation via **Sideloadly**, **SideStore**, or **AltStore**.
   - `MicYou-<version>-LiveContainer.ipa`: Build without widget extensions, dedicated for **LiveContainer**.
 
 ## Method 1: Install with Sideloadly
@@ -1772,7 +1786,7 @@ Go to iOS `Settings` -> `Privacy & Security` -> `Developer Mode` -> turn it **On
 ## Troubleshooting
 
 - **"Untrusted Developer" prompt**: Go to `Settings` -> `General` -> `VPN & Device Management`, tap your Apple ID, and select **Trust**.
-- **Live Activity or Dynamic Island unavailable**: The LiveContainer build omits widget extensions. To use Live Activity, Dynamic Island, and the Control Center button, install the standard `MicYou-<version>.ipa` directly via Sideloadly or SideStore.
+- **Live Activity or Dynamic Island unavailable**: The LiveContainer build omits widget extensions. To use Live Activity and Dynamic Island, install the standard `MicYou-<version>.ipa` directly via Sideloadly or SideStore.
 
 
 ---
@@ -2632,9 +2646,11 @@ No cables needed, instant setup—perfect for casual calls, meetings, and stream
    - Open the MicYou App on your phone, select your computer under "Nearby Computers" (or enter the IP and port manually), and tap "Connect".
    - Speak into your phone and watch the volume meter bounce on your PC—you're live!
 
-### Option B: USB Cable / ADB (Ultra-Low Latency, Android Only)
+### Option B: USB Cable (Ultra-Low Latency)
 
 Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gaming or restricted networks (campus Wi-Fi with AP isolation).
+
+#### Android
 
 1. **Enable USB Debugging**:
    - On your phone, go to "Settings" > "About phone" and tap "Build number" **7 times** to unlock Developer Options.
@@ -2651,6 +2667,16 @@ Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gamin
 > - macOS: <Copy text="brew install android-platform-tools" type="info" />
 > - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
 > - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
+
+#### iOS
+
+1. **Prepare the USB driver**: Nothing to install on macOS. Windows needs iTunes (the same requirement as [Install on iOS](/en/docs/how-to-install-in-ios)). Linux needs usbmuxd:
+   - Ubuntu / Debian: <Copy text="sudo apt install usbmuxd" type="info" />
+   - Arch Linux: <Copy text="sudo pacman -S usbmuxd" type="info" />
+2. **Connect to the PC**: Plug your iPhone / iPad into the PC. If "Trust This Computer?" appears, tap **Trust** and enter your passcode.
+3. **Start Streaming**: Switch MicYou on the PC to **USB** mode and click Start. On the phone, tap the computer card at the top, choose "USB Cable", then tap Connect.
+
+Over USB, iOS always sends audio over TCP.
 
 ### Option C: Web Browser Mode (No Installation)
 
@@ -2681,7 +2707,7 @@ Once streaming is active, select the virtual microphone driver in your target so
 ## 4. Quick Troubleshooting & Tips
 
 - **Wi-Fi connection fails or times out?**  
-  Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
+  Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
   Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
 - **Audio cuts off when phone screen turns off?**  
@@ -3087,10 +3113,11 @@ systemctl --user status pipewire pipewire-pulse
 
 ### iOS (iPhone / iPad) 裝置如何安裝與使用 MicYou？
 
-MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支援 Bonjour 自動探索、背景與鎖定螢幕持續傳輸、鎖定畫面即時動態（Live Activity）與動態島（Dynamic Island）。
+MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS)，需 **iOS 18.0+**），支援 Bonjour 自動探索、USB 傳輸線連線、背景與鎖定螢幕持續傳輸、鎖定畫面即時動態（Live Activity）與動態島（Dynamic Island），傳輸時還能查看電腦端測得的往返延遲與丟包率。
 
 - **安裝方式**：前往 [下載頁面](/zh-TW/download) 下載 IPA 安裝套件，並參考 [在 iOS 上安裝](/zh-TW/docs/how-to-install-in-ios) 使用 Sideloadly 或 LiveContainer + SideStore 進行自簽安裝。
 - **使用提示**：受 iOS 錄音限制，需先在 MicYou 前景點擊「連線」開始傳輸，隨後即可鎖定螢幕或切到背景持續收音。若你的裝置低於 iOS 18 或不便自簽，也可直接使用免安裝的 **Web 網頁模式**。
+- **USB 連線**：參考[快速開始](/zh-TW/docs/quick-start#方式-b-usb-資料線連線-超低延遲)。若提示電腦沒有透過 USB 連線，請確認電腦端 MicYou 已在 USB 模式下開始；Windows 需要安裝 iTunes，Linux 需要安裝並執行 usbmuxd。
 
 
 ---
@@ -3114,7 +3141,7 @@ Description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sidel
 - **帳號**：使用電子郵件註冊的 [Apple ID](https://support.apple.com/zh-tw/apple-account)（手機號碼註冊的帳號不支援自簽）。
 - **Windows 環境**：需安裝非 Microsoft Store 版本的 [iTunes](https://www.apple.com/itunes/)（若已安裝商店版，請先解除安裝）。
 - **IPA 安裝套件**：從[下載頁](/zh-TW/download)或 [GitHub Releases](https://github.com/MicYou-Dev/MicYou-iOS/releases/latest) 下載：
-  - `MicYou-<版本>.ipa`：完整版（含鎖定畫面即時動態、動態島與控制中心按鈕），用於 **Sideloadly**、**SideStore** 或 **AltStore** 直接安裝。
+  - `MicYou-<版本>.ipa`：完整版（含鎖定畫面即時動態與動態島），用於 **Sideloadly**、**SideStore** 或 **AltStore** 直接安裝。
   - `MicYou-<版本>-LiveContainer.ipa`：移除小工具擴充功能的 **LiveContainer 專用版**。
 
 ## 方法一：使用 Sideloadly 安裝
@@ -3153,7 +3180,7 @@ Description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sidel
 ## 常見問題
 
 - **提示「不受信任的開發者」**：前往 `設定` -> `一般` -> `VPN 與裝置管理`，點擊你的 Apple ID 並選擇**信任**。
-- **即時動態或動態島不可用**：LiveContainer 專用版不含小工具擴充功能；若需使用即時動態、動態島和控制中心按鈕，請透過 Sideloadly 或 SideStore 直接安裝標準版 `MicYou-<版本>.ipa`。
+- **即時動態或動態島不可用**：LiveContainer 專用版不含小工具擴充功能；若需使用即時動態和動態島，請透過 Sideloadly 或 SideStore 直接安裝標準版 `MicYou-<版本>.ipa`。
 
 
 ---
@@ -4014,9 +4041,11 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
    - 手機端開啟 MicYou App，在「附近的電腦」中選擇自動探索到的電腦（或手動輸入對應的 IP 和連接埠），點擊「連線」。
    - 對著手機說話，觀察電腦端 MicYou 介面上的音量電平跳動，即代表音訊傳輸成功！
 
-### 方式 B：USB 資料線連線（超低延遲，僅限 Android）
+### 方式 B：USB 資料線連線（超低延遲）
 
 不受 Wi-Fi 訊號波動影響，延遲穩定在 10ms 以內，適合對低延遲要求極高的競技遊戲或受限網路（如校園網路 / 開啟了 AP 隔離的網路）。
+
+#### Android
 
 1. **開啟手機 USB 偵錯**：
    - 進入手機「設定」>「關於手機」，連續點擊「版本號碼」**7 次**進入開發人員模式。
@@ -4033,6 +4062,16 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 > - macOS: <Copy text="brew install android-platform-tools" type="info" />
 > - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
 > - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
+
+#### iOS
+
+1. **準備 USB 驅動**：macOS 無需額外安裝；Windows 需要安裝 iTunes（與[在 iOS 上安裝](/zh-TW/docs/how-to-install-in-ios)的要求相同）；Linux 需要安裝 usbmuxd：
+   - Ubuntu / Debian: <Copy text="sudo apt install usbmuxd" type="info" />
+   - Arch Linux: <Copy text="sudo pacman -S usbmuxd" type="info" />
+2. **連線電腦**：用傳輸線將 iPhone / iPad 連至電腦，若彈出「要信任這部電腦嗎？」，點擊**信任**並輸入鎖定密碼。
+3. **開始串流**：電腦端 MicYou 切換到 **USB** 模式並點擊開始；手機端點擊頂部的電腦卡片，選擇「USB 傳輸線」，再點擊「連線」。
+
+iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 
 ### 方式 C：Web 網頁免安裝連線
 
@@ -4063,7 +4102,7 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 ## 4. 常見疑難排解與使用建議
 
 - **Wi-Fi 模式連不上？**  
-  檢查電腦防火牆是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線（Android）或開啟手機熱點。
+  檢查電腦防火牆是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線或開啟手機熱點。
 - **電平有跳動，但聊天軟體裡聽不到聲音？**  
   重點檢查輸入輸出方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
 - **手機鎖定螢幕後聲音斷開？**  

@@ -29,7 +29,7 @@ Wi-Fi mode requires your phone and computer to communicate over your local area 
 2. **Check Router AP Isolation / Guest Network**  
    - Make sure your phone and PC are connected to the same Wi-Fi router.
    - On **campus networks, company public Wi-Fi, or shared apartment networks**, routers frequently have **AP Isolation (Client Isolation)** turned on, preventing devices from talking to each other.
-   - **Solution**: Enable a personal hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#option-b-usb-cable-adb-ultra-low-latency).
+   - **Solution**: Enable a personal hotspot on your phone and connect your PC to it, or switch directly to [USB Cable Mode](/en/docs/quick-start#option-b-usb-cable-ultra-low-latency).
 
 3. **Wrong Network Adapter IP Selected**  
    If your computer has WSL, virtual machines (VMware / VirtualBox), VPNs, or mesh networks (Tailscale / ZeroTier) enabled, MicYou Desktop may detect multiple virtual IP addresses.  
@@ -200,7 +200,8 @@ You can download the compatibility APK from our download page or build it yourse
 
 ### How do I install and use MicYou on iOS (iPhone / iPad)?
 
-MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support.
+MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/MicYou-iOS), requires **iOS 18.0+**) with Bonjour auto-discovery, USB cable connections, continuous background & lock-screen streaming, Live Activities, and Dynamic Island support. While streaming it also shows the round trip time and packet loss measured by the PC.
 
 - **Installation**: Download the IPA package from the [Download page](/en/download) and follow the [Install on iOS guide](/en/docs/how-to-install-in-ios) to sideload it via Sideloadly or LiveContainer + SideStore.
 - **Usage Tip**: Due to iOS audio recording restrictions, start streaming while MicYou is in the foreground first; once connected, you can lock your screen or switch apps freely. For devices below iOS 18 or quick zero-install setups, you can also use **Web Mode**.
+- **USB Connection**: See the [Quick Start](/en/docs/quick-start#option-b-usb-cable-ultra-low-latency). If the app says the computer did not connect over USB, make sure MicYou on the PC is started in USB mode; Windows needs iTunes, and Linux needs usbmuxd installed and running.

@@ -52,9 +52,11 @@ No cables needed, instant setup—perfect for casual calls, meetings, and stream
    - Open the MicYou App on your phone, select your computer under "Nearby Computers" (or enter the IP and port manually), and tap "Connect".
    - Speak into your phone and watch the volume meter bounce on your PC—you're live!
 
-### Option B: USB Cable / ADB (Ultra-Low Latency, Android Only)
+### Option B: USB Cable (Ultra-Low Latency)
 
 Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gaming or restricted networks (campus Wi-Fi with AP isolation).
+
+#### Android
 
 1. **Enable USB Debugging**:
    - On your phone, go to "Settings" > "About phone" and tap "Build number" **7 times** to unlock Developer Options.
@@ -71,6 +73,16 @@ Immune to Wi-Fi jitter with steady sub-10ms latency. Ideal for competitive gamin
 > - macOS: <Copy text="brew install android-platform-tools" type="info" />
 > - Ubuntu / Debian: <Copy text="sudo apt install android-tools-adb" type="info" />
 > - Arch Linux: <Copy text="sudo pacman -S android-tools" type="info" />
+
+#### iOS
+
+1. **Prepare the USB driver**: Nothing to install on macOS. Windows needs iTunes (the same requirement as [Install on iOS](/en/docs/how-to-install-in-ios)). Linux needs usbmuxd:
+   - Ubuntu / Debian: <Copy text="sudo apt install usbmuxd" type="info" />
+   - Arch Linux: <Copy text="sudo pacman -S usbmuxd" type="info" />
+2. **Connect to the PC**: Plug your iPhone / iPad into the PC. If "Trust This Computer?" appears, tap **Trust** and enter your passcode.
+3. **Start Streaming**: Switch MicYou on the PC to **USB** mode and click Start. On the phone, tap the computer card at the top, choose "USB Cable", then tap Connect.
+
+Over USB, iOS always sends audio over TCP.
 
 ### Option C: Web Browser Mode (No Installation)
 
@@ -101,7 +113,7 @@ Once streaming is active, select the virtual microphone driver in your target so
 ## 4. Quick Troubleshooting & Tips
 
 - **Wi-Fi connection fails or times out?**  
-  Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode (Android) or use a mobile hotspot.
+  Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
   Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
 - **Audio cuts off when phone screen turns off?**  
