@@ -3,8 +3,8 @@
 	"releaseUrl": "https://github.com/MicYou-Dev/MicYou/releases/tag/v2.1.1",
 	"releaseDate": "2026-10-11T10:22:04Z",
 	"releaseNotes": "## What's Changed\n\n### iOS 支持\n\n配合 [MicYou for iOS 1.1.2](https://github.com/MicYou-Dev/MicYou-iOS/releases/tag/v1.1.2) 使用。新增的协议字段向后兼容，旧版 Android 与 iOS 客户端可照常连接。\n\n* 连接后显示对方是 iOS 还是 Android 设备，Android 客户端同步上报平台 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/f319bdd5894b4c31ea1360a540245867b3bb6a70\n* iPhone / iPad 可通过 USB 数据线连接：USB 模式下经 usbmuxd 自动连上手机，只连 iPhone 时无需安装 adb（Windows 需安装 iTunes，Linux 需安装 usbmuxd） by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/c1b8096ab6dffa0b06ad208142ba8a3a8c8ac61a\n* 连接期间每秒向手机发送往返延迟、抖动与丢包率，iOS 端在传输界面显示 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/1327613d45e2284965d16c7d3ebbdfd46b934f0c\n\n### 桌面端\n\n* USB 模式改为只监听 127.0.0.1 且不再广播 mDNS，Wi-Fi 下的手机无法连上为数据线启动的服务 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/c1b8096ab6dffa0b06ad208142ba8a3a8c8ac61a\n* 重新支持 Intel Mac，纯 Rust VM 替代 ort/ONNX Runtime，PureVox6/AEC7 权重编译期内嵌 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/366\n* 安装程序分离 CLI/TUI 快捷方式 AUMID，安装时放行 Windows 防火墙 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/361\n* 安装选项增加手动配置防火墙的说明，引导用户选择自动配置 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/commit/fcf8205f583cc3eb25b7f17e03a7d9b3eaef6501\n* 修复 Windows 端串流后音量环动画持续卡顿 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/367\n\n### 插件\n\n* 撤销 v2.1.0 中原生插件初始化失败后跳过 deinit 与压缩包解压限额，保留市场插件 ID 校验 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/364\n\n### 文档与维护\n\n* README 加入 iOS 客户端 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/5d78d306e09f02225a6d0fe64cee8e0ad56a1aba\n* 补充 iOS USB 连接与链路统计的说明 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/51f0d08ee7d6e62669ebc53323cb173603faaaf0\n* MirrorChyan 工作流指向 MicYou-Dev 组织 by @ChouChiu in https://github.com/MicYou-Dev/MicYou/commit/6a34e09797c29f8263747c78fe11a71597852117\n\n**Full Changelog**: https://github.com/MicYou-Dev/MicYou/compare/v2.1.0...v2.1.1\n",
-	"iosVersion": "1.2.0",
-	"iosReleaseUrl": "https://github.com/MicYou-Dev/MicYou-iOS/releases/tag/v1.2.0",
+	"iosVersion": "1.2.1",
+	"iosReleaseUrl": "https://github.com/MicYou-Dev/MicYou-iOS/releases/tag/v1.2.1",
 	"contributors": [
 		{
 			"login": "WhatDamon",
@@ -131,7 +131,13 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/64356325?u=76792ee0df111a81d8becb400d18b7ff0e253433&v=4",
 			"html_url": "https://github.com/ArturoAtomplay",
 			"contributions": 1
+		},
+		{
+			"login": "ShirazuNagisa",
+			"avatar_url": "https://avatars.githubusercontent.com/u/187374778?u=56fd39592cb57ad85719448d52d6e6e6d52a29b0&v=4",
+			"html_url": "https://github.com/ShirazuNagisa",
+			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-10-17T09:51:00.993Z"
+	"fetchedAt": "2026-10-22T16:12:56.000Z"
 }
