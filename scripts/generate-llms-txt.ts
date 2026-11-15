@@ -139,7 +139,7 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 		"- 专业音频处理：内置 PureVox AI 降噪、AEC 回声消除、去混响、均衡器与自动增益 (AGC)",
 	);
 	lines.push(
-		"- 虚拟麦克风支持：原生适配 Windows (VB-CABLE)、macOS (BlackHole) 与 Linux (PipeWire)",
+		"- 虚拟麦克风支持：原生适配 Windows (Steam Streaming Microphone)、macOS (BlackHole) 与 Linux (PipeWire)",
 	);
 	lines.push(
 		"- 全平台支持：覆盖 Windows、macOS、Linux、Android 与 iOS，桌面端支持精美 GUI、轻量 CLI 与终端 TUI",
@@ -176,7 +176,7 @@ function generateLlmsTxt(docs: DocInfo[]): string {
 		"1. 从下载页或 GitHub Releases 下载桌面端应用与 Android APK / iOS IPA（或使用免安装的 Web 模式）",
 	);
 	lines.push(
-		"2. 配置系统虚拟麦克风（Windows: VB-CABLE，macOS: BlackHole，Linux: PipeWire）",
+		"2. 配置系统虚拟麦克风（Windows: 安装 MicYou 时自动安装并配置 Steam Streaming Microphone；macOS: BlackHole；Linux: PipeWire）",
 	);
 	lines.push("3. 选择连接模式（Wi-Fi、USB 或 Web 模式）开始音频推流");
 	lines.push("");
