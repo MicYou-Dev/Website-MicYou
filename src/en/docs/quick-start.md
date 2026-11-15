@@ -1,7 +1,7 @@
 ---
 title: Quick Start - MicYou
 description: Get started with MicYou. Stream your mobile microphone to your computer over Wi-Fi, USB, or Web with low latency, and use it in Discord, OBS, Zoom, and games.
-keywords: MicYou,phone microphone,PC microphone,Wi-Fi mic,Web mic,ADB connection,virtual audio cable,VB-CABLE,BlackHole,PipeWire,firewall setup
+keywords: MicYou,phone microphone,PC microphone,Wi-Fi mic,Web mic,ADB connection,virtual audio cable,Steam Streaming Microphone,BlackHole,PipeWire,firewall setup
 ---
 
 # Quick Start
@@ -16,7 +16,7 @@ Your computer's voice apps (Discord, Zoom, games, etc.) receive the incoming str
 
 1. **Download & Install MicYou Desktop**: Grab the installer for your OS from the [Download page](/en/download) (Windows / macOS / Linux).
 2. **Install a Virtual Audio Driver**:
-   - **Windows**: Download the free **VB-CABLE Driver** from the [VB-Audio website](https://vb-audio.com/Cable/). Extract the ZIP, right-click `VBCABLE_Setup_x64.exe` and choose "Run as administrator". **Restart your PC after installation**.
+   - **Windows**: No separate driver download is needed. The MicYou installer bundles Valve's **Steam Streaming Microphone** and configures it for microphone use (mono 48 kHz, unity capture gain). After installation, **Microphone (Steam Streaming Microphone)** appears under Windows Sound Settings > Recording.
    - **macOS**: Install the open-source BlackHole driver via Homebrew:
      ```bash
      brew install blackhole-2ch --cask
@@ -99,13 +99,13 @@ Once streaming is active, select the virtual microphone driver in your target so
 
 1. **Check MicYou Desktop Output Device**:
    - Set **Audio Output Device** to the virtual driver input:
-     - **Windows**: `CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**: `Steam Streaming Microphone`
      - **macOS**: `BlackHole 2ch`
      - **Linux**: Default PipeWire virtual output node
 2. **Set Input in Your Voice / Meeting App**:
    - Open audio settings in your app (Discord, Zoom, OBS, Teams, Steam Voice, etc.).
    - Set the **Microphone (Audio Input)** to:
-     - **Windows**: `CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**: `Microphone (Steam Streaming Microphone)`
      - **macOS**: `BlackHole 2ch`
      - **Linux**: PipeWire `MicYou` virtual source
 3. Speak into your phone—your apps will now capture clean, low-latency audio directly from your phone!
@@ -115,7 +115,7 @@ Once streaming is active, select the virtual microphone driver in your target so
 - **Wi-Fi connection fails or times out?**  
   Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
-  Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
+  Double check the device: both MicYou Desktop's output and the voice app's microphone input must be **`Steam Streaming Microphone`**. Selecting `Steam Streaming Speakers` (the playback sibling) produces no microphone audio.
 - **Audio cuts off when phone screen turns off?**  
   - **Android**: Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
   - **iOS**: Due to iOS recording rules, start the connection while MicYou is in the foreground first. Once streaming begins, you can lock your screen or switch to the background, and control mute/disconnect right from the Lock Screen Live Activity or Dynamic Island.

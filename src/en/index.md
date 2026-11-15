@@ -34,7 +34,7 @@ features:
     details: Built-in PureVox AI noise suppression, AEC echo cancellation, dereverberation, equalizer, and automatic gain control (AGC) for crystal-clear voice capture.
   - icon: 🎤
     title: Virtual Microphone Support
-    details: Native integration with VB-CABLE (Windows), BlackHole (macOS), and PipeWire (Linux). Ready out-of-the-box for Discord, OBS, Zoom, and games.
+    details: Native integration with Steam Streaming Microphone (Windows), BlackHole (macOS), and PipeWire (Linux). Ready out-of-the-box for Discord, OBS, Zoom, and games.
   - icon: 🖥️
     title: Cross-Platform & Multi-Form
     details: Full support across Windows, macOS, Linux, Android, and iOS. Choose between a clean desktop GUI, a lightweight CLI, or an interactive terminal TUI.
