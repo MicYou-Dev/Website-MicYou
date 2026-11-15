@@ -24,20 +24,31 @@ Description: MicYou 支持通过 Wi-Fi、USB 与 Web 网页连接，将手机麦
 
 ---
 
-# 更新日志 - MicYou
+# changelog
 
 URL: https://micyou.top/changelog
-Description: 查看 MicYou 各版本的功能更新、体验改进与问题修复记录。
+
+---
+title: 更新日志 - MicYou
+description: 查看 MicYou 各版本的功能更新、体验改进与问题修复记录。
+keywords: MicYou更新日志,MicYou版本更新,MicYou新功能,MicYou更新记录
+aside: false
+---
 
 <ChangelogViewer />
 
 
 ---
 
-# Android 旧设备兼容构建 - MicYou
+# android-compat
 
 URL: https://micyou.top/docs/android-compat
-Description: 为 Android 5.0+ (API 21+) 及老旧 32 位设备编译兼容版 MicYou 客户端，让闲置手机变身电脑麦克风。
+
+---
+title: Android 旧设备兼容构建 - MicYou
+description: 为 Android 5.0+ (API 21+) 及老旧 32 位设备编译兼容版 MicYou 客户端，让闲置手机变身电脑麦克风。
+keywords: MicYou Android,Android兼容构建,API 21,Android 5.0,老旧设备,MultiDex,Gradle构建
+---
 
 # Android 旧设备兼容构建
 
@@ -201,20 +212,24 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 - **第三方软件（Discord / 微信 / QQ / OBS / 游戏语音）**是音频的**接收方**：把虚拟声卡作为**麦克风输入**。
 :::
 
+> **注意**：`Steam Streaming Speakers` 是同一驱动的播放端，不是虚拟麦克风。MicYou 输出与录音软件输入都应选 `Steam Streaming Microphone`。
+
 #### 检查步骤：
 
 1. **检查 MicYou 桌面端的「音频输出设备」**：
-   - **Windows**：选择 `CABLE Input (VB-Audio Virtual Cable)`
+   - **Windows**：选择 `Steam Streaming Microphone`
    - **macOS**：选择 `BlackHole 2ch`
    - **Linux**：选择默认 PipeWire 虚拟输出节点
 
 2. **检查第三方通讯 / 录音软件的「麦克风 / 输入设备」**：
-   - **Windows**：选择 `CABLE Output (VB-Audio Virtual Cable)`
+   - **Windows**：选择 `麦克风 (Steam Streaming Microphone)`
    - **macOS**：选择 `BlackHole 2ch`
    - **Linux**：选择 PipeWire 对应的 `MicYou` 虚拟麦克风
 
 3. **检查系统音量设置**：  
-   打开系统声音控制面板，确保 `CABLE Output` 或 `BlackHole` 没有被静音，且输入音量处于 80%~100%。
+   打开系统声音控制面板，确保 `Steam Streaming Microphone` 或 `BlackHole` 没有被静音。MicYou 安装时已把 Steam 采集增益设为 0 dB，不要把它改成 +30 dB，否则会削波。
+
+> 下列截图是旧版 VB-CABLE 配置示意；使用 Steam Streaming Microphone 时，输出与输入均选择同名设备即可。
 
 **Windows 系统声音设备设置参考：**
 
@@ -230,7 +245,7 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 
 1. **音量偏小**：
    - 在手机端 MicYou 界面调大麦克风收音增益。
-   - 在 Windows「声音设置」>「更多声音设置」>「录制」> 双击 `CABLE Output` >「级别」中，将音量拉到 100。
+   - Windows 下请保持 `Steam Streaming Microphone` 的采集增益为 0 dB（MicYou 安装时已配置）；不要通过「级别」页额外提升，否则会削波。
 2. **刺耳啸叫（回声反馈）**：
    - 啸叫是因为电脑扬声器播放的声音被手机麦克风再次收录，形成死循环反馈。
    - **解决方法**：佩戴耳机收听电脑声音；或在 MicYou 桌面端设置中开启 **AEC (声学回声消除)** 与 **PureVox AI 降噪**。
@@ -240,9 +255,8 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 ### 声音出现杂音、爆音或断续撕裂？
 
 1. **音频采样率不匹配（Windows）**：
-   - 打开 Windows 声音控制面板（`mmsys.cpl`）。
-   - 分别进入 `CABLE Input`（播放选项卡）和 `CABLE Output`（录制选项卡）的「属性」>「高级」。
-   - 将「默认格式」统一修改为 **`2通道, 16位, 48000 Hz`** 或 **`2通道, 24位, 48000 Hz`**，保持两端采样率一致。
+   - Steam Streaming Microphone 的格式由 MicYou 安装程序自动配置为单声道 48 kHz，一般无需手动修改。
+   - 若使用 VB-CABLE 作为回退方案，才需要在 `CABLE Input` / `CABLE Output` 的「属性」>「高级」中把格式统一为 2 通道 48 kHz。
 2. **Wi-Fi 网络抖动导致丢包**：
    - 在 MicYou 桌面端设置中适当增大音频缓冲区（Buffer Size）。
    - 优先连接 5GHz Wi-Fi 频段，避开 2.4GHz 蓝牙与微波炉频段干扰。
@@ -250,7 +264,7 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 ### 退出 MicYou 后，电脑自带麦克风 / 耳机没有声音了？
 
 - **macOS**：macOS 在连接时可能会将系统默认输入设备切换至 BlackHole。如果软件意外退出，请手动打开「系统设置」>「声音」>「输入」，切回你的硬件麦克风（如「MacBook Pro 麦克风」或外接耳机）。
-- **Windows**：检查聊天软件中是否将麦克风写死为了 `CABLE Output`，切回「默认通信设备」或你的实体耳机麦克风即可。
+- **Windows**：检查聊天软件中是否将麦克风写死为了 `Steam Streaming Microphone`，切回「默认通信设备」或你的实体耳机麦克风即可。
 
 ## 3. 后台保活与延迟优化
 
@@ -275,10 +289,11 @@ Android 系统为了省电，在熄屏后会激进冻结后台应用的网络与
 
 ## 4. 操作系统专属问题
 
-### Windows：安装 VB-CABLE 驱动后仍无法识别
+### Windows：安装后没有出现 Steam Streaming Microphone
 
-- 安装时必须解压 ZIP 压缩包，右键 `VBCABLE_Setup_x64.exe` 并选择 **「以管理员身份运行」**。
-- 安装完成后**必须重启电脑**，驱动才会被 Windows 音频核心服务加载。
+- 运行 MicYou 安装包（需管理员权限），安装程序会安装并配置 Valve 的 Steam Streaming Microphone 驱动。
+- 打开「设置」>「声音」>「更多声音设置」>「录音」，确认 **麦克风 (Steam Streaming Microphone)** 已启用；不要选择 Steam Streaming Speakers。
+- 若设备仍缺失，重新运行 MicYou 安装程序修复驱动，或安装 VB-CABLE 作为回退方案。
 
 ### macOS：提示「无法打开，因为无法验证开发者」
 
@@ -331,10 +346,15 @@ MicYou 提供了原生 iOS 客户端（[MicYou-iOS](https://github.com/MicYou-De
 
 ---
 
-# 在 iOS 上安装 - MicYou
+# how-to-install-in-ios
 
 URL: https://micyou.top/docs/how-to-install-in-ios
-Description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sideloadly 或 LiveContainer + SideStore 进行侧载安装。
+
+---
+title: 在 iOS 上安装 - MicYou
+description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sideloadly 或 LiveContainer + SideStore 进行侧载安装。
+keywords: MicYou iOS,iOS自签,iOS侧载,Sideloadly,SideStore,LiveContainer,IPA安装,iPhone麦克风
+---
 
 # 在 iOS 上安装
 
@@ -394,10 +414,15 @@ Description: 在 iOS 设备上自签安装 MicYou 的教程，支持使用 Sidel
 
 ---
 
-# 插件 API 参考 - MicYou
+# plugin-api-reference
 
 URL: https://micyou.top/docs/plugin/plugin-api-reference
-Description: MicYou 插件系统完整 API 手册：C ABI 结构体、WASM 导入导出、权限清单、消息协议与错误码。
+
+---
+title: 插件 API 参考 - MicYou
+description: MicYou 插件系统完整 API 手册：C ABI 结构体、WASM 导入导出、权限清单、消息协议与错误码。
+keywords: MicYou,插件API,Host API,WASM,Native,C ABI,权限
+---
 
 # 插件 API 参考
 
@@ -558,10 +583,15 @@ message PluginMessage {
 
 ---
 
-# 插件最佳实践与扩展架构 - MicYou
+# plugin-best-practices
 
 URL: https://micyou.top/docs/plugin/plugin-best-practices
-Description: MicYou 插件架构设计理念、移动端扩展路线、版本兼容策略、安全模型与性能预算。
+
+---
+title: 插件最佳实践与扩展架构 - MicYou
+description: MicYou 插件架构设计理念、移动端扩展路线、版本兼容策略、安全模型与性能预算。
+keywords: MicYou,插件,最佳实践,安全模型,版本兼容,Android,架构设计
+---
 
 # 插件最佳实践与扩展架构
 
@@ -630,10 +660,15 @@ Description: MicYou 插件架构设计理念、移动端扩展路线、版本兼
 
 ---
 
-# 插件开发指南 - MicYou
+# plugin-development-guide
 
 URL: https://micyou.top/docs/plugin/plugin-development-guide
-Description: 完整的 MicYou 插件开发教程：快速起步、Manifest 规范、Native 与 WASM 插件编写、Host API 及跨端通信。
+
+---
+title: 插件开发指南 - MicYou
+description: 完整的 MicYou 插件开发教程：快速起步、Manifest 规范、Native 与 WASM 插件编写、Host API 及跨端通信。
+keywords: MicYou,插件开发,WASM,Native,manifest,示例插件,Host API
+---
 
 # 插件开发指南
 
@@ -871,10 +906,15 @@ await callHost('play', { id: 'beep' });
 
 ---
 
-# 插件市场规范与准入政策 - MicYou
+# plugin-marketplace-policy
 
 URL: https://micyou.top/docs/plugin/plugin-marketplace-policy
-Description: 发布到 MicYou 官方插件市场的准入标准、GPLv3 插件例外条款、安全性要求与提交审核流程。
+
+---
+title: 插件市场规范与准入政策 - MicYou
+description: 发布到 MicYou 官方插件市场的准入标准、GPLv3 插件例外条款、安全性要求与提交审核流程。
+keywords: MicYou,插件市场,准入政策,GPL例外,安全规范,提交流程
+---
 
 # 插件市场规范与准入政策
 
@@ -922,10 +962,15 @@ MicYou 项目主代码采用 GNU GPLv3 许可证，并附加官方插件例外�
 
 ---
 
-# 插件系统总览 - MicYou
+# plugin-overview
 
 URL: https://micyou.top/docs/plugin/plugin-overview
-Description: MicYou 插件系统架构设计：Native 与 WASM 双运行时、DSP 音频处理链路接入、跨端消息总线与插件分类。
+
+---
+title: 插件系统总览 - MicYou
+description: MicYou 插件系统架构设计：Native 与 WASM 双运行时、DSP 音频处理链路接入、跨端消息总线与插件分类。
+keywords: MicYou,插件系统,WASM,Native,架构,DSP,跨端同步
+---
 
 # 插件系统总览
 
@@ -1026,10 +1071,15 @@ sequenceDiagram
 
 ---
 
-# 插件包格式规范 - MicYou
+# plugin-package-format
 
 URL: https://micyou.top/docs/plugin/plugin-package-format
-Description: MicYou 插件目录结构、plugin.json 清单定义、ZIP 打包分发与市场索引规范。
+
+---
+title: 插件包格式规范 - MicYou
+description: MicYou 插件目录结构、plugin.json 清单定义、ZIP 打包分发与市场索引规范。
+keywords: MicYou,插件包,ZIP打包,插件市场,自动更新,包格式
+---
 
 # 插件包格式规范
 
@@ -1114,10 +1164,15 @@ MicYou 官方插件市场通过公开 Git 仓库维护索引与分发：
 
 ---
 
-# 插件使用指南 - MicYou
+# plugin-user-guide
 
 URL: https://micyou.top/docs/plugin/plugin-user-guide
-Description: MicYou 插件安装、管理、配置修改、音效板与手机跨端同步使用说明。
+
+---
+title: 插件使用指南 - MicYou
+description: MicYou 插件安装、管理、配置修改、音效板与手机跨端同步使用说明。
+keywords: MicYou,插件,用户指南,安装插件,音效板,插件市场,跨端同步
+---
 
 # 插件使用指南
 
@@ -1214,7 +1269,7 @@ Description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将
 
 1. **下载并安装 MicYou 电脑端**：前往 [下载页面](/download) 获取对应操作系统的安装包（Windows / macOS / Linux）。
 2. **安装虚拟声卡驱动**：
-   - **Windows**：前往 [VB-Audio 官网](https://vb-audio.com/Cable/) 下载免费的 **VB-CABLE Driver**。解压后右键选择「以管理员身份运行」`VBCABLE_Setup_x64.exe`，安装完成后**建议重启一次电脑**。
+   - **Windows**：无需单独下载驱动。MicYou 安装包会一并安装 Valve 的 **Steam Streaming Microphone** 虚拟声卡，并自动完成麦克风配置（单声道 48 kHz、采集增益 0 dB）。安装完成后可在 Windows「声音设置」>「录音」中看到 **麦克风 (Steam Streaming Microphone)**。
    - **macOS**：推荐使用 Homebrew 安装开源的 BlackHole 虚拟声卡：
      ```bash
      brew install blackhole-2ch --cask
@@ -1297,13 +1352,13 @@ iOS 通过 USB 连接时音频固定使用 TCP 传输。
 
 1. **确认 MicYou 电脑端输出设置**：
    - **音频输出设备** 选择虚拟声卡的输入端：
-     - **Windows**：`CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**：`Steam Streaming Microphone`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：默认 PipeWire 虚拟输出节点
 2. **在目标软件中设置输入设备**：
    - 打开聊天软件（Discord、微信、QQ、腾讯会议、OBS、Steam 语音等）的音频设置。
    - 将 **麦克风（音频输入）** 选为：
-     - **Windows**：`CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**：`麦克风 (Steam Streaming Microphone)`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：PipeWire 对应的 `MicYou` 虚拟麦克风
 3. 现在对手机说话，目标软件就能直接采集到清晰的麦克风声音了！
@@ -1313,7 +1368,7 @@ iOS 通过 USB 连接时音频固定使用 TCP 传输。
 - **Wi-Fi 模式连不上？**  
   检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
-  重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
+  重点检查设备方向：MicYou 电脑端的输出与第三方软件的麦克风输入都应选择 **`Steam Streaming Microphone`**；选成 `Steam Streaming Speakers`（播放端）会没有声音。
 - **手机锁屏后声音断开？**  
   - **Android**：请在手机「设置」>「应用管理」>「MicYou」>「电池 / 耗电管理」中设为 **「无限制」**（允许完全后台运行），并在多任务切换界面锁定 MicYou。
   - **iOS**：受 iOS 录音限制，需先在前台点击「连接」开始传输，之后即可锁屏或切到后台持续传输，并通过锁屏实时活动或灵动岛随时静音或断开。
@@ -1324,20 +1379,32 @@ iOS 通过 USB 连接时音频固定使用 TCP 传输。
 
 ---
 
-# 下载 MicYou - Windows、macOS、Linux、Android、iOS
+# download
 
 URL: https://micyou.top/download
-Description: 获取 MicYou 最新版本客户端，支持 Windows、macOS、Linux、Android 与 iOS，快速将手机麦克风串流至电脑。
+
+---
+layout: page
+title: 下载 MicYou - Windows、macOS、Linux、Android、iOS
+description: 获取 MicYou 最新版本客户端，支持 Windows、macOS、Linux、Android 与 iOS，快速将手机麦克风串流至电脑。
+keywords: MicYou下载,MicYou安装,Android麦克风下载,iOS麦克风下载,iPhone麦克风,手机麦克风下载,Windows麦克风,Linux麦克风,macOS麦克风
+---
 
 <DownloadSection />
 
 
 ---
 
-# 视频教程 - MicYou
+# video
 
 URL: https://micyou.top/video
-Description: 通过视频快速了解 MicYou 的功能特性、版本更新与实际配置使用流程。
+
+---
+aside: false
+title: 视频教程 - MicYou
+description: 通过视频快速了解 MicYou 的功能特性、版本更新与实际配置使用流程。
+keywords: MicYou教程,MicYou视频,MicYou使用教程,手机麦克风教程,Android麦克风教程
+---
 
 # 视频教程
 
@@ -1419,20 +1486,31 @@ Description: Stream your phone microphone to your computer over Wi-Fi, USB, or W
 
 ---
 
-# Changelog - MicYou
+# changelog
 
 URL: https://micyou.top/en/changelog
-Description: See release notes, new features, performance improvements, and bug fixes across all MicYou versions.
+
+---
+title: Changelog - MicYou
+description: See release notes, new features, performance improvements, and bug fixes across all MicYou versions.
+keywords: MicYou changelog,MicYou updates,MicYou new features,MicYou version history
+aside: false
+---
 
 <ChangelogViewer />
 
 
 ---
 
-# Android Legacy Device Compatibility Build - MicYou
+# android-compat
 
 URL: https://micyou.top/en/docs/android-compat
-Description: Compile a custom compatibility build of the MicYou Android client for Android 5.0+ (API 21+) and 32-bit legacy devices to repurpose old phones as PC microphones.
+
+---
+title: Android Legacy Device Compatibility Build - MicYou
+description: Compile a custom compatibility build of the MicYou Android client for Android 5.0+ (API 21+) and 32-bit legacy devices to repurpose old phones as PC microphones.
+keywords: MicYou Android,Android compatibility build,API 21,Android 5.0,legacy devices,MultiDex,Gradle build
+---
 
 # Android Legacy Device Compatibility Build
 
@@ -1596,20 +1674,24 @@ This is the most common configuration issue: **swapping audio input and output d
 - **Third-party software (Discord / Zoom / OBS / Game Voice)** is the audio **receiver** — it captures sound **IN** from the virtual audio cable as a microphone.
 :::
 
+> **Note**: `Steam Streaming Speakers` is the playback sibling of the same driver, not the virtual microphone. Both MicYou's output and the recording app's input must be `Steam Streaming Microphone`.
+
 #### Verification Steps:
 
 1. **Check MicYou Desktop's "Audio Output Device"**:
-   - **Windows**: Select `CABLE Input (VB-Audio Virtual Cable)`
+   - **Windows**: Select `Steam Streaming Microphone`
    - **macOS**: Select `BlackHole 2ch`
    - **Linux**: Select default PipeWire virtual sink
 
 2. **Check third-party software's "Microphone / Input Device"**:
-   - **Windows**: Select `CABLE Output (VB-Audio Virtual Cable)`
+   - **Windows**: Select `Microphone (Steam Streaming Microphone)`
    - **macOS**: Select `BlackHole 2ch`
    - **Linux**: Select the PipeWire `MicYou` virtual source
 
 3. **Check System Recording Levels**:  
-   Open your operating system's sound control panel and ensure `CABLE Output` or `BlackHole` is not muted and the input volume is set to 80%~100%.
+   Open your operating system's sound control panel and ensure `Steam Streaming Microphone` or `BlackHole` is not muted. MicYou's installer sets the Steam capture gain to 0 dB; do not raise it to +30 dB or the signal will clip.
+
+> The screenshots below show the old VB-CABLE setup; with Steam Streaming Microphone, select the same-named device for both MicYou output and the recording app input.
 
 **Windows Sound Device Configuration:**
 
@@ -1625,7 +1707,7 @@ This is the most common configuration issue: **swapping audio input and output d
 
 1. **Low Volume**:
    - Increase microphone input gain in the MicYou mobile app.
-   - In Windows "Sound Settings" > "More sound settings" > "Recording" > double-click `CABLE Output` > "Levels", turn the volume up to 100.
+   - On Windows, leave the `Steam Streaming Microphone` capture gain at 0 dB (the MicYou installer configures it); raising it on the Levels tab will clip the signal.
 2. **Feedback Screeching / Echo**:
    - Screeching happens when computer speakers play incoming audio and the mobile phone microphone picks it up again in a feedback loop.
    - **Solution**: Use headphones to listen to PC audio, or enable **AEC (Acoustic Echo Cancellation)** and **PureVox Noise Suppression** in MicYou settings.
@@ -1635,8 +1717,8 @@ This is the most common configuration issue: **swapping audio input and output d
 ### Audio crackling, popping, or distorted sound?
 
 1. **Sample Rate Mismatch (Windows)**:
-   - Open Windows Sound Control Panel (`mmsys.cpl`).
-   - Under `CABLE Input` (Playback tab) and `CABLE Output` (Recording tab) > "Properties" > "Advanced", set "Default Format" on both to **`2 channel, 16 bit, 48000 Hz`** (or `24 bit, 48000 Hz`).
+   - The MicYou installer configures Steam Streaming Microphone to mono 48 kHz, so no manual format change is normally needed.
+   - Only if you fall back to VB-CABLE, set both `CABLE Input` and `CABLE Output` to 2 channel, 48 kHz under "Properties" > "Advanced".
 2. **Wi-Fi Network Jitter**:
    - Increase the Audio Buffer Size in MicYou Desktop settings.
    - Switch your mobile device to 5GHz Wi-Fi to avoid 2.4GHz Bluetooth and microwave congestion.
@@ -1644,7 +1726,7 @@ This is the most common configuration issue: **swapping audio input and output d
 ### Built-in mic or headphones stopped working after quitting MicYou?
 
 - **macOS**: macOS may leave the default system input set to BlackHole. If `switchaudio-osx` is not installed or MicYou exited unexpectedly, open "System Settings" > "Sound" > "Input" and manually re-select your built-in microphone or headset.
-- **Windows**: Check your voice chat app (e.g. Discord) to ensure the input device is set to "Default Communication Device" or your physical headset rather than permanently locked to `CABLE Output`.
+- **Windows**: Check your voice chat app (e.g. Discord) to ensure the input device is set to "Default Communication Device" or your physical headset rather than permanently locked to `Steam Streaming Microphone`.
 
 ## 3. Latency Optimization & Background Keep-Alive
 
@@ -1672,10 +1754,11 @@ To ensure uninterrupted streaming:
 
 ## 4. Operating System Specific Fixes
 
-### Windows: VB-CABLE driver not detected after installation
+### Windows: Steam Streaming Microphone does not appear after installation
 
-- When installing, extract the downloaded ZIP and right-click `VBCABLE_Setup_x64.exe`, then choose **"Run as administrator"**.
-- You **must restart your computer** after installation for the driver to register with Windows Audio services.
+- Run the MicYou installer (it requires administrator privileges); it installs and configures Valve's Steam Streaming Microphone driver.
+- Open "Settings" > "Sound" > "More sound settings" > "Recording" and confirm **Microphone (Steam Streaming Microphone)** is enabled; do not select Steam Streaming Speakers.
+- If the device is still missing, re-run the MicYou installer to repair the driver, or install VB-CABLE as a fallback.
 
 ### macOS: "Cannot be opened because the developer cannot be verified"
 
@@ -1728,10 +1811,15 @@ MicYou offers a native iOS client ([MicYou-iOS](https://github.com/MicYou-Dev/Mi
 
 ---
 
-# Install on iOS - MicYou
+# how-to-install-in-ios
 
 URL: https://micyou.top/en/docs/how-to-install-in-ios
-Description: Guide to sideloading and installing MicYou on iOS devices using Sideloadly or LiveContainer + SideStore.
+
+---
+title: Install on iOS - MicYou
+description: Guide to sideloading and installing MicYou on iOS devices using Sideloadly or LiveContainer + SideStore.
+keywords: MicYou iOS,iOS sideload,Sideloadly,SideStore,LiveContainer,install IPA,iPhone microphone
+---
 
 # Install on iOS
 
@@ -1791,10 +1879,15 @@ Go to iOS `Settings` -> `Privacy & Security` -> `Developer Mode` -> turn it **On
 
 ---
 
-# Plugin API Reference - MicYou
+# plugin-api-reference
 
 URL: https://micyou.top/en/docs/plugin/plugin-api-reference
-Description: Complete Host API specification for MicYou plugins: C ABI structures, WASM imports/exports, permission capabilities, wire protocol, and error codes.
+
+---
+title: Plugin API Reference - MicYou
+description: "Complete Host API specification for MicYou plugins: C ABI structures, WASM imports/exports, permission capabilities, wire protocol, and error codes."
+keywords: MicYou,plugin API,Host API,WASM,Native,C ABI,capabilities
+---
 
 # Plugin API Reference
 
@@ -1955,10 +2048,15 @@ message PluginMessage {
 
 ---
 
-# Plugin Best Practices & Architecture - MicYou
+# plugin-best-practices
 
 URL: https://micyou.top/en/docs/plugin/plugin-best-practices
-Description: Architecture design principles, mobile extension roadmap, API versioning strategy, security model, and performance budgets for MicYou plugins.
+
+---
+title: Plugin Best Practices & Architecture - MicYou
+description: Architecture design principles, mobile extension roadmap, API versioning strategy, security model, and performance budgets for MicYou plugins.
+keywords: MicYou,plugins,best practices,security model,version compatibility,Android,architecture
+---
 
 # Plugin Best Practices & Architecture
 
@@ -2027,10 +2125,15 @@ To guarantee long-term stability without breaking existing plugins, the architec
 
 ---
 
-# Plugin Development Guide - MicYou
+# plugin-development-guide
 
 URL: https://micyou.top/en/docs/plugin/plugin-development-guide
-Description: Complete developer tutorial for MicYou plugins: CLI tools, Manifest format, writing Native and WASM plugins, Host APIs, and cross-device communication.
+
+---
+title: Plugin Development Guide - MicYou
+description: "Complete developer tutorial for MicYou plugins: CLI tools, Manifest format, writing Native and WASM plugins, Host APIs, and cross-device communication."
+keywords: MicYou,plugin development,WASM,Native,manifest,plugin examples,Host API
+---
 
 # Plugin Development Guide
 
@@ -2267,10 +2370,15 @@ await callHost('play', { id: 'beep' });
 
 ---
 
-# Plugin Marketplace Policy - MicYou
+# plugin-marketplace-policy
 
 URL: https://micyou.top/en/docs/plugin/plugin-marketplace-policy
-Description: Developer policies for the MicYou Plugin Marketplace: licensing terms, GPLv3 plugin exception, security requirements, and submission workflow.
+
+---
+title: Plugin Marketplace Policy - MicYou
+description: "Developer policies for the MicYou Plugin Marketplace: licensing terms, GPLv3 plugin exception, security requirements, and submission workflow."
+keywords: MicYou,plugin marketplace,marketplace policy,GPL exception,security requirements,submission workflow
+---
 
 # Plugin Marketplace Policy
 
@@ -2318,10 +2426,15 @@ Marketplace listings adapt dynamically to user UI language settings:
 
 ---
 
-# Plugin System Overview - MicYou
+# plugin-overview
 
 URL: https://micyou.top/en/docs/plugin/plugin-overview
-Description: Architecture, dual runtimes, DSP pipeline integration, and cross-platform synchronization model for MicYou plugins.
+
+---
+title: Plugin System Overview - MicYou
+description: Architecture, dual runtimes, DSP pipeline integration, and cross-platform synchronization model for MicYou plugins.
+keywords: MicYou,plugin system,WASM,Native,architecture,DSP,cross-platform sync
+---
 
 # Plugin System Overview
 
@@ -2422,10 +2535,15 @@ sequenceDiagram
 
 ---
 
-# Plugin Package Format - MicYou
+# plugin-package-format
 
 URL: https://micyou.top/en/docs/plugin/plugin-package-format
-Description: Specifications for MicYou plugin directory structure, manifest schema, ZIP packaging, and marketplace repository layout.
+
+---
+title: Plugin Package Format - MicYou
+description: Specifications for MicYou plugin directory structure, manifest schema, ZIP packaging, and marketplace repository layout.
+keywords: MicYou,plugin package,ZIP package,marketplace,auto update,package format
+---
 
 # Plugin Package Format
 
@@ -2510,10 +2628,15 @@ The official MicYou Plugin Marketplace repository maintains metadata and package
 
 ---
 
-# Plugin User Guide - MicYou
+# plugin-user-guide
 
 URL: https://micyou.top/en/docs/plugin/plugin-user-guide
-Description: How to install, configure, and manage MicYou plugins, use soundboard hotkeys, and sync data across devices.
+
+---
+title: Plugin User Guide - MicYou
+description: How to install, configure, and manage MicYou plugins, use soundboard hotkeys, and sync data across devices.
+keywords: MicYou,plugins,user guide,install plugins,soundpad,marketplace,cross-device sync
+---
 
 # Plugin User Guide
 
@@ -2610,7 +2733,7 @@ Your computer's voice apps (Discord, Zoom, games, etc.) receive the incoming str
 
 1. **Download & Install MicYou Desktop**: Grab the installer for your OS from the [Download page](/en/download) (Windows / macOS / Linux).
 2. **Install a Virtual Audio Driver**:
-   - **Windows**: Download the free **VB-CABLE Driver** from the [VB-Audio website](https://vb-audio.com/Cable/). Extract the ZIP, right-click `VBCABLE_Setup_x64.exe` and choose "Run as administrator". **Restart your PC after installation**.
+   - **Windows**: No separate driver download is needed. The MicYou installer bundles Valve's **Steam Streaming Microphone** and configures it for microphone use (mono 48 kHz, unity capture gain). After installation, **Microphone (Steam Streaming Microphone)** appears under Windows Sound Settings > Recording.
    - **macOS**: Install the open-source BlackHole driver via Homebrew:
      ```bash
      brew install blackhole-2ch --cask
@@ -2693,13 +2816,13 @@ Once streaming is active, select the virtual microphone driver in your target so
 
 1. **Check MicYou Desktop Output Device**:
    - Set **Audio Output Device** to the virtual driver input:
-     - **Windows**: `CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**: `Steam Streaming Microphone`
      - **macOS**: `BlackHole 2ch`
      - **Linux**: Default PipeWire virtual output node
 2. **Set Input in Your Voice / Meeting App**:
    - Open audio settings in your app (Discord, Zoom, OBS, Teams, Steam Voice, etc.).
    - Set the **Microphone (Audio Input)** to:
-     - **Windows**: `CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**: `Microphone (Steam Streaming Microphone)`
      - **macOS**: `BlackHole 2ch`
      - **Linux**: PipeWire `MicYou` virtual source
 3. Speak into your phone—your apps will now capture clean, low-latency audio directly from your phone!
@@ -2709,7 +2832,7 @@ Once streaming is active, select the virtual microphone driver in your target so
 - **Wi-Fi connection fails or times out?**  
   Confirm Windows Firewall or Linux ufw has unblocked TCP 8554 and UDP 8555. Public or school networks often enable "AP Isolation" to block local device communication—switch to USB mode or use a mobile hotspot.
 - **Level meter moves, but no sound in voice apps?**  
-  Double check routing directions: MicYou Desktop outputs to **`CABLE Input`**, while Discord/voice apps must listen to **`CABLE Output`**.
+  Double check the device: both MicYou Desktop's output and the voice app's microphone input must be **`Steam Streaming Microphone`**. Selecting `Steam Streaming Speakers` (the playback sibling) produces no microphone audio.
 - **Audio cuts off when phone screen turns off?**  
   - **Android**: Go to "Settings" > "Apps" > "MicYou" > "Battery" and set it to **"Unrestricted"**, then lock MicYou in your recent apps overview.
   - **iOS**: Due to iOS recording rules, start the connection while MicYou is in the foreground first. Once streaming begins, you can lock your screen or switch to the background, and control mute/disconnect right from the Lock Screen Live Activity or Dynamic Island.
@@ -2720,20 +2843,32 @@ Once streaming is active, select the virtual microphone driver in your target so
 
 ---
 
-# Download MicYou - Windows, macOS, Linux, Android, iOS
+# download
 
 URL: https://micyou.top/en/download
-Description: Download the latest MicYou releases for Windows, macOS, Linux, Android, and iOS to turn your phone into a high-quality PC microphone.
+
+---
+layout: page
+title: Download MicYou - Windows, macOS, Linux, Android, iOS
+description: Download the latest MicYou releases for Windows, macOS, Linux, Android, and iOS to turn your phone into a high-quality PC microphone.
+keywords: MicYou download,MicYou install,Android microphone download,iOS microphone download,iPhone microphone,phone microphone download,Windows microphone,Linux microphone,macOS microphone
+---
 
 <DownloadSection />
 
 
 ---
 
-# Video Tutorials - MicYou
+# video
 
 URL: https://micyou.top/en/video
-Description: Watch video walkthroughs covering MicYou features, new updates, and step-by-step setup guides.
+
+---
+aside: false
+title: Video Tutorials - MicYou
+description: Watch video walkthroughs covering MicYou features, new updates, and step-by-step setup guides.
+keywords: MicYou tutorial,MicYou video,MicYou guide,phone microphone tutorial,Android microphone tutorial
+---
 
 # Video Tutorials
 
@@ -2815,20 +2950,31 @@ Description: MicYou 支援透過 Wi-Fi、USB 與 Web 網頁連線，將手機麥
 
 ---
 
-# 更新日誌 - MicYou
+# changelog
 
 URL: https://micyou.top/zh-TW/changelog
-Description: 查看 MicYou 各版本的功能更新、體驗改進與問題修復記錄。
+
+---
+title: 更新日誌 - MicYou
+description: 查看 MicYou 各版本的功能更新、體驗改進與問題修復記錄。
+keywords: MicYou更新日誌,MicYou版本更新,MicYou新功能,MicYou更新記錄
+aside: false
+---
 
 <ChangelogViewer />
 
 
 ---
 
-# Android 舊裝置相容構建 - MicYou
+# android-compat
 
 URL: https://micyou.top/zh-TW/docs/android-compat
-Description: 為 Android 5.0+ (API 21+) 及老舊 32 位元裝置編譯相容版 MicYou 客戶端，讓閒置手機變身電腦麥克風。
+
+---
+title: Android 舊裝置相容構建 - MicYou
+description: 為 Android 5.0+ (API 21+) 及老舊 32 位元裝置編譯相容版 MicYou 客戶端，讓閒置手機變身電腦麥克風。
+keywords: MicYou Android,Android相容構建,API 21,Android 5.0,老舊裝置,MultiDex,Gradle構建
+---
 
 # Android 舊裝置相容構建
 
@@ -2992,20 +3138,24 @@ USB 模式透過 ADB 進行本機連接埠代理，連線穩定且延遲極低�
 - **第三方軟體（Discord / 微信 / QQ / OBS / 遊戲語音）**是音訊的**接收端**：把虛擬音效卡作為**麥克風輸入**。
 :::
 
+> **注意**：`Steam Streaming Speakers` 是同一驅動的播放端，不是虛擬麥克風。MicYou 輸出與錄音軟體輸入都應選 `Steam Streaming Microphone`。
+
 #### 檢查步驟：
 
 1. **檢查 MicYou 桌面端的「音訊輸出裝置」**：
-   - **Windows**：選擇 `CABLE Input (VB-Audio Virtual Cable)`
+   - **Windows**：選擇 `Steam Streaming Microphone`
    - **macOS**：選擇 `BlackHole 2ch`
    - **Linux**：選擇預設 PipeWire 虛擬輸出節點
 
 2. **檢查第三方通訊 / 錄音軟體的「麥克風 / 輸入裝置」**：
-   - **Windows**：選擇 `CABLE Output (VB-Audio Virtual Cable)`
+   - **Windows**：選擇 `麥克風 (Steam Streaming Microphone)`
    - **macOS**：選擇 `BlackHole 2ch`
    - **Linux**：選擇 PipeWire 對應的 `MicYou` 虛擬麥克風
 
 3. **檢查系統音量設定**：  
-   開啟系統聲音控制台，確保 `CABLE Output` 或 `BlackHole` 沒有被靜音，且輸入音量處於 80%~100%。
+   開啟系統聲音控制台，確保 `Steam Streaming Microphone` 或 `BlackHole` 沒有被靜音。MicYou 安裝時已把 Steam 擷取增益設為 0 dB，不要把它改成 +30 dB，否則會削波。
+
+> 下列截圖為舊版 VB-CABLE 設定示意；使用 Steam Streaming Microphone 時，輸出與輸入皆選擇同名裝置即可。
 
 **Windows 系統聲音裝置設定參考：**
 
@@ -3021,7 +3171,7 @@ USB 模式透過 ADB 進行本機連接埠代理，連線穩定且延遲極低�
 
 1. **音量偏小**：
    - 在手機端 MicYou 介面調大麥克風收音增益。
-   - 在 Windows「聲音設定」>「更多聲音設定」>「錄製」> 點兩下 `CABLE Output` >「等級」中，將音量調至 100。
+   - Windows 下請保持 `Steam Streaming Microphone` 的擷取增益為 0 dB（MicYou 安裝時已設定）；不要透過「等級」頁額外提升，否則會削波。
 2. **刺耳嘯叫（回聲反饋）**：
    - 嘯叫是因為電腦喇叭播放的聲音被手機麥克風再次收錄，形成死循環反饋。
    - **解決方法**：配戴耳機收聽電腦聲音；或在 MicYou 桌面端設定中開啟 **AEC (聲學回聲消除)** 與 **PureVox AI 降噪**。
@@ -3031,9 +3181,8 @@ USB 模式透過 ADB 進行本機連接埠代理，連線穩定且延遲極低�
 ### 聲音出現雜音、爆音或斷續撕裂？
 
 1. **音訊取樣率不相符（Windows）**：
-   - 開啟 Windows 聲音控制台（`mmsys.cpl`）。
-   - 分別進入 `CABLE Input`（播放分頁）與 `CABLE Output`（錄製分頁）的「內容」>「進階」。
-   - 將「預設格式」統一修改為 **`2 聲道, 16 位元, 48000 Hz`** 或 **`2 聲道, 24 位元, 48000 Hz`**，保持兩端取樣率一致。
+   - Steam Streaming Microphone 的格式由 MicYou 安裝程式自動設定為單聲道 48 kHz，一般無需手動修改。
+   - 若使用 VB-CABLE 作為回退方案，才需要在 `CABLE Input` / `CABLE Output` 的「內容」>「進階」中把格式統一為 2 聲道 48 kHz。
 2. **Wi-Fi 網路抖動導致封包遺失**：
    - 在 MicYou 桌面端設定中適度加大音訊緩衝區（Buffer Size）。
    - 優先連線至 5GHz Wi-Fi 頻段，避開 2.4GHz 藍牙與微波爐頻段干擾。
@@ -3041,7 +3190,7 @@ USB 模式透過 ADB 進行本機連接埠代理，連線穩定且延遲極低�
 ### 結束 MicYou 後，電腦自帶麥克風 / 耳機沒有聲音了？
 
 - **macOS**：macOS 在連線時可能會將系統預設輸入裝置切換至 BlackHole。如果軟體意外結束，請手動開啟「系統設定」>「聲音」>「輸入」，切回您的硬體麥克風（如「MacBook Pro 麥克风」或外接耳機）。
-- **Windows**：檢查語音軟體中是否將麥克風固定設定為 `CABLE Output`，切回「預設通訊裝置」或您的實體耳機麥克風即可。
+- **Windows**：檢查語音軟體中是否將麥克風固定設定為 `Steam Streaming Microphone`，切回「預設通訊裝置」或您的實體耳機麥克風即可。
 
 ## 3. 背景保活與延遲最佳化
 
@@ -3066,10 +3215,11 @@ Android 系統為了省電，在螢幕關閉後會積極凍結背景應用程式
 
 ## 4. 作業系統專屬問題
 
-### Windows：安裝 VB-CABLE 驅動程式後仍無法辨識
+### Windows：安裝後沒有出現 Steam Streaming Microphone
 
-- 安裝時必須解壓縮 ZIP 壓縮套件，在 `VBCABLE_Setup_x64.exe` 上按右鍵並選擇 **「以系統管理員身分執行」**。
-- 安裝完成後**必須重新啟動電腦**，驅動程式才會被 Windows 音訊核心服務載入。
+- 執行 MicYou 安裝程式（需要系統管理員權限），安裝程式會安裝並設定 Valve 的 Steam Streaming Microphone 驅動程式。
+- 開啟「設定」>「音效」>「更多音效設定」>「錄音」，確認 **麥克風 (Steam Streaming Microphone)** 已啟用；不要選擇 Steam Streaming Speakers。
+- 若裝置仍缺失，重新執行 MicYou 安裝程式修復驅動程式，或安裝 VB-CABLE 作為回退方案。
 
 ### macOS：提示「無法打開，因為無法驗證開發者」
 
@@ -3122,10 +3272,15 @@ MicYou 提供了原生 iOS 客戶端（[MicYou-iOS](https://github.com/MicYou-De
 
 ---
 
-# 在 iOS 上安裝 - MicYou
+# how-to-install-in-ios
 
 URL: https://micyou.top/zh-TW/docs/how-to-install-in-ios
-Description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sideloadly 或 LiveContainer + SideStore 進行側載安裝。
+
+---
+title: 在 iOS 上安裝 - MicYou
+description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sideloadly 或 LiveContainer + SideStore 進行側載安裝。
+keywords: MicYou iOS,iOS自簽,iOS側載,Sideloadly,SideStore,LiveContainer,IPA安裝,iPhone麥克風
+---
 
 # 在 iOS 上安裝
 
@@ -3185,10 +3340,15 @@ Description: 在 iOS 裝置上自簽安裝 MicYou 的教學，支援使用 Sidel
 
 ---
 
-# 插件 API 參考 - MicYou
+# plugin-api-reference
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-api-reference
-Description: MicYou 插件系統完整 API 手冊：C ABI 結構體、WASM 匯入匯出、權限清單、訊息協定與錯誤碼。
+
+---
+title: 插件 API 參考 - MicYou
+description: MicYou 插件系統完整 API 手冊：C ABI 結構體、WASM 匯入匯出、權限清單、訊息協定與錯誤碼。
+keywords: MicYou,插件API,Host API,WASM,Native,C ABI,權限
+---
 
 # 插件 API 參考
 
@@ -3349,10 +3509,15 @@ message PluginMessage {
 
 ---
 
-# 插件最佳實踐與擴充架構 - MicYou
+# plugin-best-practices
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-best-practices
-Description: MicYou 插件架構設計理念、行動端擴充路線、版本相容策略、安全模型與效能預算。
+
+---
+title: 插件最佳實踐與擴充架構 - MicYou
+description: MicYou 插件架構設計理念、行動端擴充路線、版本相容策略、安全模型與效能預算。
+keywords: MicYou,插件,最佳實踐,安全模型,版本相容,Android,架構設計
+---
 
 # 插件最佳實踐與擴充架構
 
@@ -3421,10 +3586,15 @@ Description: MicYou 插件架構設計理念、行動端擴充路線、版本相
 
 ---
 
-# 插件開發指南 - MicYou
+# plugin-development-guide
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-development-guide
-Description: 完整的 MicYou 插件開發教學：快速起步、Manifest 規範、Native 與 WASM 插件撰寫、Host API 及跨端通訊。
+
+---
+title: 插件開發指南 - MicYou
+description: 完整的 MicYou 插件開發教學：快速起步、Manifest 規範、Native 與 WASM 插件撰寫、Host API 及跨端通訊。
+keywords: MicYou,插件開發,WASM,Native,manifest,範例插件,Host API
+---
 
 # 插件開發指南
 
@@ -3662,10 +3832,15 @@ await callHost('play', { id: 'beep' });
 
 ---
 
-# 插件市集規範與准入政策 - MicYou
+# plugin-marketplace-policy
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-marketplace-policy
-Description: 發布至 MicYou 官方插件市集的准入標準、GPLv3 插件例外條款、安全性要求與提交審核流程。
+
+---
+title: 插件市集規範與准入政策 - MicYou
+description: 發布至 MicYou 官方插件市集的准入標準、GPLv3 插件例外條款、安全性要求與提交審核流程。
+keywords: MicYou,插件市集,准入政策,GPL例外,安全規範,提交流程
+---
 
 # 插件市集規範與准入政策
 
@@ -3713,10 +3888,15 @@ MicYou 專案主程式碼採用 GNU GPLv3 授權條款，並附加官方插件�
 
 ---
 
-# 插件系統總覽 - MicYou
+# plugin-overview
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-overview
-Description: MicYou 插件系統架構設計：Native 與 WASM 雙執行階段、DSP 音訊處理鏈路接入、跨端訊息匯流排與插件分類。
+
+---
+title: 插件系統總覽 - MicYou
+description: MicYou 插件系統架構設計：Native 與 WASM 雙執行階段、DSP 音訊處理鏈路接入、跨端訊息匯流排與插件分類。
+keywords: MicYou,插件系統,WASM,Native,架構,DSP,跨端同步
+---
 
 # 插件系統總覽
 
@@ -3817,10 +3997,15 @@ sequenceDiagram
 
 ---
 
-# 插件套件格式規範 - MicYou
+# plugin-package-format
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-package-format
-Description: MicYou 插件目錄結構、plugin.json 清單定義、ZIP 打包分發與市集索引規範。
+
+---
+title: 插件套件格式規範 - MicYou
+description: MicYou 插件目錄結構、plugin.json 清單定義、ZIP 打包分發與市集索引規範。
+keywords: MicYou,插件套件,ZIP打包,插件市集,自動更新,套件格式
+---
 
 # 插件套件格式規範
 
@@ -3905,10 +4090,15 @@ MicYou 官方插件市集透過公開 Git 儲存庫維護索引與分發：
 
 ---
 
-# 插件使用指南 - MicYou
+# plugin-user-guide
 
 URL: https://micyou.top/zh-TW/docs/plugin/plugin-user-guide
-Description: MicYou 插件安裝、管理、設定修改、音效板與手機跨端同步使用說明。
+
+---
+title: 插件使用指南 - MicYou
+description: MicYou 插件安裝、管理、設定修改、音效板與手機跨端同步使用說明。
+keywords: MicYou,插件,使用者指南,安裝插件,音效板,插件市集,跨端同步
+---
 
 # 插件使用指南
 
@@ -4005,7 +4195,7 @@ Description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將
 
 1. **下載並安裝 MicYou 電腦端**：前往 [下載頁面](/zh-TW/download) 獲取對應作業系統的安裝套件（Windows / macOS / Linux）。
 2. **安裝虛擬音效卡驅動程式**：
-   - **Windows**：前往 [VB-Audio 官網](https://vb-audio.com/Cable/) 下載免費的 **VB-CABLE Driver**。解壓縮後按右鍵選擇「以系統管理員身分執行」`VBCABLE_Setup_x64.exe`，安裝完成後**建議重新啟動一次電腦**。
+   - **Windows**：無需單獨下載驅動。MicYou 安裝程式會一併安裝 Valve 的 **Steam Streaming Microphone** 虛擬音效卡，並自動完成麥克風設定（單聲道 48 kHz、擷取增益 0 dB）。安裝完成後可在 Windows「音效設定」>「錄音」中看到 **麥克風 (Steam Streaming Microphone)**。
    - **macOS**：建議使用 Homebrew 安裝開源的 BlackHole 虛擬音效卡：
      ```bash
      brew install blackhole-2ch --cask
@@ -4088,13 +4278,13 @@ iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 
 1. **確認 MicYou 電腦端輸出設定**：
    - **音訊輸出裝置** 選擇虛擬音效卡的輸入端：
-     - **Windows**：`CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**：`Steam Streaming Microphone`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：預設 PipeWire 虛擬輸出節點
 2. **在目標軟體中設定輸入裝置**：
    - 開啟通訊軟體（Discord、微信、QQ、騰訊會議、OBS、Steam 語音等）的音訊設定。
    - 將 **麥克風（音訊輸入）** 選為：
-     - **Windows**：`CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**：`麥克風 (Steam Streaming Microphone)`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：PipeWire 對應的 `MicYou` 虛擬麥克風
 3. 現在對手機說話，目標軟體就能直接收錄到清晰的麥克風聲音了！
@@ -4104,7 +4294,7 @@ iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 - **Wi-Fi 模式連不上？**  
   檢查電腦防火牆是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線或開啟手機熱點。
 - **電平有跳動，但聊天軟體裡聽不到聲音？**  
-  重點檢查輸入輸出方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
+  重點檢查裝置方向：MicYou 電腦端的輸出與第三方軟體的麥克風輸入都應選擇 **`Steam Streaming Microphone`**；選成 `Steam Streaming Speakers`（播放端）會沒有聲音。
 - **手機鎖定螢幕後聲音斷開？**  
   - **Android**：請在手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理」中設為 **「無限制」**（允許完全背景執行），並在多工切換介面鎖定 MicYou。
   - **iOS**：受 iOS 錄音限制，需先在前景點擊「連線」開始傳輸，之後即可鎖定螢幕或切到背景持續傳輸，並透過鎖定畫面即時動態或動態島隨時靜音或中斷連線。
@@ -4115,20 +4305,32 @@ iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 
 ---
 
-# 下載 MicYou - Windows、macOS、Linux、Android、iOS
+# download
 
 URL: https://micyou.top/zh-TW/download
-Description: 獲取 MicYou 最新版本客戶端，支援 Windows、macOS、Linux、Android 與 iOS，快速將手機麥克風串流至電腦。
+
+---
+layout: page
+title: 下載 MicYou - Windows、macOS、Linux、Android、iOS
+description: 獲取 MicYou 最新版本客戶端，支援 Windows、macOS、Linux、Android 與 iOS，快速將手機麥克風串流至電腦。
+keywords: MicYou下載,MicYou安裝,Android麥克風下載,iOS麥克風下載,iPhone麥克風,手機麥克風下載,Windows麥克風,Linux麥克風,macOS麥克風
+---
 
 <DownloadSection />
 
 
 ---
 
-# 影片教學 - MicYou
+# video
 
 URL: https://micyou.top/zh-TW/video
-Description: 透過影片快速了解 MicYou 的功能特色、版本更新與實際設定使用流程。
+
+---
+aside: false
+title: 影片教學 - MicYou
+description: 透過影片快速了解 MicYou 的功能特色、版本更新與實際設定使用流程。
+keywords: MicYou教學,MicYou影片,MicYou使用教學,手機麥克風教學,Android麥克風教學
+---
 
 # 影片教學
 

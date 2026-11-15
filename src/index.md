@@ -34,7 +34,7 @@ features:
     details: 内置 PureVox AI 降噪、AEC 回声消除、去混响、均衡器与自动增益 (AGC)，嘈杂环境也能清晰收音
   - icon: 🎤
     title: 虚拟麦克风无缝接入
-    details: 原生适配 Windows (VB-CABLE)、macOS (BlackHole) 与 Linux (PipeWire)，各类通话与游戏软件即选即用
+    details: 原生适配 Windows (Steam Streaming Microphone)、macOS (BlackHole) 与 Linux (PipeWire)，各类通话与游戏软件即选即用
   - icon: 🖥️
     title: 跨平台与多形态支持
     details: 全面覆盖 Windows、macOS、Linux、Android 与 iOS；桌面端提供精美 GUI、轻量 CLI 与终端 TUI

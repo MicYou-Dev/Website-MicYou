@@ -1,7 +1,7 @@
 ---
 title: FAQ - MicYou
 description: Frequently asked questions and troubleshooting guide for MicYou. Covers Wi-Fi, USB, and Web connection issues, audio routing, background keep-alive, latency optimization, and OS-specific fixes.
-keywords: MicYou FAQ,MicYou troubleshooting,cannot connect,no sound,audio routing,noise suppression,latency,background battery,VB-CABLE,BlackHole,PipeWire
+keywords: MicYou FAQ,MicYou troubleshooting,cannot connect,no sound,audio routing,noise suppression,latency,background battery,Steam Streaming Microphone,BlackHole,PipeWire
 ---
 
 # Frequently Asked Questions (FAQ)
@@ -77,20 +77,24 @@ This is the most common configuration issue: **swapping audio input and output d
 - **Third-party software (Discord / Zoom / OBS / Game Voice)** is the audio **receiver** — it captures sound **IN** from the virtual audio cable as a microphone.
 :::
 
+> **Note**: `Steam Streaming Speakers` is the playback sibling of the same driver, not the virtual microphone. Both MicYou's output and the recording app's input must be `Steam Streaming Microphone`.
+
 #### Verification Steps:
 
 1. **Check MicYou Desktop's "Audio Output Device"**:
-   - **Windows**: Select `CABLE Input (VB-Audio Virtual Cable)`
+   - **Windows**: Select `Steam Streaming Microphone`
    - **macOS**: Select `BlackHole 2ch`
    - **Linux**: Select default PipeWire virtual sink
 
 2. **Check third-party software's "Microphone / Input Device"**:
-   - **Windows**: Select `CABLE Output (VB-Audio Virtual Cable)`
+   - **Windows**: Select `Microphone (Steam Streaming Microphone)`
    - **macOS**: Select `BlackHole 2ch`
    - **Linux**: Select the PipeWire `MicYou` virtual source
 
 3. **Check System Recording Levels**:  
-   Open your operating system's sound control panel and ensure `CABLE Output` or `BlackHole` is not muted and the input volume is set to 80%~100%.
+   Open your operating system's sound control panel and ensure `Steam Streaming Microphone` or `BlackHole` is not muted. MicYou's installer sets the Steam capture gain to 0 dB; do not raise it to +30 dB or the signal will clip.
+
+> The screenshots below show the old VB-CABLE setup; with Steam Streaming Microphone, select the same-named device for both MicYou output and the recording app input.
 
 **Windows Sound Device Configuration:**
 
@@ -106,7 +110,7 @@ This is the most common configuration issue: **swapping audio input and output d
 
 1. **Low Volume**:
    - Increase microphone input gain in the MicYou mobile app.
-   - In Windows "Sound Settings" > "More sound settings" > "Recording" > double-click `CABLE Output` > "Levels", turn the volume up to 100.
+   - On Windows, leave the `Steam Streaming Microphone` capture gain at 0 dB (the MicYou installer configures it); raising it on the Levels tab will clip the signal.
 2. **Feedback Screeching / Echo**:
    - Screeching happens when computer speakers play incoming audio and the mobile phone microphone picks it up again in a feedback loop.
    - **Solution**: Use headphones to listen to PC audio, or enable **AEC (Acoustic Echo Cancellation)** and **PureVox Noise Suppression** in MicYou settings.
@@ -116,8 +120,8 @@ This is the most common configuration issue: **swapping audio input and output d
 ### Audio crackling, popping, or distorted sound?
 
 1. **Sample Rate Mismatch (Windows)**:
-   - Open Windows Sound Control Panel (`mmsys.cpl`).
-   - Under `CABLE Input` (Playback tab) and `CABLE Output` (Recording tab) > "Properties" > "Advanced", set "Default Format" on both to **`2 channel, 16 bit, 48000 Hz`** (or `24 bit, 48000 Hz`).
+   - The MicYou installer configures Steam Streaming Microphone to mono 48 kHz, so no manual format change is normally needed.
+   - Only if you fall back to VB-CABLE, set both `CABLE Input` and `CABLE Output` to 2 channel, 48 kHz under "Properties" > "Advanced".
 2. **Wi-Fi Network Jitter**:
    - Increase the Audio Buffer Size in MicYou Desktop settings.
    - Switch your mobile device to 5GHz Wi-Fi to avoid 2.4GHz Bluetooth and microwave congestion.
@@ -125,7 +129,7 @@ This is the most common configuration issue: **swapping audio input and output d
 ### Built-in mic or headphones stopped working after quitting MicYou?
 
 - **macOS**: macOS may leave the default system input set to BlackHole. If `switchaudio-osx` is not installed or MicYou exited unexpectedly, open "System Settings" > "Sound" > "Input" and manually re-select your built-in microphone or headset.
-- **Windows**: Check your voice chat app (e.g. Discord) to ensure the input device is set to "Default Communication Device" or your physical headset rather than permanently locked to `CABLE Output`.
+- **Windows**: Check your voice chat app (e.g. Discord) to ensure the input device is set to "Default Communication Device" or your physical headset rather than permanently locked to `Steam Streaming Microphone`.
 
 ## 3. Latency Optimization & Background Keep-Alive
 
@@ -153,10 +157,11 @@ To ensure uninterrupted streaming:
 
 ## 4. Operating System Specific Fixes
 
-### Windows: VB-CABLE driver not detected after installation
+### Windows: Steam Streaming Microphone does not appear after installation
 
-- When installing, extract the downloaded ZIP and right-click `VBCABLE_Setup_x64.exe`, then choose **"Run as administrator"**.
-- You **must restart your computer** after installation for the driver to register with Windows Audio services.
+- Run the MicYou installer (it requires administrator privileges); it installs and configures Valve's Steam Streaming Microphone driver.
+- Open "Settings" > "Sound" > "More sound settings" > "Recording" and confirm **Microphone (Steam Streaming Microphone)** is enabled; do not select Steam Streaming Speakers.
+- If the device is still missing, re-run the MicYou installer to repair the driver, or install VB-CABLE as a fallback.
 
 ### macOS: "Cannot be opened because the developer cannot be verified"
 

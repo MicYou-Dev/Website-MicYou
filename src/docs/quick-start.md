@@ -1,7 +1,7 @@
 ---
 title: 快速开始 - MicYou
 description: 快速上手 MicYou。通过 Wi-Fi、USB 数据线或 Web 网页将手机麦克风低延迟串流到电脑，并在 Discord、微信、QQ、OBS 等软件中作为麦克风使用。
-keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连接,虚拟声卡,VB-CABLE,BlackHole,PipeWire,防火墙设置
+keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连接,虚拟声卡,Steam Streaming Microphone,BlackHole,PipeWire,防火墙设置
 ---
 
 # 快速开始
@@ -16,7 +16,7 @@ keywords: MicYou,手机麦克风,电脑麦克风,Wi-Fi连接,Web麦克风,ADB连
 
 1. **下载并安装 MicYou 电脑端**：前往 [下载页面](/download) 获取对应操作系统的安装包（Windows / macOS / Linux）。
 2. **安装虚拟声卡驱动**：
-   - **Windows**：前往 [VB-Audio 官网](https://vb-audio.com/Cable/) 下载免费的 **VB-CABLE Driver**。解压后右键选择「以管理员身份运行」`VBCABLE_Setup_x64.exe`，安装完成后**建议重启一次电脑**。
+   - **Windows**：无需单独下载驱动。MicYou 安装包会一并安装 Valve 的 **Steam Streaming Microphone** 虚拟声卡，并自动完成麦克风配置（单声道 48 kHz、采集增益 0 dB）。安装完成后可在 Windows「声音设置」>「录音」中看到 **麦克风 (Steam Streaming Microphone)**。
    - **macOS**：推荐使用 Homebrew 安装开源的 BlackHole 虚拟声卡：
      ```bash
      brew install blackhole-2ch --cask
@@ -99,13 +99,13 @@ iOS 通过 USB 连接时音频固定使用 TCP 传输。
 
 1. **确认 MicYou 电脑端输出设置**：
    - **音频输出设备** 选择虚拟声卡的输入端：
-     - **Windows**：`CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**：`Steam Streaming Microphone`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：默认 PipeWire 虚拟输出节点
 2. **在目标软件中设置输入设备**：
    - 打开聊天软件（Discord、微信、QQ、腾讯会议、OBS、Steam 语音等）的音频设置。
    - 将 **麦克风（音频输入）** 选为：
-     - **Windows**：`CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**：`麦克风 (Steam Streaming Microphone)`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：PipeWire 对应的 `MicYou` 虚拟麦克风
 3. 现在对手机说话，目标软件就能直接采集到清晰的麦克风声音了！
@@ -115,7 +115,7 @@ iOS 通过 USB 连接时音频固定使用 TCP 传输。
 - **Wi-Fi 模式连不上？**  
   检查电脑防火墙是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校园网往往开启了「AP 隔离」，禁止设备互联，此时建议切换为 USB 数据线连接或开启手机热点。
 - **电平有跳动，但聊天软件里听不到声音？**  
-  重点检查输入输出方向：MicYou 电脑端的输出应为 **`CABLE Input`**，而第三方软件的麦克风输入应为 **`CABLE Output`**。
+  重点检查设备方向：MicYou 电脑端的输出与第三方软件的麦克风输入都应选择 **`Steam Streaming Microphone`**；选成 `Steam Streaming Speakers`（播放端）会没有声音。
 - **手机锁屏后声音断开？**  
   - **Android**：请在手机「设置」>「应用管理」>「MicYou」>「电池 / 耗电管理」中设为 **「无限制」**（允许完全后台运行），并在多任务切换界面锁定 MicYou。
   - **iOS**：受 iOS 录音限制，需先在前台点击「连接」开始传输，之后即可锁屏或切到后台持续传输，并通过锁屏实时活动或灵动岛随时静音或断开。

@@ -1,7 +1,7 @@
 ---
 title: 快速開始 - MicYou
 description: 快速上手 MicYou。透過 Wi-Fi、USB 資料線或 Web 網頁將手機麥克風低延遲串流到電腦，並在 Discord、微信、QQ、OBS 等軟體中作為麥克風使用。
-keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連線,虛擬音效卡,VB-CABLE,BlackHole,PipeWire,防火牆設定
+keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連線,虛擬音效卡,Steam Streaming Microphone,BlackHole,PipeWire,防火牆設定
 ---
 
 # 快速開始
@@ -16,7 +16,7 @@ keywords: MicYou,手機麥克風,電腦麥克風,Wi-Fi連線,Web麥克風,ADB連
 
 1. **下載並安裝 MicYou 電腦端**：前往 [下載頁面](/zh-TW/download) 獲取對應作業系統的安裝套件（Windows / macOS / Linux）。
 2. **安裝虛擬音效卡驅動程式**：
-   - **Windows**：前往 [VB-Audio 官網](https://vb-audio.com/Cable/) 下載免費的 **VB-CABLE Driver**。解壓縮後按右鍵選擇「以系統管理員身分執行」`VBCABLE_Setup_x64.exe`，安裝完成後**建議重新啟動一次電腦**。
+   - **Windows**：無需單獨下載驅動。MicYou 安裝程式會一併安裝 Valve 的 **Steam Streaming Microphone** 虛擬音效卡，並自動完成麥克風設定（單聲道 48 kHz、擷取增益 0 dB）。安裝完成後可在 Windows「音效設定」>「錄音」中看到 **麥克風 (Steam Streaming Microphone)**。
    - **macOS**：建議使用 Homebrew 安裝開源的 BlackHole 虛擬音效卡：
      ```bash
      brew install blackhole-2ch --cask
@@ -99,13 +99,13 @@ iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 
 1. **確認 MicYou 電腦端輸出設定**：
    - **音訊輸出裝置** 選擇虛擬音效卡的輸入端：
-     - **Windows**：`CABLE Input (VB-Audio Virtual Cable)`
+     - **Windows**：`Steam Streaming Microphone`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：預設 PipeWire 虛擬輸出節點
 2. **在目標軟體中設定輸入裝置**：
    - 開啟通訊軟體（Discord、微信、QQ、騰訊會議、OBS、Steam 語音等）的音訊設定。
    - 將 **麥克風（音訊輸入）** 選為：
-     - **Windows**：`CABLE Output (VB-Audio Virtual Cable)`
+     - **Windows**：`麥克風 (Steam Streaming Microphone)`
      - **macOS**：`BlackHole 2ch`
      - **Linux**：PipeWire 對應的 `MicYou` 虛擬麥克風
 3. 現在對手機說話，目標軟體就能直接收錄到清晰的麥克風聲音了！
@@ -115,7 +115,7 @@ iOS 透過 USB 連線時音訊固定使用 TCP 傳輸。
 - **Wi-Fi 模式連不上？**  
   檢查電腦防火牆是否放行了 TCP 8554 和 UDP 8555。公共 Wi-Fi 或校園網路往往開啟了「AP 隔離」，禁止裝置互聯，此時建議切換為 USB 資料線連線或開啟手機熱點。
 - **電平有跳動，但聊天軟體裡聽不到聲音？**  
-  重點檢查輸入輸出方向：MicYou 電腦端的輸出應為 **`CABLE Input`**，而第三方軟體的麥克風輸入應為 **`CABLE Output`**。
+  重點檢查裝置方向：MicYou 電腦端的輸出與第三方軟體的麥克風輸入都應選擇 **`Steam Streaming Microphone`**；選成 `Steam Streaming Speakers`（播放端）會沒有聲音。
 - **手機鎖定螢幕後聲音斷開？**  
   - **Android**：請在手機「設定」>「應用程式管理」>「MicYou」>「電池 / 耗電管理」中設為 **「無限制」**（允許完全背景執行），並在多工切換介面鎖定 MicYou。
   - **iOS**：受 iOS 錄音限制，需先在前景點擊「連線」開始傳輸，之後即可鎖定螢幕或切到背景持續傳輸，並透過鎖定畫面即時動態或動態島隨時靜音或中斷連線。

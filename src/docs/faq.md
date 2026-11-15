@@ -1,7 +1,7 @@
 ---
 title: 常见问题 - MicYou
 description: MicYou 常见问题解答与故障排查指南。涵盖 Wi-Fi / USB / Web 连接、音频路由设置、杂音与回声消除、后台保活及各操作系统专属问题。
-keywords: MicYou常见问题,MicYou故障排除,无法连接,没有声音,杂音爆音,延迟优化,后台保活,VB-CABLE,BlackHole,PipeWire,防火墙
+keywords: MicYou常见问题,MicYou故障排除,无法连接,没有声音,杂音爆音,延迟优化,后台保活,Steam Streaming Microphone,BlackHole,PipeWire,防火墙
 ---
 
 # 常见问题
@@ -77,20 +77,24 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 - **第三方软件（Discord / 微信 / QQ / OBS / 游戏语音）**是音频的**接收方**：把虚拟声卡作为**麦克风输入**。
 :::
 
+> **注意**：`Steam Streaming Speakers` 是同一驱动的播放端，不是虚拟麦克风。MicYou 输出与录音软件输入都应选 `Steam Streaming Microphone`。
+
 #### 检查步骤：
 
 1. **检查 MicYou 桌面端的「音频输出设备」**：
-   - **Windows**：选择 `CABLE Input (VB-Audio Virtual Cable)`
+   - **Windows**：选择 `Steam Streaming Microphone`
    - **macOS**：选择 `BlackHole 2ch`
    - **Linux**：选择默认 PipeWire 虚拟输出节点
 
 2. **检查第三方通讯 / 录音软件的「麦克风 / 输入设备」**：
-   - **Windows**：选择 `CABLE Output (VB-Audio Virtual Cable)`
+   - **Windows**：选择 `麦克风 (Steam Streaming Microphone)`
    - **macOS**：选择 `BlackHole 2ch`
    - **Linux**：选择 PipeWire 对应的 `MicYou` 虚拟麦克风
 
 3. **检查系统音量设置**：  
-   打开系统声音控制面板，确保 `CABLE Output` 或 `BlackHole` 没有被静音，且输入音量处于 80%~100%。
+   打开系统声音控制面板，确保 `Steam Streaming Microphone` 或 `BlackHole` 没有被静音。MicYou 安装时已把 Steam 采集增益设为 0 dB，不要把它改成 +30 dB，否则会削波。
+
+> 下列截图是旧版 VB-CABLE 配置示意；使用 Steam Streaming Microphone 时，输出与输入均选择同名设备即可。
 
 **Windows 系统声音设备设置参考：**
 
@@ -106,7 +110,7 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 
 1. **音量偏小**：
    - 在手机端 MicYou 界面调大麦克风收音增益。
-   - 在 Windows「声音设置」>「更多声音设置」>「录制」> 双击 `CABLE Output` >「级别」中，将音量拉到 100。
+   - Windows 下请保持 `Steam Streaming Microphone` 的采集增益为 0 dB（MicYou 安装时已配置）；不要通过「级别」页额外提升，否则会削波。
 2. **刺耳啸叫（回声反馈）**：
    - 啸叫是因为电脑扬声器播放的声音被手机麦克风再次收录，形成死循环反馈。
    - **解决方法**：佩戴耳机收听电脑声音；或在 MicYou 桌面端设置中开启 **AEC (声学回声消除)** 与 **PureVox AI 降噪**。
@@ -116,9 +120,8 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 ### 声音出现杂音、爆音或断续撕裂？
 
 1. **音频采样率不匹配（Windows）**：
-   - 打开 Windows 声音控制面板（`mmsys.cpl`）。
-   - 分别进入 `CABLE Input`（播放选项卡）和 `CABLE Output`（录制选项卡）的「属性」>「高级」。
-   - 将「默认格式」统一修改为 **`2通道, 16位, 48000 Hz`** 或 **`2通道, 24位, 48000 Hz`**，保持两端采样率一致。
+   - Steam Streaming Microphone 的格式由 MicYou 安装程序自动配置为单声道 48 kHz，一般无需手动修改。
+   - 若使用 VB-CABLE 作为回退方案，才需要在 `CABLE Input` / `CABLE Output` 的「属性」>「高级」中把格式统一为 2 通道 48 kHz。
 2. **Wi-Fi 网络抖动导致丢包**：
    - 在 MicYou 桌面端设置中适当增大音频缓冲区（Buffer Size）。
    - 优先连接 5GHz Wi-Fi 频段，避开 2.4GHz 蓝牙与微波炉频段干扰。
@@ -126,7 +129,7 @@ USB 模式通过 ADB 进行本地端口代理，连接稳定且延迟极低。�
 ### 退出 MicYou 后，电脑自带麦克风 / 耳机没有声音了？
 
 - **macOS**：macOS 在连接时可能会将系统默认输入设备切换至 BlackHole。如果软件意外退出，请手动打开「系统设置」>「声音」>「输入」，切回你的硬件麦克风（如「MacBook Pro 麦克风」或外接耳机）。
-- **Windows**：检查聊天软件中是否将麦克风写死为了 `CABLE Output`，切回「默认通信设备」或你的实体耳机麦克风即可。
+- **Windows**：检查聊天软件中是否将麦克风写死为了 `Steam Streaming Microphone`，切回「默认通信设备」或你的实体耳机麦克风即可。
 
 ## 3. 后台保活与延迟优化
 
@@ -151,10 +154,11 @@ Android 系统为了省电，在熄屏后会激进冻结后台应用的网络与
 
 ## 4. 操作系统专属问题
 
-### Windows：安装 VB-CABLE 驱动后仍无法识别
+### Windows：安装后没有出现 Steam Streaming Microphone
 
-- 安装时必须解压 ZIP 压缩包，右键 `VBCABLE_Setup_x64.exe` 并选择 **「以管理员身份运行」**。
-- 安装完成后**必须重启电脑**，驱动才会被 Windows 音频核心服务加载。
+- 运行 MicYou 安装包（需管理员权限），安装程序会安装并配置 Valve 的 Steam Streaming Microphone 驱动。
+- 打开「设置」>「声音」>「更多声音设置」>「录音」，确认 **麦克风 (Steam Streaming Microphone)** 已启用；不要选择 Steam Streaming Speakers。
+- 若设备仍缺失，重新运行 MicYou 安装程序修复驱动，或安装 VB-CABLE 作为回退方案。
 
 ### macOS：提示「无法打开，因为无法验证开发者」
 
