@@ -1,8 +1,8 @@
 {
-	"version": "2.2.0",
-	"releaseUrl": "https://github.com/MicYou-Dev/MicYou/releases/tag/v2.2.0",
-	"releaseDate": "2026-11-14T14:17:43Z",
-	"releaseNotes": "## What's Changed\n* feat(android/soundpad): 引入安卓端遥控桌面音效板插件，仅当连接的桌面端有对应插件才显示 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/376\n* 改进 2.x 对 macOS 的支持 by @WhatDamon in https://github.com/MicYou-Dev/MicYou/pull/350\n* feat(cli): add JSON Lines control channel for headless frontends by @TimmySheep in https://github.com/MicYou-Dev/MicYou/pull/363\n* docs: 补充 Web 模式跨网络连接指南 by @ErickTorresBrownU in https://github.com/MicYou-Dev/MicYou/pull/380\n* fix: 终端前端按连接模式读取已保存端口 by @ErickTorresBrownU in https://github.com/MicYou-Dev/MicYou/pull/381\n* fix: 显示可操作的 Web 连接错误并释放失败会话资源 by @ErickTorresBrownU in https://github.com/MicYou-Dev/MicYou/pull/382\n* test: 为 Web 客户端增加独立预览和浏览器检查 by @ErickTorresBrownU in https://github.com/MicYou-Dev/MicYou/pull/383\n* feat: 支持显式配置 Web 来源白名单 by @ErickTorresBrownU in https://github.com/MicYou-Dev/MicYou/pull/384\n* feat: 多节点 DSP 插件、启动插件更新检查、安卓自动重连；AEC 可排序与 minHostVersion 校验 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/389\n\n## New Contributors\n* @TimmySheep made their first contribution in https://github.com/MicYou-Dev/MicYou/pull/363\n* @ErickTorresBrownU made their first contribution in https://github.com/MicYou-Dev/MicYou/pull/380\n\n**Full Changelog**: https://github.com/MicYou-Dev/MicYou/compare/v2.1.1...v2.2.0",
+	"version": "2.2.1",
+	"releaseUrl": "https://github.com/MicYou-Dev/MicYou/releases/tag/v2.2.1",
+	"releaseDate": "2026-11-19T14:59:46Z",
+	"releaseNotes": "## What's Changed\n* fix(tui): ignore key release events on Windows by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/395\n* revert: remove JSON Lines control channel for headless frontends (#363) by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/393\n* feat(audio): use Steam Streaming Microphone instead of VB-CABLE on Windows by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/394\n\n\n**Full Changelog**: https://github.com/MicYou-Dev/MicYou/compare/v2.2.0...v2.2.1",
 	"iosVersion": "1.2.1",
 	"iosReleaseUrl": "https://github.com/MicYou-Dev/MicYou-iOS/releases/tag/v1.2.1",
 	"contributors": [
@@ -151,5 +151,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-11-14T21:46:03.491Z"
+	"fetchedAt": "2026-11-19T23:59:02.329Z"
 }
