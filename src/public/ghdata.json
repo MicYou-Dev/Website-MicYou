@@ -1,8 +1,8 @@
 {
-	"version": "2.2.2",
-	"releaseUrl": "https://github.com/MicYou-Dev/MicYou/releases/tag/v2.2.2",
-	"releaseDate": "2026-11-20T15:20:21Z",
-	"releaseNotes": "## What's Changed\n* docs: add Japanese README by @eltociear in https://github.com/MicYou-Dev/MicYou/pull/397\n* fix(installer): install the Steam driver and replay onboarding with release notes by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/398\n\n## New Contributors\n* @eltociear made their first contribution in https://github.com/MicYou-Dev/MicYou/pull/397\n\n**Full Changelog**: https://github.com/MicYou-Dev/MicYou/compare/v2.2.1...v2.2.2",
+	"version": "2.2.3",
+	"releaseUrl": "https://github.com/MicYou-Dev/MicYou/releases/tag/v2.2.3",
+	"releaseDate": "2026-11-21T08:27:05Z",
+	"releaseNotes": "## What's Changed\n* feat(macos): improve main window and menu bar behavior by @P3TERX in https://github.com/MicYou-Dev/MicYou/pull/396\n* fix: 核心功能修复：Steam Streaming Microphone 统一双声道 32-bit 48 kHz，修复安装后音频爆炸 by @OrientCOMPASS in https://github.com/MicYou-Dev/MicYou/pull/399\n\n## New Contributors\n* @P3TERX made their first contribution in https://github.com/MicYou-Dev/MicYou/pull/396\n\n**Full Changelog**: https://github.com/MicYou-Dev/MicYou/compare/v2.2.2...v2.2.3",
 	"iosVersion": "1.2.1",
 	"iosReleaseUrl": "https://github.com/MicYou-Dev/MicYou-iOS/releases/tag/v1.2.1",
 	"contributors": [
@@ -163,5 +163,5 @@
 			"contributions": 1
 		}
 	],
-	"fetchedAt": "2026-11-21T04:38:21.756Z"
+	"fetchedAt": "2026-11-21T13:50:28.210Z"
 }
